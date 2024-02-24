@@ -1,7 +1,6 @@
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
-import { isMatch } from './isMatch';
-import { pTypeofSymbol, pStringFunction } from './patterns/Symbol';
+import { typeofSymbol, typeofSymbolIterator } from './patterns/Symbol';
 
 const operators = new Set([
   '==',
@@ -20,10 +19,7 @@ const plugin = declarePlugin((api) => {
         const node = path.node;
 
         if (operators.has(node.operator)) {
-          if (
-            isMatch(node.left, pStringFunction) && isMatch(node.right, pTypeofSymbol) ||
-            isMatch(node.left, pTypeofSymbol) && isMatch(node.right, pStringFunction)
-          ) {
+          if (typeofSymbol(node) || typeofSymbolIterator(node)) {
             path.replaceWith({
               type: 'BooleanLiteral',
               value: node.operator.startsWith('='),
