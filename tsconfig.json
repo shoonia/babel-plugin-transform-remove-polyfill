@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./test/**/*",
+  ],
+  "exclude": [
+    "dist/",
+    "node_modules/"
+  ]
+}
