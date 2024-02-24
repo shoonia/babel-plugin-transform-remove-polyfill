@@ -12,6 +12,9 @@
   "dependencies": {
     "@babel/helper-plugin-utils": "^7.22.5"
   },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
   "devDependencies": {
     "@babel/types": "^7.23.9",
     "@babel/core": "^7.23.9",
