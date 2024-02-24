@@ -1,0 +1,3 @@
+npx tsc
+npm run build
+npm test
