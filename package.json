@@ -1,0 +1,33 @@
+{
+  "name": "babel-plugin-transform-remove-polyfill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.cjs",
+  "exports": "./dist/index.cjs",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "test": ""
+  },
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.22.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-typescript": "^7.23.3",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "rollup": "^4.12.0",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": {
+    "name": "Alexander Zaytsev",
+    "email": "zaytsev126@gmail.com",
+    "url": "https://x.com/_shoonia"
+  },
+  "license": "MIT"
+}
