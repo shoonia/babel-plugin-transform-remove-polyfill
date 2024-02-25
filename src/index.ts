@@ -5,7 +5,7 @@ import {
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { matchTypeof } from './patterns/typeof';
-import { isNodeIdentifier } from './patterns/utils';
+import { isNodeIdentifier, oneOfIdentifier } from './patterns/utils';
 
 const isSymbolIterator = buildMatchMemberExpression('Symbol.iterator', false);
 const isSymbolFor = buildMatchMemberExpression('Symbol.for', false);
@@ -16,6 +16,13 @@ const operators = new Set<BinaryExpression['operator']>([
   '===',
   '!==',
 ]);
+
+const classes = new Set([
+  'Symbol',
+  'WeakMap',
+  'WeakSet',
+  'WeakRef',
+] as const);
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
@@ -30,7 +37,7 @@ const plugin = declarePlugin((api) => {
           const tyof = matchTypeof(node);
 
           if (tyof.match) {
-            if (isNodeIdentifier(tyof.target, 'Symbol')) {
+            if (oneOfIdentifier(tyof.target, classes)) {
               if (tyof.expect === 'function' || tyof.expect === 'undefined') {
                 path.replaceWith({
                   type: 'BooleanLiteral',
