@@ -4,10 +4,16 @@ import { is } from 'uvu/assert';
 import { t } from './utils.js';
 
 const listTrue = [
+  // function
   'typeof Symbol === "function"',
   'typeof Symbol == "function"',
   '"function" === typeof Symbol',
   '"function" == typeof Symbol',
+  // undefined
+  'typeof Symbol !== "undefined"',
+  'typeof Symbol != "undefined"',
+  '"undefined" !== typeof Symbol',
+  '"undefined" != typeof Symbol',
 ];
 
 listTrue.forEach((code, i) => {
@@ -17,10 +23,16 @@ listTrue.forEach((code, i) => {
 });
 
 const listFalse = [
+  // function
   'typeof Symbol !== "function"',
   'typeof Symbol != "function"',
   '"function" !== typeof Symbol',
   '"function" != typeof Symbol',
+  // undefined
+  'typeof Symbol === "undefined"',
+  'typeof Symbol == "undefined"',
+  '"undefined" === typeof Symbol',
+  '"undefined" == typeof Symbol',
 ];
 
 listFalse.forEach((code, i) => {
