@@ -8,6 +8,7 @@ import { matchTypeof } from './patterns/typeof';
 import { isNodeIdentifier } from './patterns/utils';
 
 const isSymbolIterator = buildMatchMemberExpression('Symbol.iterator', false);
+const isSymbolFor = buildMatchMemberExpression('Symbol.for', false);
 
 const operators = new Set<BinaryExpression['operator']>([
   '==',
@@ -50,6 +51,17 @@ const plugin = declarePlugin((api) => {
               }
             }
           }
+        }
+      },
+
+      LogicalExpression(path) {
+        const node = path.node;
+
+        if (node.operator === '&&' && isSymbolFor(node.left)) {
+          node.left = {
+            type: 'BooleanLiteral',
+            value: true,
+          };
         }
       },
     },
