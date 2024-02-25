@@ -29,4 +29,17 @@ listFalse.forEach((code, i) => {
   });
 });
 
+const noTransformList = [
+  'typeof Symbol.iterator === "number";',
+  'typeof Symbol.iterator !== "string";',
+  '"function" !== typeof Symbol.iterator;',
+  '"object" == typeof Symbol.iterator;',
+];
+
+noTransformList.forEach((code, i) => {
+  test(`no transform #${i}`, async () => {
+    is(await t(code), code);
+  });
+});
+
 test.run();

@@ -11,7 +11,6 @@ export const t = async (source) => {
   const result = await transformAsync(Array.isArray(source) ? source[0] : source, {
     plugins: [plugin],
     ast: false,
-    minified: true,
     babelrc: false,
     sourceMaps: false,
   });

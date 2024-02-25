@@ -12,7 +12,7 @@ const listTrue = [
 
 listTrue.forEach((code, i) => {
   test(`true #${i}`, async () => {
-    is(await t(code), 'true;')
+    is(await t(code), 'true;');
   });
 });
 
@@ -25,7 +25,20 @@ const listFalse = [
 
 listFalse.forEach((code, i) => {
   test(`false #${i}`, async () => {
-    is(await t(code), 'false;')
+    is(await t(code), 'false;');
+  });
+});
+
+const noTransformList = [
+  'typeof Symbol === "number";',
+  'typeof Symbol !== "string";',
+  '"object" !== typeof Symbol;',
+  '"object" == typeof Symbol;',
+];
+
+noTransformList.forEach((code, i) => {
+  test(`no transform #${i}`, async () => {
+    is(await t(code), code);
   });
 });
 
