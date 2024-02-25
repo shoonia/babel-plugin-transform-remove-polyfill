@@ -23,8 +23,7 @@ export default {
       presets: [
         '@babel/preset-typescript',
       ],
-      comments: false,
     }),
     nodeResolve({ extensions }),
   ],
-}
+};

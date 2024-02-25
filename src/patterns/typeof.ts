@@ -23,4 +23,4 @@ export const matchTypeof = (node: BinaryExpression) => {
   return {
     match: false,
   } as const;
-}
+};
