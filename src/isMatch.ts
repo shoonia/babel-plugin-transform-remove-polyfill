@@ -2,9 +2,7 @@ import type t from '@babel/types';
 
 type P = string | number | null | undefined;
 
-export const hasown = <T extends object>(obj: T, key: string | keyof T): key is keyof T => {
-  return Object.hasOwn(obj, key);
-}
+export const hasOwn = Object.hasOwn as <T extends object>(obj: T, key: keyof T | string) => key is keyof T;
 
 export const isMatch = (
   node: t.Node | P | P[],
@@ -20,7 +18,7 @@ export const isMatch = (
 
   if (typeof node === 'object') {
     return typeof pattern === 'object' && Object.keys(pattern).every((key) => {
-      return hasown(node, key) && hasown(pattern, key) && isMatch(node[key], pattern[key]);
+      return hasOwn(node, key) && hasOwn(pattern, key) && isMatch(node[key], pattern[key]);
     });
   }
 
