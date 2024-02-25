@@ -14,6 +14,11 @@ const listTrue = [
   'typeof Symbol != "undefined"',
   '"undefined" !== typeof Symbol',
   '"undefined" != typeof Symbol',
+  // call
+  'typeof Symbol() == "symbol"',
+  'typeof Symbol() === "symbol"',
+  '"symbol" == typeof Symbol()',
+  '"symbol" === typeof Symbol()',
 ];
 
 listTrue.forEach((code, i) => {
@@ -33,6 +38,11 @@ const listFalse = [
   'typeof Symbol == "undefined"',
   '"undefined" === typeof Symbol',
   '"undefined" == typeof Symbol',
+  // call
+  'typeof Symbol() != "symbol"',
+  'typeof Symbol() !== "symbol"',
+  '"symbol" != typeof Symbol()',
+  '"symbol" !== typeof Symbol()',
 ];
 
 listFalse.forEach((code, i) => {

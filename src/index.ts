@@ -38,11 +38,16 @@ const plugin = declarePlugin((api) => {
               }
             }
 
-            else if (isSymbolIterator(tyof.target) && tyof.expect === 'symbol') {
-              path.replaceWith({
-                type: 'BooleanLiteral',
-                value: node.operator.startsWith('='),
-              });
+            else if (tyof.expect === 'symbol') {
+              if (
+                isSymbolIterator(tyof.target) ||
+                tyof.target.type === 'CallExpression' && isNodeIdentifier(tyof.target.callee, 'Symbol')
+              ) {
+                path.replaceWith({
+                  type: 'BooleanLiteral',
+                  value: node.operator.startsWith('='),
+                });
+              }
             }
           }
         }
