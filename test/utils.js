@@ -3,7 +3,6 @@ import { transformAsync } from '@babel/core';
 import plugin from '../dist/index.cjs';
 
 /**
- *
  * @param {string | TemplateStringsArray} source
  * @returns {Promise<string>}
  */

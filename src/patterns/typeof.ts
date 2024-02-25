@@ -1,8 +1,7 @@
 import type { Node, UnaryExpression, BinaryExpression } from '@babel/types';
 
-const isTypeof = (node: Node): node is UnaryExpression => {
-  return node.type === 'UnaryExpression' && node.operator === 'typeof' && node.prefix;
-}
+const isTypeof = (node: Node): node is UnaryExpression =>
+  node.type === 'UnaryExpression' && node.operator === 'typeof' && node.prefix;
 
 export const matchTypeof = (node: BinaryExpression) => {
   if (isTypeof(node.left)) {
