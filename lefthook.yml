@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      run: npx eslint
+      skip:
+        - merge
+        - rebase
+    types:
+      run: npx tsc
+      skip:
+        - merge
+        - rebase

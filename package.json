@@ -20,6 +20,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
+    "@evilmartians/lefthook": "^1.6.1",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/babel__helper-plugin-utils": "^7.10.3",
