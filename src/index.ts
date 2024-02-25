@@ -1,15 +1,8 @@
-import {
-  type BinaryExpression,
-  buildMatchMemberExpression,
-} from '@babel/types';
+import type { BinaryExpression } from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { matchTypeof } from './patterns/typeof';
 import { isNodeIdentifier, oneOfIdentifier } from './patterns/utils';
-
-const isSymbolIterator = buildMatchMemberExpression('Symbol.iterator', false);
-const isSymbolFor = buildMatchMemberExpression('Symbol.for', false);
-const isObjectHasOwn = buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
 
 const operators = new Set<BinaryExpression['operator']>([
   '==',
@@ -27,6 +20,10 @@ const classes = new Set([
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
+
+  const isSymbolIterator = api.types.buildMatchMemberExpression('Symbol.iterator', false);
+  const isSymbolFor = api.types.buildMatchMemberExpression('Symbol.for', false);
+  const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
 
   return {
     name: 'transform-remove-polyfill',
