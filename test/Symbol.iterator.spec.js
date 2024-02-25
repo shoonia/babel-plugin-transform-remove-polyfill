@@ -3,51 +3,30 @@ import { is } from 'uvu/assert';
 
 import { t } from './utils.js';
 
-const TRUE = 'true;';
-const FALSE = 'false;';
+const listTrue = [
+  'typeof Symbol.iterator === "symbol"',
+  'typeof Symbol.iterator == "symbol"',
+  '"symbol" === typeof Symbol.iterator',
+  '"symbol" == typeof Symbol.iterator',
+];
 
-// true
-
-test('true #1', async () => {
-  const result = await t`typeof Symbol.iterator === 'symbol'`;
-  is(result, TRUE)
+listTrue.forEach((code, i) => {
+  test(`true #${i}`, async () => {
+    is(await t(code), 'true;')
+  });
 });
 
-test('true #2', async () => {
-  const result = await t`typeof Symbol.iterator == 'symbol'`;
-  is(result, TRUE)
-});
+const listFalse = [
+  'typeof Symbol.iterator !== "symbol"',
+  'typeof Symbol.iterator != "symbol"',
+  '"symbol" !== typeof Symbol.iterator',
+  '"symbol" != typeof Symbol.iterator',
+];
 
-test('true #3', async () => {
-  const result = await t`'symbol' === typeof Symbol.iterator`;
-  is(result, TRUE)
-});
-
-test('true #4', async () => {
-  const result = await t`'symbol' == typeof Symbol.iterator`;
-  is(result, TRUE)
-});
-
-// false
-
-test('false #1', async () => {
-  const result = await t`typeof Symbol.iterator !== 'symbol'`;
-  is(result, FALSE)
-});
-
-test('false #2', async () => {
-  const result = await t`typeof Symbol.iterator != 'symbol'`;
-  is(result, FALSE)
-});
-
-test('false #3', async () => {
-  const result = await t`'symbol' !== typeof Symbol.iterator`;
-  is(result, FALSE)
-});
-
-test('false #4', async () => {
-  const result = await t`'symbol' != typeof Symbol.iterator`;
-  is(result, FALSE)
+listFalse.forEach((code, i) => {
+  test(`false #${i}`, async () => {
+    is(await t(code), 'false;')
+  });
 });
 
 test.run();

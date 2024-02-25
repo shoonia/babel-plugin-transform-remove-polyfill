@@ -3,51 +3,30 @@ import { is } from 'uvu/assert';
 
 import { t } from './utils.js';
 
-const TRUE = 'true;';
-const FALSE = 'false;';
+const listTrue = [
+  'typeof Symbol === "function"',
+  'typeof Symbol == "function"',
+  '"function" === typeof Symbol',
+  '"function" == typeof Symbol',
+];
 
-// true
-
-test('transform to true #1', async () => {
-  const result = await t`typeof Symbol === 'function'`;
-  is(result, TRUE)
+listTrue.forEach((code, i) => {
+  test(`true #${i}`, async () => {
+    is(await t(code), 'true;')
+  });
 });
 
-test('transform to true #2', async () => {
-  const result = await t`typeof Symbol == 'function'`;
-  is(result, TRUE)
-});
+const listFalse = [
+  'typeof Symbol !== "function"',
+  'typeof Symbol != "function"',
+  '"function" !== typeof Symbol',
+  '"function" != typeof Symbol',
+];
 
-test('transform to true #3', async () => {
-  const result = await t`'function' === typeof Symbol`;
-  is(result, TRUE)
-});
-
-test('transform to true #4', async () => {
-  const result = await t`'function' == typeof Symbol`;
-  is(result, TRUE)
-});
-
-// false
-
-test('transform to false #1', async () => {
-  const result = await t`typeof Symbol !== 'function'`;
-  is(result, FALSE)
-});
-
-test('transform to false #2', async () => {
-  const result = await t`typeof Symbol != 'function'`;
-  is(result, FALSE)
-});
-
-test('transform to false #3', async () => {
-  const result = await t`'function' !== typeof Symbol`;
-  is(result, FALSE)
-});
-
-test('transform to false #4', async () => {
-  const result = await t`'function' != typeof Symbol`;
-  is(result, FALSE)
+listFalse.forEach((code, i) => {
+  test(`false #${i}`, async () => {
+    is(await t(code), 'false;')
+  });
 });
 
 test.run();
