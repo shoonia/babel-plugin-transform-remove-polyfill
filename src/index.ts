@@ -9,6 +9,7 @@ import { isNodeIdentifier, oneOfIdentifier } from './patterns/utils';
 
 const isSymbolIterator = buildMatchMemberExpression('Symbol.iterator', false);
 const isSymbolFor = buildMatchMemberExpression('Symbol.for', false);
+const isObjectHasOwn = buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
 
 const operators = new Set<BinaryExpression['operator']>([
   '==',
@@ -68,6 +69,29 @@ const plugin = declarePlugin((api) => {
           node.left = {
             type: 'BooleanLiteral',
             value: true,
+          };
+        }
+      },
+
+      CallExpression(path) {
+        const node = path.node;
+
+        if (
+          isObjectHasOwn(node.callee) &&
+          node.arguments.length === 2 &&
+          node.arguments.every((i) => i.type === 'Identifier')
+        ) {
+          node.callee = {
+            type: 'MemberExpression',
+            object: {
+              type: 'Identifier',
+              name: 'Object',
+            },
+            computed: false,
+            property: {
+              type: 'Identifier',
+              name: 'hasOwn',
+            },
           };
         }
       },
