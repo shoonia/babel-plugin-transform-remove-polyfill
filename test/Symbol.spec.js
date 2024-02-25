@@ -1,7 +1,9 @@
-import { test } from 'uvu';
+import { suite } from 'uvu';
 import { is } from 'uvu/assert';
 
 import { t } from './utils.js';
+
+const test = suite('Symbol');
 
 const listTrue = [
   // function
