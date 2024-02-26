@@ -2,7 +2,7 @@ import type { BinaryExpression } from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { matchTypeof } from './patterns/typeof';
-import { isNodeIdentifier, oneOfIdentifier } from './patterns/utils';
+import { objectMember, isNodeIdentifier, oneOfIdentifier } from './patterns/utils';
 
 const operators = new Set<BinaryExpression['operator']>([
   '==',
@@ -73,33 +73,11 @@ const plugin = declarePlugin((api) => {
 
         else if (node.operator === '||') {
           if (isObjectAssign(node.left)) {
-            path.replaceWith({
-              type: 'MemberExpression',
-              object: {
-                type: 'Identifier',
-                name: 'Object',
-              },
-              computed: false,
-              property: {
-                type: 'Identifier',
-                name: 'assign',
-              },
-            });
+            path.replaceWith(objectMember('assign'));
           }
 
           else if (isObjectSetProtoOf(node.left)) {
-            path.replaceWith({
-              type: 'MemberExpression',
-              object: {
-                type: 'Identifier',
-                name: 'Object',
-              },
-              computed: false,
-              property: {
-                type: 'Identifier',
-                name: 'setPrototypeOf',
-              },
-            });
+            path.replaceWith(objectMember('setPrototypeOf'));
           }
         }
       },
@@ -112,18 +90,7 @@ const plugin = declarePlugin((api) => {
           node.arguments.length === 2 &&
           node.arguments.every((i) => i.type === 'Identifier')
         ) {
-          node.callee = {
-            type: 'MemberExpression',
-            object: {
-              type: 'Identifier',
-              name: 'Object',
-            },
-            computed: false,
-            property: {
-              type: 'Identifier',
-              name: 'hasOwn',
-            },
-          };
+          node.callee = objectMember('hasOwn');
         }
       },
     },
