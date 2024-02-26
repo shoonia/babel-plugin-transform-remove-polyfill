@@ -72,12 +72,11 @@ const plugin = declarePlugin((api) => {
         }
 
         else if (node.operator === '||') {
-          if (isObjectAssign(node.left)) {
-            path.replaceWith(objectMember('assign'));
-          }
-
-          else if (isObjectSetProtoOf(node.left)) {
-            path.replaceWith(objectMember('setPrototypeOf'));
+          if (
+            isObjectAssign(node.left) ||
+            isObjectSetProtoOf(node.left)
+          ) {
+            path.replaceWith(node.left);
           }
         }
       },
