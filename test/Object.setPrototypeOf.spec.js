@@ -12,4 +12,11 @@ test('tranfrom', async () => {
   );
 });
 
+test('tranfrom #2', async () => {
+  is(
+    await t`(Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t)`,
+    'Object.setPrototypeOf(e, t);'
+  );
+});
+
 test.run();

@@ -93,6 +93,14 @@ const plugin = declarePlugin((api) => {
           node.callee = objectMember('hasOwn');
         }
       },
+
+      ConditionalExpression(path) {
+        const node = path.node;
+
+        if (isObjectSetProtoOf(node.test)) {
+          path.replaceWith(node.consequent);
+        }
+      },
     },
   };
 });
