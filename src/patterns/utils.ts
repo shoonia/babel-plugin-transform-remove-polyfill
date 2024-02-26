@@ -11,6 +11,7 @@ const objectKeys = new Set<K>([
   'values',
   'entries',
   'fromEntries',
+  'getOwnPropertySymbols',
 ]);
 
 const builtInObjects = new Set([

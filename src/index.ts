@@ -95,6 +95,17 @@ const plugin = declarePlugin((api) => {
           }
         }
       },
+
+      IfStatement(path) {
+        const node = path.node;
+
+        if (isObjecMember(node.test)) {
+          node.test = {
+            type: 'BooleanLiteral',
+            value: true,
+          };
+        }
+      },
     },
   };
 });
