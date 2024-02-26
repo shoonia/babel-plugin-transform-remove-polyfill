@@ -2,7 +2,12 @@ import type { BinaryExpression } from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { matchTypeof } from './patterns/typeof';
-import { objectMember, isNodeIdentifier, oneOfIdentifier } from './patterns/utils';
+import {
+  objectMember,
+  isObjecMember,
+  isBuiltInObject,
+  isNodeIdentifier,
+} from './patterns/utils';
 
 const operators = new Set<BinaryExpression['operator']>([
   '==',
@@ -11,21 +16,12 @@ const operators = new Set<BinaryExpression['operator']>([
   '!==',
 ]);
 
-const classes = new Set([
-  'Symbol',
-  'WeakMap',
-  'WeakSet',
-  'WeakRef',
-] as const);
-
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
 
   const isSymbolIterator = api.types.buildMatchMemberExpression('Symbol.iterator', false);
   const isSymbolFor = api.types.buildMatchMemberExpression('Symbol.for', false);
   const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
-  const isObjectAssign = api.types.buildMatchMemberExpression('Object.assign', false);
-  const isObjectSetProtoOf = api.types.buildMatchMemberExpression('Object.setPrototypeOf', false);
 
   return {
     name: 'transform-remove-polyfill',
@@ -37,13 +33,12 @@ const plugin = declarePlugin((api) => {
           const tyof = matchTypeof(node);
 
           if (tyof.match) {
-            if (oneOfIdentifier(tyof.target, classes)) {
+            if (isBuiltInObject(tyof.target)) {
               path.replaceWith({
                 type: 'BooleanLiteral',
                 value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
               });
             }
-
             else if (tyof.expect === 'symbol') {
               if (
                 isSymbolIterator(tyof.target) ||
@@ -68,10 +63,7 @@ const plugin = declarePlugin((api) => {
           }
         }
         else if (node.operator === '||') {
-          if (
-            isObjectAssign(node.left) ||
-            isObjectSetProtoOf(node.left)
-          ) {
+          if (isObjecMember(node.left)) {
             path.replaceWith(node.left);
           }
         }
@@ -92,7 +84,7 @@ const plugin = declarePlugin((api) => {
       ConditionalExpression(path) {
         const node = path.node;
 
-        if (isObjectSetProtoOf(node.test)) {
+        if (isObjecMember(node.test)) {
           path.replaceWith(node.consequent);
         }
       },
