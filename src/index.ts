@@ -38,12 +38,10 @@ const plugin = declarePlugin((api) => {
 
           if (tyof.match) {
             if (oneOfIdentifier(tyof.target, classes)) {
-              if (tyof.expect === 'function' || tyof.expect === 'undefined') {
-                path.replaceWith({
-                  type: 'BooleanLiteral',
-                  value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
-                });
-              }
+              path.replaceWith({
+                type: 'BooleanLiteral',
+                value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
+              });
             }
 
             else if (tyof.expect === 'symbol') {

@@ -21,6 +21,10 @@ const listTrue = [
   'typeof Symbol() === "symbol"',
   '"symbol" == typeof Symbol()',
   '"symbol" === typeof Symbol()',
+  // incorrect value
+  'typeof Symbol !== "string"',
+  '"object" !== typeof Symbol',
+  '"object" != typeof Symbol',
 ];
 
 listTrue.forEach((code, i) => {
@@ -45,24 +49,15 @@ const listFalse = [
   'typeof Symbol() !== "symbol"',
   '"symbol" != typeof Symbol()',
   '"symbol" !== typeof Symbol()',
+  // incorrect value
+  '"object" == typeof Symbol',
+  'typeof Symbol == "object"',
+  'typeof Symbol === "object"',
 ];
 
 listFalse.forEach((code, i) => {
   test(`false #${i}`, async () => {
     is(await t(code), 'false;');
-  });
-});
-
-const noTransformList = [
-  'typeof Symbol === "number";',
-  'typeof Symbol !== "string";',
-  '"object" !== typeof Symbol;',
-  '"object" == typeof Symbol;',
-];
-
-noTransformList.forEach((code, i) => {
-  test(`no transform #${i}`, async () => {
-    is(await t(code), code);
   });
 });
 

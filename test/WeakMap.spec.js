@@ -16,6 +16,9 @@ const listTrue = [
   'typeof WeakMap != "undefined"',
   '"undefined" !== typeof WeakMap',
   '"undefined" != typeof WeakMap',
+  // incorrect value
+  'typeof WeakMap !== "string"',
+  '"object" !== typeof WeakMap',
 ];
 
 listTrue.forEach((code, i) => {
@@ -35,24 +38,14 @@ const listFalse = [
   'typeof WeakMap == "undefined"',
   '"undefined" === typeof WeakMap',
   '"undefined" == typeof WeakMap',
+  // incorrect value
+  'typeof WeakMap === "number"',
+  '"object" == typeof WeakMap',
 ];
 
 listFalse.forEach((code, i) => {
   test(`false #${i}`, async () => {
     is(await t(code), 'false;');
-  });
-});
-
-const noTransformList = [
-  'typeof WeakMap === "number";',
-  'typeof WeakMap !== "string";',
-  '"object" !== typeof WeakMap;',
-  '"object" == typeof WeakMap;',
-];
-
-noTransformList.forEach((code, i) => {
-  test(`no transform #${i}`, async () => {
-    is(await t(code), code);
   });
 });
 
