@@ -10,6 +10,7 @@ const list = [
   'typeof identifier !== "function" ? 0 : 1;',
   '"undefined" == typeof identifier ? 0 : 1;',
   '"undefined" != typeof identifier ? 0 : 1;',
+  'Object.getOwnPropertyDescriptor(r, t);',
 ];
 
 list.forEach((code, i) => {
