@@ -5,17 +5,17 @@ import { t } from './utils.js';
 
 const test = suite('Symbol.for');
 
-test('Symbol.for to true', async () => {
+test('remove', async () => {
   is(
     await t`Symbol.for && Symbol.for("react.forward_ref")`,
-    'true && Symbol.for("react.forward_ref");'
+    'Symbol.for("react.forward_ref");'
   );
 });
 
-test('Symbol.for to true #2', async () => {
+test('remove #2', async () => {
   is(
     await t`var c = Symbol.for && Symbol.for("react.forward_ref") || 3911;`,
-    'var c = true && Symbol.for("react.forward_ref") || 3911;'
+    'var c = Symbol.for("react.forward_ref") || 3911;'
   );
 });
 

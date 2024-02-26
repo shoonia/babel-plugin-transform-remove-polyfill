@@ -64,13 +64,11 @@ const plugin = declarePlugin((api) => {
       LogicalExpression(path) {
         const node = path.node;
 
-        if (node.operator === '&&' && isSymbolFor(node.left)) {
-          node.left = {
-            type: 'BooleanLiteral',
-            value: true,
-          };
+        if (node.operator === '&&') {
+          if (isSymbolFor(node.left)) {
+            path.replaceWith(node.right);
+          }
         }
-
         else if (node.operator === '||') {
           if (
             isObjectAssign(node.left) ||
