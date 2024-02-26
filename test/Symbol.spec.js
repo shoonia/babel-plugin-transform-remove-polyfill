@@ -84,4 +84,11 @@ ternaryList.forEach((code, i) => {
   });
 });
 
+test('true && true', async () => {
+  is(
+    await'"function" == typeof Symbol && "symbol" == typeof Symbol("foo")',
+    'true && true;'
+  );
+});
+
 test.run();
