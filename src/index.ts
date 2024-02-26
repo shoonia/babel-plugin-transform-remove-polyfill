@@ -90,7 +90,7 @@ const plugin = declarePlugin((api) => {
         else if (node.test.type === 'BinaryExpression') {
           const tyof = matchTypeof(node.test);
 
-          if (tyof.match) {
+          if (tyof.match && isBuiltInObject(tyof.target)) {
             path.replaceWith(tyof.expect === 'function' ? node.consequent : node.alternate);
           }
         }
