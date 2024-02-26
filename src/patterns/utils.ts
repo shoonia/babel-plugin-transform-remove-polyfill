@@ -31,6 +31,7 @@ const builtInObjects = new Set([
   'Proxy',
   'Promise',
   'BigInt',
+  'URLSearchParams',
 ] as const);
 
 export const isNodeIdentifier = (node: Node, name: string): node is Identifier =>
