@@ -24,6 +24,7 @@ const plugin = declarePlugin((api) => {
   const isSymbolIterator = api.types.buildMatchMemberExpression('Symbol.iterator', false);
   const isSymbolFor = api.types.buildMatchMemberExpression('Symbol.for', false);
   const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+  const isObjectAssign = api.types.buildMatchMemberExpression('Object.assign', false);
 
   return {
     name: 'transform-remove-polyfill',
@@ -67,6 +68,24 @@ const plugin = declarePlugin((api) => {
             type: 'BooleanLiteral',
             value: true,
           };
+        }
+
+        else if (
+          node.operator === '||' && isObjectAssign(node.left) &&
+          node.right.type === 'FunctionExpression' && !node.right.async && !node.right.generator
+        ) {
+          path.replaceWith({
+            type: 'MemberExpression',
+            object: {
+              type: 'Identifier',
+              name: 'Object',
+            },
+            computed: false,
+            property: {
+              type: 'Identifier',
+              name: 'assign',
+            },
+          });
         }
       },
 
