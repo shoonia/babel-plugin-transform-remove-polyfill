@@ -49,4 +49,27 @@ listFalse.forEach((code, i) => {
   });
 });
 
+const ternaryList = [
+  'typeof WeakMap === "function" ? WeakMap : Polyfill',
+  'typeof WeakMap !== "function" Polyfill : WeakMap',
+  'typeof WeakMap !== "undefined" ? WeakMap : Polyfill',
+  'typeof WeakMap === "undefined" ? Polyfill : WeakMap',
+  // ==
+  'typeof WeakMap == "function" ? WeakMap : Polyfill',
+  'typeof WeakMap != "function" Polyfill : WeakMap',
+  'typeof WeakMap != "undefined" ? WeakMap : Polyfill',
+  'typeof WeakMap == "undefined" ? Polyfill : WeakMap',
+  // ..
+  '"function" === typeof WeakMap ? WeakMap : Polyfill',
+  '"function" !== typeof WeakMap Polyfill : WeakMap',
+  '"undefined" !== typeof WeakMap ? WeakMap : Polyfill',
+  '"undefined" === typeof WeakMap ? Polyfill : WeakMap',
+];
+
+ternaryList.forEach((code, i) => {
+  test(`ternary operator #${i}`, async () => {
+    is(await t(code), 'WeakMap;');
+  });
+});
+
 test.run();

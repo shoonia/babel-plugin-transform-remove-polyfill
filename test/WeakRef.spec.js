@@ -49,4 +49,27 @@ listFalse.forEach((code, i) => {
   });
 });
 
+const ternaryList = [
+  'typeof WeakRef === "function" ? WeakRef : Polyfill',
+  'typeof WeakRef !== "function" Polyfill : WeakRef',
+  'typeof WeakRef !== "undefined" ? WeakRef : Polyfill',
+  'typeof WeakRef === "undefined" ? Polyfill : WeakRef',
+  // ==
+  'typeof WeakRef == "function" ? WeakRef : Polyfill',
+  'typeof WeakRef != "function" Polyfill : WeakRef',
+  'typeof WeakRef != "undefined" ? WeakRef : Polyfill',
+  'typeof WeakRef == "undefined" ? Polyfill : WeakRef',
+  // ..
+  '"function" === typeof WeakRef ? WeakRef : Polyfill',
+  '"function" !== typeof WeakRef Polyfill : WeakRef',
+  '"undefined" !== typeof WeakRef ? WeakRef : Polyfill',
+  '"undefined" === typeof WeakRef ? Polyfill : WeakRef',
+];
+
+ternaryList.forEach((code, i) => {
+  test(`ternary operator #${i}`, async () => {
+    is(await t(code), 'WeakRef;');
+  });
+});
+
 test.run();

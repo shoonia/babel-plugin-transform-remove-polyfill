@@ -61,4 +61,27 @@ listFalse.forEach((code, i) => {
   });
 });
 
+const ternaryList = [
+  'typeof Symbol === "function" ? Symbol : Polyfill',
+  'typeof Symbol !== "function" Polyfill : Symbol',
+  'typeof Symbol !== "undefined" ? Symbol : Polyfill',
+  'typeof Symbol === "undefined" ? Polyfill : Symbol',
+  // ==
+  'typeof Symbol == "function" ? Symbol : Polyfill',
+  'typeof Symbol != "function" Polyfill : Symbol',
+  'typeof Symbol != "undefined" ? Symbol : Polyfill',
+  'typeof Symbol == "undefined" ? Polyfill : Symbol',
+  // ..
+  '"function" === typeof Symbol ? Symbol : Polyfill',
+  '"function" !== typeof Symbol Polyfill : Symbol',
+  '"undefined" !== typeof Symbol ? Symbol : Polyfill',
+  '"undefined" === typeof Symbol ? Polyfill : Symbol',
+];
+
+ternaryList.forEach((code, i) => {
+  test(`ternary operator #${i}`, async () => {
+    is(await t(code), 'Symbol;');
+  });
+});
+
 test.run();
