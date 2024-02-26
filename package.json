@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-remove-polyfill",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "",
   "main": "dist/index.cjs",
   "exports": "./dist/index.cjs",
@@ -40,5 +40,6 @@
     "email": "zaytsev126@gmail.com",
     "url": "https://x.com/_shoonia"
   },
+  "repository": "https://github.com/shoonia/babel-plugin-transform-remove-polyfill.git",
   "license": "MIT"
 }
