@@ -25,6 +25,7 @@ const plugin = declarePlugin((api) => {
   const isSymbolFor = api.types.buildMatchMemberExpression('Symbol.for', false);
   const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
   const isObjectAssign = api.types.buildMatchMemberExpression('Object.assign', false);
+  const isObjectSetProtoOf = api.types.buildMatchMemberExpression('Object.setPrototypeOf', false);
 
   return {
     name: 'transform-remove-polyfill',
@@ -70,22 +71,36 @@ const plugin = declarePlugin((api) => {
           };
         }
 
-        else if (
-          node.operator === '||' && isObjectAssign(node.left) &&
-          node.right.type === 'FunctionExpression' && !node.right.async && !node.right.generator
-        ) {
-          path.replaceWith({
-            type: 'MemberExpression',
-            object: {
-              type: 'Identifier',
-              name: 'Object',
-            },
-            computed: false,
-            property: {
-              type: 'Identifier',
-              name: 'assign',
-            },
-          });
+        else if (node.operator === '||') {
+          if (isObjectAssign(node.left)) {
+            path.replaceWith({
+              type: 'MemberExpression',
+              object: {
+                type: 'Identifier',
+                name: 'Object',
+              },
+              computed: false,
+              property: {
+                type: 'Identifier',
+                name: 'assign',
+              },
+            });
+          }
+
+          else if (isObjectSetProtoOf(node.left)) {
+            path.replaceWith({
+              type: 'MemberExpression',
+              object: {
+                type: 'Identifier',
+                name: 'Object',
+              },
+              computed: false,
+              property: {
+                type: 'Identifier',
+                name: 'setPrototypeOf',
+              },
+            });
+          }
         }
       },
 
