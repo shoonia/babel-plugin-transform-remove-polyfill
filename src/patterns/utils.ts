@@ -6,6 +6,7 @@ const objectKeys = new Set<K>([
   'assign',
   'create',
   'setPrototypeOf',
+  'getPrototypeOf',
   'keys',
   'values',
   'entries',
@@ -13,12 +14,23 @@ const objectKeys = new Set<K>([
 ]);
 
 const builtInObjects = new Set([
+  'ArrayBuffer',
+  'Int8Array',
+  'Int16Array',
+  'Int32Array',
+  'Uint8Array',
+  'Uint16Array',
+  'Uint32Array',
+  'Uint8ClampedArray',
   'Set',
   'Map',
   'Symbol',
   'WeakMap',
   'WeakSet',
   'WeakRef',
+  'Proxy',
+  'Promise',
+  'BigInt',
 ] as const);
 
 export const isNodeIdentifier = (node: Node, name: string): node is Identifier =>
