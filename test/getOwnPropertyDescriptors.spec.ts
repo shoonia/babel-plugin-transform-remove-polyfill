@@ -22,4 +22,22 @@ describe('Object.getOwnPropertyDescriptors', () => {
       'Object.getOwnPropertyDescriptors ? A : B',
     ).toBeTransform('A;');
   });
+
+  it('tranfrom #4', async () => {
+    await expect(
+      'typeof Object.getOwnPropertyDescriptors === "function" ? A : B'
+    ).toBeTransform('A;');
+  });
+
+  it('tranfrom #5', async () => {
+    await expect(
+      'typeof Object.getOwnPropertyDescriptors !== "undefined" ? A : B'
+    ).toBeTransform('A;');
+  });
+
+  it('tranfrom #6', async () => {
+    await expect(
+      '"undefined" == typeof Object.getOwnPropertyDescriptors ? A : B'
+    ).toBeTransform('B;');
+  });
 });

@@ -86,12 +86,17 @@ const plugin = declarePlugin((api) => {
         else if (node.test.type === 'BinaryExpression') {
           const tyof = matchTypeof(node.test);
 
-          if (tyof.match && isBuiltInObject(tyof.target)) {
-            path.replaceWith(
-              node.test.operator.startsWith(tyof.expect === 'function' ? '=' : '!')
-                ? node.consequent
-                : node.alternate
-            );
+          if (tyof.match) {
+            if (
+              isBuiltInObject(tyof.target) ||
+              isObjecMember(tyof.target)
+            ) {
+              path.replaceWith(
+                node.test.operator.startsWith(tyof.expect === 'function' ? '=' : '!')
+                  ? node.consequent
+                  : node.alternate
+              );
+            }
           }
         }
       },
