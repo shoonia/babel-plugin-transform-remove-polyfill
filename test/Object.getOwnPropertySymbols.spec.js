@@ -12,6 +12,13 @@ test('tranfrom #0', async () => {
   );
 });
 
+test('tranfrom #0.1', async () => {
+  is(
+    await t`if (Object.getOwnPropertySymbols) {} else if (Object.getOwnPropertySymbols) {}`,
+    'if (true) {} else if (true) {}'
+  );
+});
+
 test('tranfrom #1', async () => {
   is(
     await t`Object.getOwnPropertySymbols || A`,
