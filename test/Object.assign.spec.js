@@ -5,10 +5,31 @@ import { t } from './utils.js';
 
 const test = suite('Object.assign');
 
-test('tranfrom', async () => {
+test('tranfrom #0', async () => {
   is(
-    await t`var x = Object.assign || function () {}`,
-    'var x = Object.assign;'
+    await t`if (Object.assign) {}`,
+    'if (true) {}'
+  );
+});
+
+test('tranfrom #1', async () => {
+  is(
+    await t`Object.assign || A`,
+    'Object.assign;'
+  );
+});
+
+test('tranfrom #2', async () => {
+  is(
+    await t`Object.assign && A`,
+    'A;'
+  );
+});
+
+test('tranfrom #3', async () => {
+  is(
+    await t`Object.assign ? A : B`,
+    'A;'
   );
 });
 

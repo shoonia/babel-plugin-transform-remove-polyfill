@@ -5,7 +5,7 @@ import { t } from './utils.js';
 
 const test = suite('Object.getOwnPropertyDescriptors');
 
-test('tranfrom `if(true)`', async () => {
+test('tranfrom #0', async () => {
   is(
     await t`if (Object.getOwnPropertyDescriptors) {}`,
     'if (true) {}'
@@ -14,15 +14,22 @@ test('tranfrom `if(true)`', async () => {
 
 test('tranfrom #1', async () => {
   is(
-    await t`Object.getOwnPropertyDescriptors || function () {}`,
+    await t`Object.getOwnPropertyDescriptors || A`,
     'Object.getOwnPropertyDescriptors;'
   );
 });
 
-test('tranfrom #2', async () => {
+test('tranfrom #1', async () => {
   is(
-    await t`(Object.getOwnPropertyDescriptors ? function A() {} : function B() {}`,
-    'function A() {}'
+    await t`Object.getOwnPropertyDescriptors && A`,
+    'A;'
+  );
+});
+
+test('tranfrom #3', async () => {
+  is(
+    await t`Object.getOwnPropertyDescriptors ? A : B`,
+    'A;'
   );
 });
 

@@ -5,24 +5,31 @@ import { t } from './utils.js';
 
 const test = suite('Object.getOwnPropertySymbols');
 
-test('tranfrom `if(true)`', async () => {
+test('tranfrom #0', async () => {
   is(
     await t`if (Object.getOwnPropertySymbols) {}`,
     'if (true) {}'
   );
 });
 
-test('tranfrom', async () => {
+test('tranfrom #1', async () => {
   is(
-    await t`Object.getOwnPropertySymbols || function () {}`,
+    await t`Object.getOwnPropertySymbols || A`,
     'Object.getOwnPropertySymbols;'
   );
 });
 
 test('tranfrom #2', async () => {
   is(
-    await t`(Object.getOwnPropertySymbols ? function A() {} : function B() {}`,
-    'function A() {}'
+    await t`Object.getOwnPropertySymbols && A`,
+    'A;'
+  );
+});
+
+test('tranfrom #3', async () => {
+  is(
+    await t`Object.getOwnPropertySymbols ? A : B`,
+    'A;'
   );
 });
 

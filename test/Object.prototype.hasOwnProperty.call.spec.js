@@ -13,7 +13,7 @@ test('transform', async () => {
 });
 
 test('NO transform', async () => {
-  const code = 'obj.hasOwnProperty(a, b);';
+  const code = 'obj.hasOwnProperty(a);';
 
   is(await t(code), code);
 });

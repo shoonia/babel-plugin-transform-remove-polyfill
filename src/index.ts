@@ -58,7 +58,10 @@ const plugin = declarePlugin((api) => {
         const node = path.node;
 
         if (node.operator === '&&') {
-          if (isSymbolFor(node.left)) {
+          if (
+            isObjecMember(node.left) ||
+            isSymbolFor(node.left)
+          ) {
             path.replaceWith(node.right);
           }
         }
