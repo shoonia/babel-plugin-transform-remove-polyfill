@@ -87,7 +87,11 @@ const plugin = declarePlugin((api) => {
           const tyof = matchTypeof(node.test);
 
           if (tyof.match && isBuiltInObject(tyof.target)) {
-            path.replaceWith(tyof.expect === 'function' ? node.consequent : node.alternate);
+            path.replaceWith(
+              node.test.operator.startsWith(tyof.expect === 'function' ? '=' : '!')
+                ? node.consequent
+                : node.alternate
+            );
           }
         }
       },
