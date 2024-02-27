@@ -18,7 +18,7 @@ expect.extend({
       pass,
       message: () => pass
         ? 'expected value not to be equal code'
-        : 'expected value to be equal code\n\n' + diffStringsUnified(code?.code, result),
+        : 'expected value to be equal code\n\n' + diffStringsUnified(code?.code ?? '', result),
     };
   },
 });
