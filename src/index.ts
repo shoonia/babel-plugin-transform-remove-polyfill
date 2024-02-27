@@ -1,13 +1,13 @@
 import type { BinaryExpression } from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
-import { matchTypeof } from './patterns/typeof';
+import { matchTypeof } from './typeof';
 import {
   objectMember,
   isObjecMember,
   isBuiltInObject,
   isNodeIdentifier,
-} from './patterns/utils';
+} from './utils';
 
 const operators = new Set<BinaryExpression['operator']>([
   '==',
