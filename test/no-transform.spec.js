@@ -11,6 +11,7 @@ const list = [
   '"undefined" == typeof identifier ? 0 : 1;',
   '"undefined" != typeof identifier ? 0 : 1;',
   'Object.getOwnPropertyDescriptor(r, t);',
+  'typeof Symbol + "__tag";',
 ];
 
 list.forEach((code, i) => {

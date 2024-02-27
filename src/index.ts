@@ -1,4 +1,3 @@
-import type { BinaryExpression } from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { matchTypeof } from './typeof';
@@ -8,13 +7,6 @@ import {
   isBuiltInObject,
   isNodeIdentifier,
 } from './utils';
-
-const operators = new Set<BinaryExpression['operator']>([
-  '==',
-  '!=',
-  '===',
-  '!==',
-]);
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
@@ -28,27 +20,24 @@ const plugin = declarePlugin((api) => {
     visitor: {
       BinaryExpression(path) {
         const node = path.node;
+        const tyof = matchTypeof(node);
 
-        if (operators.has(node.operator)) {
-          const tyof = matchTypeof(node);
-
-          if (tyof.match) {
-            if (isBuiltInObject(tyof.target)) {
+        if (tyof.match) {
+          if (isBuiltInObject(tyof.target)) {
+            path.replaceWith({
+              type: 'BooleanLiteral',
+              value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
+            });
+          }
+          else if (tyof.expect === 'symbol') {
+            if (
+              isSymbolIterator(tyof.target) ||
+              tyof.target.type === 'CallExpression' && isNodeIdentifier(tyof.target.callee, 'Symbol')
+            ) {
               path.replaceWith({
                 type: 'BooleanLiteral',
-                value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
+                value: node.operator.startsWith('='),
               });
-            }
-            else if (tyof.expect === 'symbol') {
-              if (
-                isSymbolIterator(tyof.target) ||
-                tyof.target.type === 'CallExpression' && isNodeIdentifier(tyof.target.callee, 'Symbol')
-              ) {
-                path.replaceWith({
-                  type: 'BooleanLiteral',
-                  value: node.operator.startsWith('='),
-                });
-              }
             }
           }
         }
