@@ -1,22 +1,15 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from './utils.js';
 
-const test = suite('Symbol.for');
+describe('Symbol.for', () => {
+  it('remove', async () => {
+    expect(
+      await t`Symbol.for && Symbol.for("react.forward_ref")`,
+    ).toBe('Symbol.for("react.forward_ref");');
+  });
 
-test('remove', async () => {
-  is(
-    await t`Symbol.for && Symbol.for("react.forward_ref")`,
-    'Symbol.for("react.forward_ref");'
-  );
+  it('remove #2', async () => {
+    expect(
+      await t`var c = Symbol.for && Symbol.for("react.forward_ref") || 3911;`,
+    ).toBe('var c = Symbol.for("react.forward_ref") || 3911;');
+  });
 });
-
-test('remove #2', async () => {
-  is(
-    await t`var c = Symbol.for && Symbol.for("react.forward_ref") || 3911;`,
-    'var c = Symbol.for("react.forward_ref") || 3911;'
-  );
-});
-
-test.run();

@@ -1,9 +1,4 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from '../utils.js';
-
-const test = suite('typescript: __assign');
 
 const code =
 `var __assign = (this && this.__assign) || function () {
@@ -20,8 +15,6 @@ const code =
 
 const result = 'var __assign = Object.assign;';
 
-test('transform', async () => {
-  is(await t(code), result);
+it('typescript: __assign', async () => {
+  expect(await t(code)).toBe(result);
 });
-
-test.run();

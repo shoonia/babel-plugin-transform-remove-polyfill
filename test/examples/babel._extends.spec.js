@@ -1,9 +1,4 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from '../utils.js';
-
-const test = suite('@babel/helpers: _extends');
 
 const code =
 `function _extends() {
@@ -28,8 +23,6 @@ const result =
   return _extends.apply(this, arguments);
 }`;
 
-test('transform', async () => {
-  is(await t(code), result);
+it('@babel/helpers: _extends', async () => {
+  expect(await t(code)).toBe( result);
 });
-
-test.run();

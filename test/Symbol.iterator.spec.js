@@ -1,47 +1,36 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from './utils.js';
 
-const test = suite('Symbol.iterator');
+describe('Symbol.iterator', () => {
+  it.each(
+    [
+      'typeof Symbol.iterator === "symbol"',
+      'typeof Symbol.iterator == "symbol"',
+      '"symbol" === typeof Symbol.iterator',
+      '"symbol" == typeof Symbol.iterator',
+    ]
+  )('true %#', async (code) => {
+    expect(await t(code)).toBe('true;');
+  });
 
-const listTrue = [
-  'typeof Symbol.iterator === "symbol"',
-  'typeof Symbol.iterator == "symbol"',
-  '"symbol" === typeof Symbol.iterator',
-  '"symbol" == typeof Symbol.iterator',
-];
+  it.each(
+    [
+      'typeof Symbol.iterator !== "symbol"',
+      'typeof Symbol.iterator != "symbol"',
+      '"symbol" !== typeof Symbol.iterator',
+      '"symbol" != typeof Symbol.iterator',
+    ]
+  )('false %#', async (code) => {
+    expect(await t(code)).toBe('false;');
+  });
 
-listTrue.forEach((code, i) => {
-  test(`true #${i}`, async () => {
-    is(await t(code), 'true;');
+  it.each(
+    [
+      'typeof Symbol.iterator === "number";',
+      'typeof Symbol.iterator !== "string";',
+      '"function" !== typeof Symbol.iterator;',
+      '"object" == typeof Symbol.iterator;',
+    ]
+  )('no transform %#', async (code) => {
+    expect(await t(code)).toBe(code);
   });
 });
-
-const listFalse = [
-  'typeof Symbol.iterator !== "symbol"',
-  'typeof Symbol.iterator != "symbol"',
-  '"symbol" !== typeof Symbol.iterator',
-  '"symbol" != typeof Symbol.iterator',
-];
-
-listFalse.forEach((code, i) => {
-  test(`false #${i}`, async () => {
-    is(await t(code), 'false;');
-  });
-});
-
-const noTransformList = [
-  'typeof Symbol.iterator === "number";',
-  'typeof Symbol.iterator !== "string";',
-  '"function" !== typeof Symbol.iterator;',
-  '"object" == typeof Symbol.iterator;',
-];
-
-noTransformList.forEach((code, i) => {
-  test(`no transform #${i}`, async () => {
-    is(await t(code), code);
-  });
-});
-
-test.run();

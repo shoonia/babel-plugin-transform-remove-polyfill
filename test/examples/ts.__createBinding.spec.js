@@ -1,9 +1,4 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from '../utils.js';
-
-const test = suite('typescript: __createBinding');
 
 const code =
 `var __createBinding = Object.create ? (function (o, m, k, k2) {
@@ -38,8 +33,6 @@ const result =
   Object.defineProperty(o, k2, desc);
 };`;
 
-test('transform', async () => {
-  is(await t(code), result);
+it('typescript: __createBinding', async () => {
+  expect(await t(code)).toBe(result);
 });
-
-test.run();

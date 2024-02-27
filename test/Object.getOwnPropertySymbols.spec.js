@@ -1,43 +1,33 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from './utils.js';
 
-const test = suite('Object.getOwnPropertySymbols');
+describe('Object.getOwnPropertySymbols', () => {
+  it('tranfrom #0', async () => {
+    expect(
+      await t`if (Object.getOwnPropertySymbols) {}`,
+    ).toBe('if (true) {}');
+  });
 
-test('tranfrom #0', async () => {
-  is(
-    await t`if (Object.getOwnPropertySymbols) {}`,
-    'if (true) {}'
-  );
+  it('tranfrom #0.1', async () => {
+    expect(
+      await t`if (Object.getOwnPropertySymbols) {} else if (Object.getOwnPropertySymbols) {}`,
+    ).toBe('if (true) {} else if (true) {}');
+  });
+
+  it('tranfrom #1', async () => {
+    expect(
+      await t`Object.getOwnPropertySymbols || A`,
+    ).toBe('Object.getOwnPropertySymbols;');
+  });
+
+  it('tranfrom #2', async () => {
+    expect(
+      await t`Object.getOwnPropertySymbols && A`,
+    ).toBe('A;');
+  });
+
+  it('tranfrom #3', async () => {
+    expect(
+      await t`Object.getOwnPropertySymbols ? A : B`,
+    ).toBe('A;');
+  });
 });
-
-test('tranfrom #0.1', async () => {
-  is(
-    await t`if (Object.getOwnPropertySymbols) {} else if (Object.getOwnPropertySymbols) {}`,
-    'if (true) {} else if (true) {}'
-  );
-});
-
-test('tranfrom #1', async () => {
-  is(
-    await t`Object.getOwnPropertySymbols || A`,
-    'Object.getOwnPropertySymbols;'
-  );
-});
-
-test('tranfrom #2', async () => {
-  is(
-    await t`Object.getOwnPropertySymbols && A`,
-    'A;'
-  );
-});
-
-test('tranfrom #3', async () => {
-  is(
-    await t`Object.getOwnPropertySymbols ? A : B`,
-    'A;'
-  );
-});
-
-test.run();

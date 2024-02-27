@@ -1,9 +1,4 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from '../utils.js';
-
-const test = suite('@babel/helpers: _instanceof');
 
 const code =
 `import defineProperty from "defineProperty";
@@ -73,8 +68,6 @@ export default function _objectSpread2(target) {
   return target;
 }`;
 
-test('transform', async () => {
-  is(await t(code), result);
+it('@babel/helpers: _instanceof', async () => {
+  expect(await t(code)).toBe(result);
 });
-
-test.run();

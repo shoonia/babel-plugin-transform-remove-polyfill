@@ -1,21 +1,15 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from './utils.js';
 
-const test = suite('Object.prototype.hasOwnProperty.call');
+describe('Object.prototype.hasOwnProperty.call', () => {
+  it.skip('transform', async () => {
+    expect(
+      await t`Object.prototype.hasOwnProperty.call(e, s)`,
+    ).toBe('Object.hasOwn(e, s);');
+  });
 
-test.skip('transform', async () => {
-  is(
-    await t`Object.prototype.hasOwnProperty.call(e, s)`,
-    'Object.hasOwn(e, s);'
-  );
+  it.skip('NO transform', async () => {
+    const code = 'obj.hasOwnProperty(a);';
+
+    expect(await t(code)).toBe(code);
+  });
 });
-
-test.skip('NO transform', async () => {
-  const code = 'obj.hasOwnProperty(a);';
-
-  is(await t(code), code);
-});
-
-test.run();

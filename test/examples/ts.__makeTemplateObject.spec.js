@@ -1,9 +1,4 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from '../utils.js';
-
-const test = suite('typescript: __makeTemplateObject');
 
 const code =
 `function __makeTemplateObject(cooked, raw) {
@@ -29,8 +24,6 @@ const result =
   return cooked;
 }`;
 
-test('transform', async () => {
-  is(await t(code), result);
+test('typescript: __makeTemplateObject', async () => {
+  expect(await t(code)).toBe(result);
 });
-
-test.run();

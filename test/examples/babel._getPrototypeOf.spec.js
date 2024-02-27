@@ -1,9 +1,4 @@
-import { suite } from 'uvu';
-import { is } from 'uvu/assert';
-
 import { t } from '../utils.js';
-
-const test = suite('@babel/helpers: _getPrototypeOf');
 
 const code =
 `function _getPrototypeOf(o) {
@@ -21,8 +16,6 @@ const result =
   return _getPrototypeOf(o);
 }`;
 
-test('transform', async () => {
-  is(await t(code), result);
+it('@babel/helpers: _getPrototypeOf', async () => {
+  expect(await t(code)).toBe(result);
 });
-
-test.run();
