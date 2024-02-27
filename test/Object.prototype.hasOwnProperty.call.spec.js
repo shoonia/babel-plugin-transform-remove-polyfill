@@ -5,14 +5,14 @@ import { t } from './utils.js';
 
 const test = suite('Object.prototype.hasOwnProperty.call');
 
-test('transform', async () => {
+test.skip('transform', async () => {
   is(
     await t`Object.prototype.hasOwnProperty.call(e, s)`,
     'Object.hasOwn(e, s);'
   );
 });
 
-test('NO transform', async () => {
+test.skip('NO transform', async () => {
   const code = 'obj.hasOwnProperty(a);';
 
   is(await t(code), code);

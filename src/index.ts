@@ -14,7 +14,7 @@ const plugin = declarePlugin((api) => {
 
   const isSymbolIterator = api.types.buildMatchMemberExpression('Symbol.iterator', false);
   const isSymbolFor = api.types.buildMatchMemberExpression('Symbol.for', false);
-  const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+  // const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
 
   return {
     name: 'transform-remove-polyfill',
@@ -62,17 +62,20 @@ const plugin = declarePlugin((api) => {
         }
       },
 
-      CallExpression(path) {
-        const node = path.node;
+      /**
+       * TODO: Experiment
+       */
+      // CallExpression(path) {
+      //   const node = path.node;
 
-        if (
-          isObjectHasOwn(node.callee) &&
-          node.arguments.length === 2 &&
-          node.arguments.every((i) => i.type === 'Identifier')
-        ) {
-          node.callee = objectMember('hasOwn');
-        }
-      },
+      //   if (
+      //     isObjectHasOwn(node.callee) &&
+      //     node.arguments.length === 2 &&
+      //     node.arguments.every((i) => i.type === 'Identifier')
+      //   ) {
+      //     node.callee = objectMember('hasOwn');
+      //   }
+      // },
 
       ConditionalExpression(path) {
         const node = path.node;
