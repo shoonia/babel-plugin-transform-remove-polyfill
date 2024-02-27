@@ -1,13 +1,12 @@
 import { suite } from 'uvu';
 import { is } from 'uvu/assert';
 
-import { t } from './utils.js';
+import { t } from '../utils.js';
 
-const test = suite('(this && this.__assign)');
+const test = suite('typescript: __assign');
 
-test('transform', async () => {
-  const code = await t`
-var __assign = (this && this.__assign) || function () {
+const code =
+  `var __assign = (this && this.__assign) || function () {
   __assign = Object.assign || function(t) {
       for (var s, i = 1, n = arguments.length; i < n; i++) {
           s = arguments[i];
@@ -17,10 +16,12 @@ var __assign = (this && this.__assign) || function () {
       return t;
   };
   return __assign.apply(this, arguments);
-};
-  `;
+};`;
 
-  is(code, 'var __assign = Object.assign;');
+const result = 'var __assign = Object.assign;';
+
+test('transform', async () => {
+  is(await t(code), result);
 });
 
 test.run();
