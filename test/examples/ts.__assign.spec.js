@@ -6,7 +6,7 @@ import { t } from '../utils.js';
 const test = suite('typescript: __assign');
 
 const code =
-  `var __assign = (this && this.__assign) || function () {
+`var __assign = (this && this.__assign) || function () {
   __assign = Object.assign || function(t) {
       for (var s, i = 1, n = arguments.length; i < n; i++) {
           s = arguments[i];
