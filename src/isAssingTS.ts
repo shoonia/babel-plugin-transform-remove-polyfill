@@ -21,11 +21,10 @@ export const isAssingTS = (node: VariableDeclarator): node is VariableDeclarator
     isNodeLogical(node.init.left, '&&') &&
     node.init.left.left.type === 'ThisExpression' &&
     node.init.left.right.type === 'MemberExpression' &&
-    node.init.left.right.object.type === 'ThisExpression' &&
     !node.init.left.right.computed &&
+    node.init.left.right.object.type === 'ThisExpression' &&
     isNodeIdentifier(node.init.left.right.property, '__assign') &&
     isNodeFunction(node.init.right) &&
-    node.init.right.body.type === 'BlockStatement' &&
     node.init.right.body.body.length > 0
   ) {
     const exp = node.init.right.body.body[0];
