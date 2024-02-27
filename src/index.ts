@@ -1,6 +1,7 @@
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { matchTypeof } from './typeof';
+import { isAssingTS } from './isAssingTS';
 import {
   objectMember,
   isObjecMember,
@@ -96,6 +97,18 @@ const plugin = declarePlugin((api) => {
             type: 'BooleanLiteral',
             value: true,
           };
+        }
+      },
+
+      VariableDeclaration(path) {
+        const node = path.node;
+
+        if (node.kind === 'var') {
+          node.declarations.forEach((declarator) => {
+            if (isAssingTS(declarator)) {
+              declarator.init = objectMember('assign');
+            }
+          });
         }
       },
     },
