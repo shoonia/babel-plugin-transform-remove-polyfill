@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('Symbol', () => {
   it.each(
     [
@@ -24,7 +22,7 @@ describe('Symbol', () => {
       '"object" != typeof Symbol',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -50,7 +48,7 @@ describe('Symbol', () => {
       'typeof Symbol === "object"',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -71,13 +69,13 @@ describe('Symbol', () => {
       '"undefined" === typeof Symbol ? Polyfill : Symbol',
     ]
   )('ternary operator %#', async (code) => {
-    expect(await t(code)).toBe('Symbol;');
+    await expect(code).toBeTransform('Symbol;');
   });
 
   it('true && true', async () => {
-    expect(
-      await t`"function" == typeof Symbol && "symbol" == typeof Symbol("foo")`,
-    ).toBe(
+    await expect(
+      '"function" == typeof Symbol && "symbol" == typeof Symbol("foo")',
+    ).toBeTransform(
       'true && true;'
     );
   });

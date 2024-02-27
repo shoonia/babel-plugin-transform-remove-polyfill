@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('WeakRef', () => {
   it.each(
     [
@@ -18,7 +16,7 @@ describe('WeakRef', () => {
       '"object" != typeof WeakRef',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -38,7 +36,7 @@ describe('WeakRef', () => {
       '"object" == typeof WeakRef',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -59,6 +57,6 @@ describe('WeakRef', () => {
       '"undefined" === typeof WeakRef ? Polyfill : WeakRef',
     ]
   )('ternary operator %#', async (code) => {
-    expect(await t(code)).toBe('WeakRef;');
+    await expect(code).toBeTransform('WeakRef;');
   });
 });

@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `var __createBinding = Object.create ? (function (o, m, k, k2) {
   if (k2 === undefined) k2 = k;
@@ -18,7 +16,7 @@ const code =
   o[k2] = m[k];
 });`;
 
-const result =
+export const result =
 `var __createBinding = function (o, m, k, k2) {
   if (k2 === undefined) k2 = k;
   var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -34,5 +32,5 @@ const result =
 };`;
 
 it('typescript: __createBinding', async () => {
-  expect(await t(code)).toBe(result);
+  await expect(code).toBeTransform(result);
 });

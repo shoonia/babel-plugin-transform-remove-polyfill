@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `function __makeTemplateObject(cooked, raw) {
   if (Object.defineProperty) {
@@ -12,7 +10,7 @@ const code =
   return cooked;
 }`;
 
-const result =
+export const result =
 `function __makeTemplateObject(cooked, raw) {
   if (true) {
     Object.defineProperty(cooked, 'raw', {
@@ -25,5 +23,5 @@ const result =
 }`;
 
 test('typescript: __makeTemplateObject', async () => {
-  expect(await t(code)).toBe(result);
+  await expect(code).toBeTransform(result);
 });

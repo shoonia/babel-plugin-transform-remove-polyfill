@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `import defineProperty from "defineProperty";
 
@@ -35,7 +33,7 @@ export default function _objectSpread2(target) {
   return target;
 }`;
 
-const result =
+export const result =
 `import defineProperty from "defineProperty";
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -69,5 +67,5 @@ export default function _objectSpread2(target) {
 }`;
 
 it('@babel/helpers: _instanceof', async () => {
-  expect(await t(code)).toBe(result);
+  await expect(code).toBeTransform(result);
 });

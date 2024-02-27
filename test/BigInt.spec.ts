@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('BigInt', () => {
   it.each(
     [
@@ -18,7 +16,7 @@ describe('BigInt', () => {
       '"object" != typeof BigInt',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -38,7 +36,7 @@ describe('BigInt', () => {
       '"object" == typeof BigInt',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -59,6 +57,6 @@ describe('BigInt', () => {
       '"undefined" === typeof BigInt ? Polyfill : BigInt',
     ]
   )('ternary operator %#', async (code) => {
-    expect(await t(code)).toBe('BigInt;');
+    await expect(code).toBeTransform('BigInt;');
   });
 });

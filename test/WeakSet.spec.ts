@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('WeakSet', () => {
   it.each(
     [
@@ -18,7 +16,7 @@ describe('WeakSet', () => {
       '"object" != typeof WeakSet',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -38,7 +36,7 @@ describe('WeakSet', () => {
       '"object" == typeof WeakSet',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -59,6 +57,6 @@ describe('WeakSet', () => {
       '"undefined" === typeof WeakSet ? Polyfill : WeakSet',
     ]
   )('ternary operator %#', async (code) => {
-    expect(await t(code)).toBe('WeakSet;');
+    await expect(code).toBeTransform('WeakSet;');
   });
 });

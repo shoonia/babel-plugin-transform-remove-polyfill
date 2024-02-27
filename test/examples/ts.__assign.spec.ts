@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `var __assign = (this && this.__assign) || function () {
   __assign = Object.assign || function(t) {
@@ -13,8 +11,8 @@ const code =
   return __assign.apply(this, arguments);
 };`;
 
-const result = 'var __assign = Object.assign;';
+export const result = 'var __assign = Object.assign;';
 
 it('typescript: __assign', async () => {
-  expect(await t(code)).toBe(result);
+  await expect(code).toBeTransform(result);
 });

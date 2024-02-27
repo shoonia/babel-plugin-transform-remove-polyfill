@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('Symbol.iterator', () => {
   it.each(
     [
@@ -9,7 +7,7 @@ describe('Symbol.iterator', () => {
       '"symbol" == typeof Symbol.iterator',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -20,7 +18,7 @@ describe('Symbol.iterator', () => {
       '"symbol" != typeof Symbol.iterator',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -31,6 +29,6 @@ describe('Symbol.iterator', () => {
       '"object" == typeof Symbol.iterator;',
     ]
   )('no transform %#', async (code) => {
-    expect(await t(code)).toBe(code);
+    await expect(code).toBeTransform(code);
   });
 });

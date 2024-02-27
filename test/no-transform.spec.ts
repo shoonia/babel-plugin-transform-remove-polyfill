@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('no-transform', () => {
   it.each(
     [
@@ -11,6 +9,6 @@ describe('no-transform', () => {
       'typeof Symbol + "__tag";',
     ]
   )('%#', async (code) => {
-    expect(await t(code)).toBe(code);
+    await expect(code).toBeTransform(code);
   });
 });

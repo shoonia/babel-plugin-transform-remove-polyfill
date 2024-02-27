@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('URLSearchParams', () => {
   it.each(
     [
@@ -18,7 +16,7 @@ describe('URLSearchParams', () => {
       '"object" != typeof URLSearchParams',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -38,7 +36,7 @@ describe('URLSearchParams', () => {
       '"object" == typeof URLSearchParams',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -59,6 +57,6 @@ describe('URLSearchParams', () => {
       '"undefined" === typeof URLSearchParams ? Polyfill : URLSearchParams',
     ]
   )('ternary operator %#', async (code) => {
-    expect(await t(code)).toBe('URLSearchParams;');
+    await expect(code).toBeTransform('URLSearchParams;');
   });
 });

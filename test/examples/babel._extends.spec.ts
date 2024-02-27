@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `function _extends() {
   _extends = Object.assign ? Object.assign.bind() : function (target) {
@@ -17,12 +15,12 @@ const code =
   return _extends.apply(this, arguments);
 }`;
 
-const result =
+export const result =
 `function _extends() {
   _extends = Object.assign.bind();
   return _extends.apply(this, arguments);
 }`;
 
 it('@babel/helpers: _extends', async () => {
-  expect(await t(code)).toBe( result);
+  await expect(code).toBeTransform(result);
 });

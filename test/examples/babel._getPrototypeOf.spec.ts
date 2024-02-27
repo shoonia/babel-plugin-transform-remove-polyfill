@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `function _getPrototypeOf(o) {
   _getPrototypeOf = Object.setPrototypeOf
@@ -10,12 +8,12 @@ const code =
   return _getPrototypeOf(o);
 }`;
 
-const result =
+export const result =
 `function _getPrototypeOf(o) {
   _getPrototypeOf = Object.getPrototypeOf.bind();
   return _getPrototypeOf(o);
 }`;
 
 it('@babel/helpers: _getPrototypeOf', async () => {
-  expect(await t(code)).toBe(result);
+  await expect(code).toBeTransform(result);
 });

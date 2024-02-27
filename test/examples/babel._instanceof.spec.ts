@@ -1,5 +1,3 @@
-import { t } from '../utils.js';
-
 const code =
 `function _instanceof(left, right) {
   if (right != null && typeof Symbol !== 'undefined' && right[Symbol.hasInstance]) {
@@ -8,7 +6,7 @@ const code =
   return left instanceof right;
 }`;
 
-const result =
+export const result =
 `function _instanceof(left, right) {
   if (right != null && true && right[Symbol.hasInstance]) {
     return !!right[Symbol.hasInstance](left);
@@ -17,5 +15,5 @@ const result =
 }`;
 
 it('@babel/helpers: _instanceof', async () => {
-  expect(await t(code)).toBe(result);
+  await expect(code).toBeTransform(result);
 });

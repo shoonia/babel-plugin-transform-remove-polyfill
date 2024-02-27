@@ -1,5 +1,3 @@
-import { t } from './utils.js';
-
 describe('WeakMap', () => {
   it.each(
     [
@@ -18,7 +16,7 @@ describe('WeakMap', () => {
       '"object" != typeof WeakMap',
     ]
   )('true %#', async (code) => {
-    expect(await t(code)).toBe('true;');
+    await expect(code).toBeTransform('true;');
   });
 
   it.each(
@@ -38,7 +36,7 @@ describe('WeakMap', () => {
       '"object" == typeof WeakMap',
     ]
   )('false %#', async (code) => {
-    expect(await t(code)).toBe('false;');
+    await expect(code).toBeTransform('false;');
   });
 
   it.each(
@@ -59,6 +57,6 @@ describe('WeakMap', () => {
       '"undefined" === typeof WeakMap ? Polyfill : WeakMap',
     ]
   )('ternary operator %#', async (code) => {
-    expect(await t(code)).toBe('WeakMap;');
+    await expect(code).toBeTransform('WeakMap;');
   });
 });
