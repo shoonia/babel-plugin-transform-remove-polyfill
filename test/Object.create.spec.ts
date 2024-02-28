@@ -27,6 +27,10 @@ describe('Object.create', () => {
     await expect('"undefined" == typeof Object.create ? A : B').toBeTransform('B;');
   });
 
+  it('tranfrom #7', async () => {
+    await expect('Object.create ?? A',).toBeTransform('Object.create;');
+  });
+
   it.each(
     [
       'typeof Object.create === "function"',

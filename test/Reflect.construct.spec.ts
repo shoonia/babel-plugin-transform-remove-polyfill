@@ -27,6 +27,10 @@ describe('Reflect.construct', () => {
     await expect('"undefined" == typeof Reflect.construct ? A : B').toBeTransform('B;');
   });
 
+  it('tranfrom #7', async () => {
+    await expect('Reflect.construct ?? A',).toBeTransform('Reflect.construct;');
+  });
+
   it.each(
     [
       'typeof Reflect.construct === "function"',

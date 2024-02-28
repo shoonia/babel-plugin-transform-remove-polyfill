@@ -69,7 +69,7 @@ const plugin = declarePlugin((api) => {
             path.replaceWith(node.right);
           }
         }
-        else if (node.operator === '||') {
+        else if (node.operator === '||' || node.operator === '??') {
           if (mGroup(node.left)) {
             path.replaceWith(node.left);
           }

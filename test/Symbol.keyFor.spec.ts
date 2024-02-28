@@ -27,6 +27,10 @@ describe('Symbol.keyFor', () => {
     await expect('"undefined" == typeof Symbol.keyFor ? A : B').toBeTransform('B;');
   });
 
+  it('tranfrom #7', async () => {
+    await expect('Symbol.keyFor ?? A',).toBeTransform('Symbol.keyFor;');
+  });
+
   it.each(
     [
       'typeof Symbol.keyFor === "function"',
