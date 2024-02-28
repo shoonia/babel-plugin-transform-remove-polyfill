@@ -10,16 +10,13 @@
     "lint": "tsc && eslint",
     "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
-  "dependencies": {
-    "@babel/helper-plugin-utils": "^7.22.5"
-  },
   "peerDependencies": {
+    "@babel/helper-plugin-utils": "^7.0.0-0",
+    "@babel/types": "^7.0.0-0",
     "@babel/core": "^7.0.0-0"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
-    "@babel/types": "^7.23.9",
     "@evilmartians/lefthook": "^1.6.2",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",

@@ -14,7 +14,7 @@ export default {
       format: 'cjs',
     },
   ],
-  external: Object.keys(pkg.dependencies),
+  external: Object.keys(pkg.peerDependencies),
   plugins: [
     babel({
       extensions,
