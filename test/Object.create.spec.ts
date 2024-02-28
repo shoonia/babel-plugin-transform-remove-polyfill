@@ -26,4 +26,57 @@ describe('Object.create', () => {
   it('tranfrom #6', async () => {
     await expect('"undefined" == typeof Object.create ? A : B').toBeTransform('B;');
   });
+
+  it.each(
+    [
+      'typeof Object.create === "function"',
+      'typeof Object.create == "function"',
+      '"function" === typeof Object.create',
+      '"function" == typeof Object.create',
+      // undefined
+      'typeof Object.create !== "undefined"',
+      'typeof Object.create != "undefined"',
+      '"undefined" !== typeof Object.create',
+      '"undefined" != typeof Object.create',
+    ]
+  )('true %#', async (code) => {
+    await expect(code).toBeTransform('true;');
+  });
+
+  it.each(
+    [
+      'typeof Object.create !== "function"',
+      'typeof Object.create != "function"',
+      '"function" !== typeof Object.create',
+      '"function" != typeof Object.create',
+      // undefined
+      'typeof Object.create === "undefined"',
+      'typeof Object.create == "undefined"',
+      '"undefined" === typeof Object.create',
+      '"undefined" == typeof Object.create',
+    ]
+  )('false %#', async (code) => {
+    await expect(code).toBeTransform('false;');
+  });
+
+  it.each(
+    [
+      'typeof Object.create === "function" ? A : B',
+      'typeof Object.create !== "function" ? B : A',
+      'typeof Object.create !== "undefined" ? A : B',
+      'typeof Object.create === "undefined" ? B : A',
+      // ==
+      'typeof Object.create == "function" ? A : B',
+      'typeof Object.create != "function" ? B : A',
+      'typeof Object.create != "undefined" ? A : B',
+      'typeof Object.create == "undefined" ? B : A',
+      // ..
+      '"function" === typeof Object.create ? A : B',
+      '"function" !== typeof Object.create ? B : A',
+      '"undefined" !== typeof Object.create ? A : B',
+      '"undefined" === typeof Object.create ? B : A',
+    ]
+  )('ternary operator %#', async (code) => {
+    await expect(code).toBeTransform('A;');
+  });
 });

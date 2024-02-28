@@ -63,19 +63,16 @@ const builtInObjects = new Set([
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node) && set.has(node.name);
 
-export const isObjecMember = (node: t.Node): node is t.MemberExpression =>
-  t.isMemberExpression(node, { computed: false })
-  && t.isIdentifier(node.object, { name: 'Object' })
+export const isObjecMember = (node: t.MemberExpression): boolean =>
+  t.isIdentifier(node.object, { name: 'Object' })
   && oneOfIdentifier(node.property, objectKeys);
 
-export const isReflectMember = (node: t.Node): node is t.MemberExpression =>
-  t.isMemberExpression(node, { computed: false })
-  && t.isIdentifier(node.object, { name: 'Reflect' })
+export const isReflectMember = (node: t.MemberExpression): boolean =>
+  t.isIdentifier(node.object, { name: 'Reflect' })
   && oneOfIdentifier(node.property, reflectKeys);
 
-export const isSymbolMember = (node: t.Node): node is t.MemberExpression =>
-  t.isMemberExpression(node, { computed: false })
-  && t.isIdentifier(node.object, { name: 'Symbol' })
+export const isSymbolMember = (node: t.MemberExpression): boolean =>
+  t.isIdentifier(node.object, { name: 'Symbol' })
   && oneOfIdentifier(node.property, symbolKeys);
 
 export const isBuiltInObject = (node: t.Node): node is t.Identifier =>

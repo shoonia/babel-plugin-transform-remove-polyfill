@@ -13,6 +13,13 @@ import {
 
 const isSymbolIterator = t.buildMatchMemberExpression('Symbol.iterator', false);
 
+const mGroup = (node: t.Node): boolean =>
+  t.isMemberExpression(node, { computed: false }) && (
+    isObjecMember(node) ||
+    isSymbolMember(node) ||
+    isReflectMember(node)
+  );
+
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
 
@@ -26,8 +33,7 @@ const plugin = declarePlugin((api) => {
         if (tyof.match) {
           if (
             isBuiltInObject(tyof.target) ||
-            isReflectMember(tyof.target) ||
-            isSymbolMember(tyof.target)
+            mGroup(tyof.target)
           ) {
             path.replaceWith({
               type: 'BooleanLiteral',
@@ -59,20 +65,12 @@ const plugin = declarePlugin((api) => {
         const node = path.node;
 
         if (node.operator === '&&') {
-          if (
-            isObjecMember(node.left) ||
-            isReflectMember(node.left) ||
-            isSymbolMember(node.left)
-          ) {
+          if (mGroup(node.left)) {
             path.replaceWith(node.right);
           }
         }
         else if (node.operator === '||') {
-          if (
-            isObjecMember(node.left) ||
-            isReflectMember(node.left) ||
-            isSymbolMember(node.left)
-          ) {
+          if (mGroup(node.left)) {
             path.replaceWith(node.left);
           }
         }
@@ -96,11 +94,7 @@ const plugin = declarePlugin((api) => {
       ConditionalExpression(path) {
         const node = path.node;
 
-        if (
-          isObjecMember(node.test) ||
-          isReflectMember(node.test) ||
-          isSymbolMember(node.test)
-        ) {
+        if (mGroup(node.test)) {
           path.replaceWith(node.consequent);
         }
         else if (t.isBinaryExpression(node.test)) {
@@ -109,9 +103,7 @@ const plugin = declarePlugin((api) => {
           if (tyof.match) {
             if (
               isBuiltInObject(tyof.target) ||
-              isObjecMember(tyof.target) ||
-              isReflectMember(tyof.target) ||
-              isSymbolMember(tyof.target)
+              mGroup(tyof.target)
             ) {
               path.replaceWith(
                 node.test.operator.startsWith(tyof.expect === 'function' ? '=' : '!')
@@ -126,11 +118,7 @@ const plugin = declarePlugin((api) => {
       IfStatement(path) {
         const node = path.node;
 
-        if (
-          isObjecMember(node.test) ||
-          isReflectMember(node.test) ||
-          isSymbolMember(node.test)
-        ) {
+        if (mGroup(node.test)) {
           node.test = t.booleanLiteral(true);
         }
       },
