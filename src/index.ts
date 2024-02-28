@@ -7,6 +7,7 @@ import {
   objectMember,
   isObjecMember,
   isBuiltInObject,
+  isReflectMember,
 } from './utils';
 
 const isSymbolIterator = t.buildMatchMemberExpression('Symbol.iterator', false);
@@ -23,7 +24,10 @@ const plugin = declarePlugin((api) => {
         const tyof = matchTypeof(node);
 
         if (tyof.match) {
-          if (isBuiltInObject(tyof.target)) {
+          if (
+            isBuiltInObject(tyof.target) ||
+            isReflectMember(tyof.target)
+          ) {
             path.replaceWith({
               type: 'BooleanLiteral',
               value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),

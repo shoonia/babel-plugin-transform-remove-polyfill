@@ -1,6 +1,7 @@
 import t from '@babel/types';
 
 type K = keyof ObjectConstructor;
+type R = keyof typeof Reflect;
 
 const objectKeys = new Set<K>([
   'assign',
@@ -14,6 +15,22 @@ const objectKeys = new Set<K>([
   'getOwnPropertySymbols',
   'getOwnPropertyDescriptors',
   'defineProperty',
+]);
+
+const reflectKeys = new Set<R>([
+  'apply',
+  'construct',
+  'defineProperty',
+  'deleteProperty',
+  'get',
+  'getOwnPropertyDescriptor',
+  'getPrototypeOf',
+  'has',
+  'isExtensible',
+  'ownKeys',
+  'preventExtensions',
+  'set',
+  'setPrototypeOf',
 ]);
 
 const builtInObjects = new Set([
@@ -44,6 +61,11 @@ export const isObjecMember = (node: t.Node): node is t.MemberExpression =>
   t.isMemberExpression(node, { computed: false })
   && t.isIdentifier(node.object, { name: 'Object' })
   && oneOfIdentifier(node.property, objectKeys);
+
+export const isReflectMember = (node: t.Node): node is t.MemberExpression =>
+  t.isMemberExpression(node, { computed: false })
+  && t.isIdentifier(node.object, { name: 'Reflect' })
+  && oneOfIdentifier(node.property, reflectKeys);
 
 export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInObjects);

@@ -7,6 +7,7 @@ describe('no-transform', () => {
       '"undefined" != typeof identifier ? 0 : 1;',
       'Object.getOwnPropertyDescriptor(r, t);',
       'typeof Symbol + "__tag";',
+      'Reflect.__proto__;',
     ]
   )('%#', async (code) => {
     await expect(code).toBeTransform(code);
