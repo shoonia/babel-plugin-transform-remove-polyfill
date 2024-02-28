@@ -1,26 +1,26 @@
-import type { Node, Expression, UnaryExpression, BinaryExpression } from '@babel/types';
+import t from '@babel/types';
 
 type Result = {
   readonly match: true;
-  readonly target: Expression;
+  readonly target: t.Expression;
   readonly expect: string;
 } | {
   readonly match: false
 };
 
-const equalities = new Set<BinaryExpression['operator']>([
+const equalities = new Set<t.BinaryExpression['operator']>([
   '==',
   '===',
   '!=',
   '!==',
 ]);
 
-const isTypeof = (node: Node): node is UnaryExpression =>
-  node.type === 'UnaryExpression' && node.operator === 'typeof' && node.prefix;
+const isTypeof = (node: t.Node): node is t.UnaryExpression =>
+  t.isUnaryExpression(node, { operator: 'typeof', prefix: true });
 
-export const matchTypeof = (node: BinaryExpression): Result => {
+export const matchTypeof = (node: t.BinaryExpression): Result => {
   if (equalities.has(node.operator)) {
-    if (isTypeof(node.left) && node.right.type === 'StringLiteral') {
+    if (isTypeof(node.left) && t.isStringLiteral(node.right)) {
       return {
         match: true,
         target: node.left.argument,
@@ -28,7 +28,7 @@ export const matchTypeof = (node: BinaryExpression): Result => {
       };
     }
 
-    if (isTypeof(node.right) && node.left.type === 'StringLiteral') {
+    if (isTypeof(node.right) && t.isStringLiteral(node.left)) {
       return {
         match: true,
         target: node.right.argument,

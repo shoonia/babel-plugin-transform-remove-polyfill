@@ -15,11 +15,7 @@ const code =
   return _extends.apply(this, arguments);
 }`;
 
-export const result =
-`function _extends() {
-  _extends = Object.assign.bind();
-  return _extends.apply(this, arguments);
-}`;
+export const result = 'var _extends = Object.assign;';
 
 it('@babel/helpers: _extends', async () => {
   await expect(code).toBeTransform(result);

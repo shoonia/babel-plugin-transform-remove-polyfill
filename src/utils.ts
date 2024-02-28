@@ -1,4 +1,4 @@
-import type { Node, Identifier, MemberExpression } from '@babel/types';
+import t from '@babel/types';
 
 type K = keyof ObjectConstructor;
 
@@ -37,22 +37,18 @@ const builtInObjects = new Set([
   'URLSearchParams',
 ] as const);
 
-export const isNodeIdentifier = (node: Node, name: string): node is Identifier =>
-  node.type === 'Identifier' && node.name === name;
+export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
+  t.isIdentifier(node) && set.has(node.name);
 
-export const oneOfIdentifier = (node: Node, set: Set<string>): node is Identifier =>
-  node.type === 'Identifier' && set.has(node.name);
-
-export const isObjecMember = (node: Node): node is MemberExpression =>
-  node.type === 'MemberExpression'
-  && !node.computed
-  && isNodeIdentifier(node.object, 'Object')
+export const isObjecMember = (node: t.Node): node is t.MemberExpression =>
+  t.isMemberExpression(node, { computed: false })
+  && t.isIdentifier(node.object, { name: 'Object' })
   && oneOfIdentifier(node.property, objectKeys);
 
-export const isBuiltInObject = (node: Node): node is Identifier =>
+export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInObjects);
 
-export const objectMember = (property: K): MemberExpression => ({
+export const objectMember = (property: K): t.MemberExpression => ({
   type: 'MemberExpression',
   object: {
     type: 'Identifier',

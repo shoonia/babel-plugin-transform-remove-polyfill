@@ -1,20 +1,19 @@
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
+import t from '@babel/types';
 
 import { matchTypeof } from './typeof';
-import { isAssingTS } from './isAssingTS';
+import { isAssignTS, isAssingBabel } from './assign';
 import {
   objectMember,
   isObjecMember,
   isBuiltInObject,
-  isNodeIdentifier,
 } from './utils';
+
+const isSymbolIterator = t.buildMatchMemberExpression('Symbol.iterator', false);
+const isSymbolFor = t.buildMatchMemberExpression('Symbol.for', false);
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
-
-  const isSymbolIterator = api.types.buildMatchMemberExpression('Symbol.iterator', false);
-  const isSymbolFor = api.types.buildMatchMemberExpression('Symbol.for', false);
-  // const isObjectHasOwn = api.types.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
 
   return {
     name: 'transform-remove-polyfill',
@@ -33,7 +32,8 @@ const plugin = declarePlugin((api) => {
           else if (tyof.expect === 'symbol') {
             if (
               isSymbolIterator(tyof.target) ||
-              tyof.target.type === 'CallExpression' && isNodeIdentifier(tyof.target.callee, 'Symbol')
+              t.isCallExpression(tyof.target) &&
+              t.isIdentifier(tyof.target.callee, { name: 'Symbol' })
             ) {
               path.replaceWith({
                 type: 'BooleanLiteral',
@@ -83,7 +83,7 @@ const plugin = declarePlugin((api) => {
         if (isObjecMember(node.test)) {
           path.replaceWith(node.consequent);
         }
-        else if (node.test.type === 'BinaryExpression') {
+        else if (t.isBinaryExpression(node.test)) {
           const tyof = matchTypeof(node.test);
 
           if (tyof.match) {
@@ -105,10 +105,7 @@ const plugin = declarePlugin((api) => {
         const node = path.node;
 
         if (isObjecMember(node.test)) {
-          node.test = {
-            type: 'BooleanLiteral',
-            value: true,
-          };
+          node.test = t.booleanLiteral(true);
         }
       },
 
@@ -117,9 +114,27 @@ const plugin = declarePlugin((api) => {
 
         if (node.kind === 'var') {
           node.declarations.forEach((declarator) => {
-            if (isAssingTS(declarator)) {
+            if (isAssignTS(declarator)) {
               declarator.init = objectMember('assign');
             }
+          });
+        }
+      },
+
+      FunctionDeclaration(path) {
+        const node = path.node;
+
+        if (isAssingBabel(node)) {
+          path.replaceWith({
+            type: 'VariableDeclaration',
+            kind: 'var',
+            declarations: [
+              {
+                type: 'VariableDeclarator',
+                id: node.id!,
+                init: objectMember('assign'),
+              },
+            ],
           });
         }
       },
