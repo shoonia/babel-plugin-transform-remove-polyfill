@@ -29,6 +29,12 @@ const plugin = declarePlugin((api) => {
               value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
             });
           }
+          else if (t.isIdentifier(tyof.target, { name: 'Reflect' })) {
+            path.replaceWith({
+              type: 'BooleanLiteral',
+              value: node.operator.startsWith(tyof.expect === 'object' ? '=' : '!'),
+            });
+          }
           else if (tyof.expect === 'symbol') {
             if (
               isSymbolIterator(tyof.target) ||
