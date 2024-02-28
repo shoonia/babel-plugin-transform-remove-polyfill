@@ -1,9 +1,10 @@
 import t from '@babel/types';
 
-type K = keyof ObjectConstructor;
+type O = keyof ObjectConstructor;
+type S = keyof SymbolConstructor;
 type R = keyof typeof Reflect;
 
-const objectKeys = new Set<K>([
+const objectKeys = new Set<O>([
   'assign',
   'create',
   'setPrototypeOf',
@@ -31,6 +32,11 @@ const reflectKeys = new Set<R>([
   'preventExtensions',
   'set',
   'setPrototypeOf',
+]);
+
+const symbolKeys = new Set<S>([
+  'for',
+  'keyFor',
 ]);
 
 const builtInObjects = new Set([
@@ -67,10 +73,15 @@ export const isReflectMember = (node: t.Node): node is t.MemberExpression =>
   && t.isIdentifier(node.object, { name: 'Reflect' })
   && oneOfIdentifier(node.property, reflectKeys);
 
+export const isSymbolMember = (node: t.Node): node is t.MemberExpression =>
+  t.isMemberExpression(node, { computed: false })
+  && t.isIdentifier(node.object, { name: 'Symbol' })
+  && oneOfIdentifier(node.property, symbolKeys);
+
 export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInObjects);
 
-export const objectMember = (property: K): t.MemberExpression => ({
+export const objectMember = (property: O): t.MemberExpression => ({
   type: 'MemberExpression',
   object: {
     type: 'Identifier',
