@@ -5,20 +5,11 @@ import { matchTypeof } from './typeof';
 import { isAssignTS, isAssingBabel } from './assign';
 import {
   objectMember,
-  isObjecMember,
   isBuiltInObject,
-  isReflectMember,
-  isSymbolMember,
+  functionGrop,
 } from './utils';
 
 const isSymbolIterator = t.buildMatchMemberExpression('Symbol.iterator', false);
-
-const mGroup = (node: t.Node): boolean =>
-  t.isMemberExpression(node, { computed: false }) && (
-    isObjecMember(node) ||
-    isSymbolMember(node) ||
-    isReflectMember(node)
-  );
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
@@ -33,7 +24,7 @@ const plugin = declarePlugin((api) => {
         if (tyof.match) {
           if (
             isBuiltInObject(tyof.target) ||
-            mGroup(tyof.target)
+            functionGrop(tyof.target)
           ) {
             path.replaceWith({
               type: 'BooleanLiteral',
@@ -64,7 +55,7 @@ const plugin = declarePlugin((api) => {
       LogicalExpression(path) {
         const node = path.node;
 
-        if (mGroup(node.left)) {
+        if (functionGrop(node.left)) {
           path.replaceWith(node.operator === '&&' ? node.right : node.left);
         }
       },
@@ -87,7 +78,7 @@ const plugin = declarePlugin((api) => {
       ConditionalExpression(path) {
         const node = path.node;
 
-        if (mGroup(node.test)) {
+        if (functionGrop(node.test)) {
           path.replaceWith(node.consequent);
         }
         else if (t.isBinaryExpression(node.test)) {
@@ -96,7 +87,7 @@ const plugin = declarePlugin((api) => {
           if (tyof.match) {
             if (
               isBuiltInObject(tyof.target) ||
-              mGroup(tyof.target)
+              functionGrop(tyof.target)
             ) {
               path.replaceWith(
                 node.test.operator.startsWith(tyof.expect === 'function' ? '=' : '!')
@@ -111,7 +102,7 @@ const plugin = declarePlugin((api) => {
       IfStatement(path) {
         const node = path.node;
 
-        if (mGroup(node.test)) {
+        if (functionGrop(node.test)) {
           node.test = t.booleanLiteral(true);
         }
       },

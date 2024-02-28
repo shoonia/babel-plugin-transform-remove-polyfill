@@ -4,7 +4,7 @@ type O = keyof ObjectConstructor;
 type S = keyof SymbolConstructor;
 type R = keyof typeof Reflect;
 
-const objectKeys = new Set<O>([
+const objectKeys = new Set<string>([
   'assign',
   'create',
   'setPrototypeOf',
@@ -16,9 +16,9 @@ const objectKeys = new Set<O>([
   'getOwnPropertySymbols',
   'getOwnPropertyDescriptors',
   'defineProperty',
-]);
+] satisfies O[]);
 
-const reflectKeys = new Set<R>([
+const reflectKeys = new Set<string>([
   'apply',
   'construct',
   'defineProperty',
@@ -32,14 +32,14 @@ const reflectKeys = new Set<R>([
   'preventExtensions',
   'set',
   'setPrototypeOf',
-]);
+] satisfies R[]);
 
-const symbolKeys = new Set<S>([
+const symbolKeys = new Set<string>([
   'for',
   'keyFor',
-]);
+] satisfies S[]);
 
-const builtInObjects = new Set([
+const builtInObjects = new Set<string>([
   'ArrayBuffer',
   'Int8Array',
   'Int16Array',
@@ -63,17 +63,23 @@ const builtInObjects = new Set([
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node) && set.has(node.name);
 
-export const isObjecMember = (node: t.MemberExpression): boolean =>
-  t.isIdentifier(node.object, { name: 'Object' })
-  && oneOfIdentifier(node.property, objectKeys);
+export const functionGrop = (node: t.Node): node is t.MemberExpression => {
+  if (
+    t.isMemberExpression(node, { computed: false }) &&
+    t.isIdentifier(node.object)
+  ) {
+    switch (node.object.name) {
+      case 'Object':
+        return oneOfIdentifier(node.property, objectKeys);
+      case 'Symbol':
+        return oneOfIdentifier(node.property, symbolKeys);
+      case 'Reflect':
+        return oneOfIdentifier(node.property, reflectKeys);
+    }
+  }
 
-export const isReflectMember = (node: t.MemberExpression): boolean =>
-  t.isIdentifier(node.object, { name: 'Reflect' })
-  && oneOfIdentifier(node.property, reflectKeys);
-
-export const isSymbolMember = (node: t.MemberExpression): boolean =>
-  t.isIdentifier(node.object, { name: 'Symbol' })
-  && oneOfIdentifier(node.property, symbolKeys);
+  return false;
+};
 
 export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInObjects);
