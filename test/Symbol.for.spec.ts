@@ -38,4 +38,25 @@ describe('Symbol.for', () => {
       'var c = Symbol.for && Symbol.for("react.forward_ref") || 3911;',
     ).toBeTransform('var c = Symbol.for("react.forward_ref") || 3911;');
   });
+
+  it.each(
+    [
+      'typeof Symbol.for === "function" ? A : B',
+      'typeof Symbol.for !== "function" ? B : A',
+      'typeof Symbol.for !== "undefined" ? A : B',
+      'typeof Symbol.for === "undefined" ? B : A',
+      // ==
+      'typeof Symbol.for == "function" ? A : B',
+      'typeof Symbol.for != "function" ? B : A',
+      'typeof Symbol.for != "undefined" ? A : B',
+      'typeof Symbol.for == "undefined" ? B : A',
+      // ..
+      '"function" === typeof Symbol.for ? A : B',
+      '"function" !== typeof Symbol.for ? B : A',
+      '"undefined" !== typeof Symbol.for ? A : B',
+      '"undefined" === typeof Symbol.for ? B : A',
+    ]
+  )('ternary operator %#', async (code) => {
+    await expect(code).toBeTransform('A;');
+  });
 });

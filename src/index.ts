@@ -61,6 +61,7 @@ const plugin = declarePlugin((api) => {
         if (node.operator === '&&') {
           if (
             isObjecMember(node.left) ||
+            isReflectMember(node.left) ||
             isSymbolMember(node.left)
           ) {
             path.replaceWith(node.right);
@@ -69,6 +70,7 @@ const plugin = declarePlugin((api) => {
         else if (node.operator === '||') {
           if (
             isObjecMember(node.left) ||
+            isReflectMember(node.left) ||
             isSymbolMember(node.left)
           ) {
             path.replaceWith(node.left);
@@ -96,6 +98,7 @@ const plugin = declarePlugin((api) => {
 
         if (
           isObjecMember(node.test) ||
+          isReflectMember(node.test) ||
           isSymbolMember(node.test)
         ) {
           path.replaceWith(node.consequent);
@@ -107,6 +110,7 @@ const plugin = declarePlugin((api) => {
             if (
               isBuiltInObject(tyof.target) ||
               isObjecMember(tyof.target) ||
+              isReflectMember(tyof.target) ||
               isSymbolMember(tyof.target)
             ) {
               path.replaceWith(
@@ -124,6 +128,7 @@ const plugin = declarePlugin((api) => {
 
         if (
           isObjecMember(node.test) ||
+          isReflectMember(node.test) ||
           isSymbolMember(node.test)
         ) {
           node.test = t.booleanLiteral(true);

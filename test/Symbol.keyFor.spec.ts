@@ -58,4 +58,25 @@ describe('Symbol.keyFor', () => {
   )('false %#', async (code) => {
     await expect(code).toBeTransform('false;');
   });
+
+  it.each(
+    [
+      'typeof Symbol.keyFor === "function" ? A : B',
+      'typeof Symbol.keyFor !== "function" ? B : A',
+      'typeof Symbol.keyFor !== "undefined" ? A : B',
+      'typeof Symbol.keyFor === "undefined" ? B : A',
+      // ==
+      'typeof Symbol.keyFor == "function" ? A : B',
+      'typeof Symbol.keyFor != "function" ? B : A',
+      'typeof Symbol.keyFor != "undefined" ? A : B',
+      'typeof Symbol.keyFor == "undefined" ? B : A',
+      // ..
+      '"function" === typeof Symbol.keyFor ? A : B',
+      '"function" !== typeof Symbol.keyFor ? B : A',
+      '"undefined" !== typeof Symbol.keyFor ? A : B',
+      '"undefined" === typeof Symbol.keyFor ? B : A',
+    ]
+  )('ternary operator %#', async (code) => {
+    await expect(code).toBeTransform('A;');
+  });
 });
