@@ -64,15 +64,8 @@ const plugin = declarePlugin((api) => {
       LogicalExpression(path) {
         const node = path.node;
 
-        if (node.operator === '&&') {
-          if (mGroup(node.left)) {
-            path.replaceWith(node.right);
-          }
-        }
-        else if (node.operator === '||' || node.operator === '??') {
-          if (mGroup(node.left)) {
-            path.replaceWith(node.left);
-          }
+        if (mGroup(node.left)) {
+          path.replaceWith(node.operator === '&&' ? node.right : node.left);
         }
       },
 
