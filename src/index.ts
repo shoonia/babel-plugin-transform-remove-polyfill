@@ -7,9 +7,8 @@ import {
   objectMember,
   isBuiltInObject,
   functionGrop,
+  isWellKnownSymbol,
 } from './utils';
-
-const isSymbolIterator = t.buildMatchMemberExpression('Symbol.iterator', false);
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
@@ -39,7 +38,7 @@ const plugin = declarePlugin((api) => {
           }
           else if (tyof.expect === 'symbol') {
             if (
-              isSymbolIterator(tyof.target) ||
+              isWellKnownSymbol(tyof.target) ||
               t.isCallExpression(tyof.target) &&
               t.isIdentifier(tyof.target.callee, { name: 'Symbol' })
             ) {

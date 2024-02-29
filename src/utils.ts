@@ -39,6 +39,11 @@ const symbolKeys = new Set<string>([
   'keyFor',
 ] satisfies S[]);
 
+const wellKnownSymbols = new Set<string>([
+  'iterator',
+  'toStringTag',
+] satisfies S[]);
+
 const builtInObjects = new Set<string>([
   'ArrayBuffer',
   'Int8Array',
@@ -83,6 +88,11 @@ export const functionGrop = (node: t.Node): node is t.MemberExpression => {
 
 export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInObjects);
+
+export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
+  t.isMemberExpression(node, { computed: false }) &&
+  t.isIdentifier(node.object) &&
+  oneOfIdentifier(node.property, wellKnownSymbols);
 
 export const objectMember = (property: O): t.MemberExpression => ({
   type: 'MemberExpression',
