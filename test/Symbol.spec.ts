@@ -76,7 +76,7 @@ describe('Symbol', () => {
     await expect(
       '"function" == typeof Symbol && "symbol" == typeof Symbol("foo")',
     ).toBeTransform(
-      'true && true;'
+      'true;'
     );
   });
 });

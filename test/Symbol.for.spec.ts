@@ -27,7 +27,7 @@ describe('Symbol.for', () => {
     await expect('"undefined" == typeof Symbol.for ? A : B').toBeTransform('B;');
   });
 
-  it('remove', async () => {
+  it('remove #1', async () => {
     await expect(
       'Symbol.for && Symbol.for("react.forward_ref")',
     ).toBeTransform('Symbol.for("react.forward_ref");');
@@ -37,6 +37,14 @@ describe('Symbol.for', () => {
     await expect(
       'var c = Symbol.for && Symbol.for("react.forward_ref") || 3911;',
     ).toBeTransform('var c = Symbol.for("react.forward_ref") || 3911;');
+  });
+
+  it('remove #3', async () => {
+    await expect(
+      'const REACT_ELEMENT_TYPE = (typeof Symbol != "undefined" && Symbol.for && Symbol.for("react.element")) || 0xeac7;'
+    ).toBeTransform(
+      'const REACT_ELEMENT_TYPE = Symbol.for("react.element") || 0xeac7;'
+    );
   });
 
   it.each(

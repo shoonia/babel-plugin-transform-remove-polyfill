@@ -51,12 +51,21 @@ const plugin = declarePlugin((api) => {
         }
       },
 
-      LogicalExpression(path) {
-        const node = path.node;
+      LogicalExpression: {
+        exit(path) {
+          const node = path.node;
 
-        if (functionGrop(node.left)) {
-          path.replaceWith(node.operator === '&&' ? node.right : node.left);
-        }
+          if (functionGrop(node.left)) {
+            path.replaceWith(node.operator === '&&' ? node.right : node.left);
+          }
+          else if (t.isBooleanLiteral(node.left)) {
+            if (node.operator === '&&') {
+              path.replaceWith(node.left.value ? node.right : node.left);
+            } else if (node.operator === '||') {
+              path.replaceWith(node.left.value ? node.left : node.right);
+            }
+          }
+        },
       },
 
       /**
