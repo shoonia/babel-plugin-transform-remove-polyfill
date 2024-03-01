@@ -84,8 +84,7 @@ export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Ident
   t.isIdentifier(node) && set.has(node.name);
 
 export const functionGrop = (node: t.Node): node is t.MemberExpression => {
-  if (
-    t.isMemberExpression(node, { computed: false })) {
+  if (t.isMemberExpression(node, { computed: false })) {
     if (t.isIdentifier(node.object)) {
       switch (node.object.name) {
         case 'Object':
