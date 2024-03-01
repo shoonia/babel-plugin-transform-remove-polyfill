@@ -16,6 +16,7 @@ const objectKeys = new Set<string>([
   'getOwnPropertySymbols',
   'getOwnPropertyDescriptors',
   'defineProperty',
+  'is',
 ] satisfies O[]);
 
 const reflectKeys = new Set<string>([
