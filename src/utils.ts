@@ -91,7 +91,7 @@ export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
 
 export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
   t.isMemberExpression(node, { computed: false }) &&
-  t.isIdentifier(node.object) &&
+  t.isIdentifier(node.object, { name: 'Symbol' }) &&
   oneOfIdentifier(node.property, wellKnownSymbols);
 
 export const objectMember = (property: O): t.MemberExpression => ({
