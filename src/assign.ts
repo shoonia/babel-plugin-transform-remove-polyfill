@@ -1,7 +1,8 @@
 import t from '@babel/types';
 
-const isNodeFunction = (node: t.Node): node is t.FunctionExpression =>
-  t.isFunctionExpression(node, { id: null, async: false, generator: false });
+const isNodeFunction = (node: t.Node, params: number): node is t.FunctionExpression =>
+  t.isFunctionExpression(node, { id: null, async: false, generator: false }) &&
+  node.params.length === params;
 
 const isThisAssign = t.buildMatchMemberExpression('this.__assign', false);
 const isObjectAssign = t.buildMatchMemberExpression('Object.assign', false);
@@ -14,8 +15,7 @@ export const isAssignTS = (node: t.VariableDeclarator): boolean => {
     t.isLogicalExpression(node.init.left, { operator: '&&' }) &&
     t.isThisExpression(node.init.left.left) &&
     isThisAssign(node.init.left.right) &&
-    isNodeFunction(node.init.right) &&
-    node.init.right.params.length === 0 &&
+    isNodeFunction(node.init.right, 0) &&
     node.init.right.body.body.length === 2
   ) {
     const exp = node.init.right.body.body[0];
@@ -27,7 +27,7 @@ export const isAssignTS = (node: t.VariableDeclarator): boolean => {
       t.isIdentifier(exp.expression.left, { name: '__assign' }) &&
       t.isLogicalExpression(exp.expression.right, { operator: '||' }) &&
       isObjectAssign(exp.expression.right.left) &&
-      isNodeFunction(exp.expression.right.right)
+      isNodeFunction(exp.expression.right.right, 1)
     );
   }
 
@@ -53,7 +53,7 @@ export const isAssingBabel = (node: t.FunctionDeclaration): boolean => {
       isObjectAssign(exp.expression.right.test) &&
       t.isCallExpression(exp.expression.right.consequent) &&
       isAssignBind(exp.expression.right.consequent.callee) &&
-      isNodeFunction(exp.expression.right.alternate)
+      isNodeFunction(exp.expression.right.alternate, 1)
     );
   }
 
