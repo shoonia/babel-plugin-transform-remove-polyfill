@@ -46,4 +46,19 @@ describe('Symbol.iterator', () => {
   it('transform #2', async () => {
     await expect('"function" == typeof Symbol && Symbol.iterator').toBeTransform('Symbol.iterator;');
   });
+
+  it('transform #3', async () => {
+    await expect(
+      `var r = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(e) {
+  return typeof e
+}
+: function(e) {
+  return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e
+}`
+    ).toBeTransform(
+      `var r = function (e) {
+  return typeof e;
+};`
+    );
+  });
 });
