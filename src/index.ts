@@ -83,28 +83,17 @@ const plugin = declarePlugin((api) => {
       //   }
       // },
 
-      ConditionalExpression(path) {
-        const node = path.node;
+      ConditionalExpression: {
+        exit(path) {
+          const node = path.node;
 
-        if (functionGrop(node.test)) {
-          path.replaceWith(node.consequent);
-        }
-        else if (t.isBinaryExpression(node.test)) {
-          const tyof = matchTypeof(node.test);
-
-          if (tyof.match) {
-            if (
-              isBuiltInObject(tyof.target) ||
-              functionGrop(tyof.target)
-            ) {
-              path.replaceWith(
-                node.test.operator.startsWith(tyof.expect === 'function' ? '=' : '!')
-                  ? node.consequent
-                  : node.alternate
-              );
-            }
+          if (functionGrop(node.test)) {
+            path.replaceWith(node.consequent);
           }
-        }
+          else if (t.isBooleanLiteral(node.test)) {
+            path.replaceWith(node.test.value ? node.consequent : node.alternate);
+          }
+        },
       },
 
       IfStatement(path) {
