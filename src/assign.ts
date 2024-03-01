@@ -36,9 +36,9 @@ export const isAssignTS = (node: t.VariableDeclarator): boolean => {
 
 export const isAssingBabel = (node: t.FunctionDeclaration): boolean => {
   if (
+    t.isIdentifier(node.id, { name: '_extends' }) &&
     !node.async &&
     !node.generator &&
-    t.isIdentifier(node.id, { name: '_extends' }) &&
     node.params.length === 0 &&
     node.body.body.length === 2
   ) {
