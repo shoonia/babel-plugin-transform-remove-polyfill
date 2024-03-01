@@ -1,7 +1,7 @@
 import { transformAsync } from '@babel/core';
 import { diffStringsUnified } from 'jest-diff';
 
-import plugin from '../dist/index.cjs';
+import plugin from '..';
 
 expect.extend({
   async toBeTransform(source, result) {
