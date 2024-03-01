@@ -1,6 +1,7 @@
 import t from '@babel/types';
 
-type A = keyof Array<unknown>;
+type AP = keyof Array<unknown>;
+type A = keyof ArrayConstructor
 type O = keyof ObjectConstructor;
 type S = keyof SymbolConstructor;
 type R = keyof typeof Reflect;
@@ -9,6 +10,12 @@ const arrayProtoKeys = new Set<string>([
   'find',
   'findIndex',
   'includes',
+] satisfies AP[]);
+
+const arrayKeys = new Set<string>([
+  'of',
+  'from',
+  'isArray',
 ] satisfies A[]);
 
 const objectKeys = new Set<string>([
@@ -87,6 +94,8 @@ export const functionGrop = (node: t.Node): node is t.MemberExpression => {
           return oneOfIdentifier(node.property, symbolKeys);
         case 'Reflect':
           return oneOfIdentifier(node.property, reflectKeys);
+        case 'Array':
+          return oneOfIdentifier(node.property, arrayKeys);
       }
     }
     else if (t.isMemberExpression(node.object, { computed: false })) {
