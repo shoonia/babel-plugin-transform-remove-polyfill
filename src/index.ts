@@ -59,11 +59,17 @@ const plugin = declarePlugin((api) => {
             path.replaceWith(node.operator === '&&' ? node.right : node.left);
           }
           else if (t.isBooleanLiteral(node.left)) {
-            if (node.operator === '&&') {
-              path.replaceWith(node.left.value ? node.right : node.left);
-            } else if (node.operator === '||') {
-              path.replaceWith(node.left.value ? node.left : node.right);
-            }
+            path.replaceWith(
+              node.operator === '&&'
+                ? node.left.value
+                  ? node.right
+                  : node.left
+                : node.operator === '||'
+                  ? node.left.value
+                    ? node.left
+                    : node.right
+                  : node.left
+            );
           }
         },
       },

@@ -12,4 +12,13 @@ describe('LogicalExpression', () => {
   ])('%#', async (code) => {
     await expect(code).toBeTransform('false;');
   });
+
+  it.each([
+    ['typeof Symbol == "function" ?? {}', 'true;'],
+    ['typeof Symbol != "function" ?? {}', 'false;'],
+    ['true ?? {}', 'true;'],
+    ['false ?? {}', 'false;'],
+  ])('%#', async (code, result) => {
+    await expect(code).toBeTransform(result);
+  });
 });
