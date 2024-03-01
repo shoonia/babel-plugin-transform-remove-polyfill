@@ -1,14 +1,14 @@
 describe('Array.isArray', () => {
   it('tranfrom #0', async () => {
-    await expect('if (Array.isArray) {}',).toBeTransform('if (true) {}');
+    await expect('if (Array.isArray) {}').toBeTransform('if (true) {}');
   });
 
   it('tranfrom #1', async () => {
-    await expect('Array.isArray || A',).toBeTransform('Array.isArray;');
+    await expect('Array.isArray || A').toBeTransform('Array.isArray;');
   });
 
   it('tranfrom #2', async () => {
-    await expect('Array.isArray && A',).toBeTransform('A;');
+    await expect('Array.isArray && A').toBeTransform('A;');
   });
 
   it('tranfrom #3', async () => {
@@ -28,7 +28,7 @@ describe('Array.isArray', () => {
   });
 
   it('tranfrom #7', async () => {
-    await expect('Array.isArray ?? A',).toBeTransform('Array.isArray;');
+    await expect('Array.isArray ?? A').toBeTransform('Array.isArray;');
   });
 
   it.each(

@@ -1,14 +1,14 @@
 describe('Reflect.construct', () => {
   it('tranfrom #0', async () => {
-    await expect('if (Reflect.construct) {}',).toBeTransform('if (true) {}');
+    await expect('if (Reflect.construct) {}').toBeTransform('if (true) {}');
   });
 
   it('tranfrom #1', async () => {
-    await expect('Reflect.construct || A',).toBeTransform('Reflect.construct;');
+    await expect('Reflect.construct || A').toBeTransform('Reflect.construct;');
   });
 
   it('tranfrom #2', async () => {
-    await expect('Reflect.construct && A',).toBeTransform('A;');
+    await expect('Reflect.construct && A').toBeTransform('A;');
   });
 
   it('tranfrom #3', async () => {
@@ -28,7 +28,7 @@ describe('Reflect.construct', () => {
   });
 
   it('tranfrom #7', async () => {
-    await expect('Reflect.construct ?? A',).toBeTransform('Reflect.construct;');
+    await expect('Reflect.construct ?? A').toBeTransform('Reflect.construct;');
   });
 
   it.each(

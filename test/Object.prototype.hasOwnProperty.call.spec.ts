@@ -1,6 +1,6 @@
 describe('Object.prototype.hasOwnProperty.call', () => {
   it.skip('transform', async () => {
-    await expect('Object.prototype.hasOwnProperty.call(e, s)',).toBeTransform(
+    await expect('Object.prototype.hasOwnProperty.call(e, s)').toBeTransform(
       'Object.hasOwn(e, s);'
     );
   });

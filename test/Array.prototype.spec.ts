@@ -53,15 +53,15 @@ describe('Array.prototype', () => {
   });
 
   it('tranfrom #0', async () => {
-    await expect('if (Array.prototype.find) {}',).toBeTransform('if (true) {}');
+    await expect('if (Array.prototype.find) {}').toBeTransform('if (true) {}');
   });
 
   it('tranfrom #1', async () => {
-    await expect('Array.prototype.find || A',).toBeTransform('Array.prototype.find;');
+    await expect('Array.prototype.find || A').toBeTransform('Array.prototype.find;');
   });
 
   it('tranfrom #2', async () => {
-    await expect('Array.prototype.find && A',).toBeTransform('A;');
+    await expect('Array.prototype.find && A').toBeTransform('A;');
   });
 
   it('tranfrom #3', async () => {

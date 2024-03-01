@@ -1,14 +1,14 @@
 describe('Object.assign', () => {
   it('tranfrom #0', async () => {
-    await expect('if (Object.assign) {}',).toBeTransform('if (true) {}');
+    await expect('if (Object.assign) {}').toBeTransform('if (true) {}');
   });
 
   it('tranfrom #1', async () => {
-    await expect('Object.assign || A',).toBeTransform('Object.assign;');
+    await expect('Object.assign || A').toBeTransform('Object.assign;');
   });
 
   it('tranfrom #2', async () => {
-    await expect('Object.assign && A',).toBeTransform('A;');
+    await expect('Object.assign && A').toBeTransform('A;');
   });
 
   it('tranfrom #3', async () => {
@@ -28,7 +28,7 @@ describe('Object.assign', () => {
   });
 
   it('tranfrom #7', async () => {
-    await expect('Object.assign ?? A',).toBeTransform('Object.assign;');
+    await expect('Object.assign ?? A').toBeTransform('Object.assign;');
   });
 
   it.each(

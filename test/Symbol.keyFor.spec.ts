@@ -1,14 +1,14 @@
 describe('Symbol.keyFor', () => {
   it('tranfrom #0', async () => {
-    await expect('if (Symbol.keyFor) {}',).toBeTransform('if (true) {}');
+    await expect('if (Symbol.keyFor) {}').toBeTransform('if (true) {}');
   });
 
   it('tranfrom #1', async () => {
-    await expect('Symbol.keyFor || A',).toBeTransform('Symbol.keyFor;');
+    await expect('Symbol.keyFor || A').toBeTransform('Symbol.keyFor;');
   });
 
   it('tranfrom #2', async () => {
-    await expect('Symbol.keyFor && A',).toBeTransform('A;');
+    await expect('Symbol.keyFor && A').toBeTransform('A;');
   });
 
   it('tranfrom #3', async () => {
@@ -28,7 +28,7 @@ describe('Symbol.keyFor', () => {
   });
 
   it('tranfrom #7', async () => {
-    await expect('Symbol.keyFor ?? A',).toBeTransform('Symbol.keyFor;');
+    await expect('Symbol.keyFor ?? A').toBeTransform('Symbol.keyFor;');
   });
 
   it.each(
