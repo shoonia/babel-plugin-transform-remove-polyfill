@@ -131,7 +131,11 @@ const plugin = declarePlugin((api, options = {}) => {
     visitor.CallExpression = (path) => {
       const node = path.node;
 
-      if (isObjectHasOwn(node.callee)) {
+      if (
+        isObjectHasOwn(node.callee) &&
+        node.arguments.length === 2 &&
+        node.arguments.every((i) => t.isIdentifier(i))
+      ) {
         node.callee = objectMember('hasOwn');
       }
     };

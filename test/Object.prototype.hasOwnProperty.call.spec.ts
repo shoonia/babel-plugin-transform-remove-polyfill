@@ -10,6 +10,7 @@ describe('Object.prototype.hasOwnProperty.call', () => {
   it.each([
     'obj.hasOwnProperty(a);',
     'Object.prototype.hasOwnProperty.call;',
+    'Object.prototype.hasOwnProperty.call(this, b);',
     'Object.prototype.hasOwnProperty.call.bind(true);',
     'SomeObject.prototype.hasOwnProperty.call(a, b);',
   ])('NO transform', async (code) => {
