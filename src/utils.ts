@@ -27,11 +27,19 @@ const objectKeys = new Set<string>([
   'values',
   'entries',
   'fromEntries',
+  'getOwnPropertyNames',
   'getOwnPropertySymbols',
+  'getOwnPropertyDescriptor',
   'getOwnPropertyDescriptors',
   'defineProperty',
   'defineProperties',
   'is',
+  'freeze',
+  'isFrozen',
+  'seal',
+  'isSealed',
+  'isExtensible',
+  'preventExtensions',
 ] satisfies O[]);
 
 const reflectKeys = new Set<string>([
