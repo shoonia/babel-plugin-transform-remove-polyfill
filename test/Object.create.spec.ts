@@ -83,4 +83,14 @@ describe('Object.create', () => {
   )('ternary operator %#', async (code) => {
     await expect(code).toBeTransform('A;');
   });
+
+  it('case', async () => {
+    await expect(
+      `var Da = "function" == typeof Object.create ? Object.create : function(a) {
+    var b = function() {};
+    b.prototype = a;
+    return new b
+}`
+    ).toBeTransform('var Da = Object.create;');
+  });
 });
