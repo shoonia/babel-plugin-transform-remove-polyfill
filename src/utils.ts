@@ -30,6 +30,7 @@ const objectKeys = new Set<string>([
   'getOwnPropertySymbols',
   'getOwnPropertyDescriptors',
   'defineProperty',
+  'defineProperties',
   'is',
 ] satisfies O[]);
 
