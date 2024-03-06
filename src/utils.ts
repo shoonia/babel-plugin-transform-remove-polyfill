@@ -3,7 +3,8 @@ import t from '@babel/types';
 type AP = keyof Array<unknown>;
 type A = keyof ArrayConstructor
 type O = keyof ObjectConstructor;
-type S = keyof SymbolConstructor;
+type SM = keyof SymbolConstructor;
+type ST = keyof typeof String.prototype;
 type R = keyof typeof Reflect;
 
 const arrayProtoKeys = new Set<string>([
@@ -61,12 +62,12 @@ const reflectKeys = new Set<string>([
 const symbolKeys = new Set<string>([
   'for',
   'keyFor',
-] satisfies S[]);
+] satisfies SM[]);
 
 const wellKnownSymbols = new Set<string>([
   'iterator',
   'toStringTag',
-] satisfies S[]);
+] satisfies SM[]);
 
 const builtInObjects = new Set<string>([
   'ArrayBuffer',
@@ -92,6 +93,19 @@ const builtInObjects = new Set<string>([
   'URLSearchParams',
 ] as const);
 
+const stringProtoKeys = new Set<string>([
+  'includes',
+  'startsWith',
+  'endsWith',
+  'padStart',
+  'padEnd',
+  'trimStart',
+  'trimEnd',
+  'repeat',
+  'normalize',
+  'localeCompare',
+] satisfies ST[]);
+
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node) && set.has(node.name);
 
@@ -109,12 +123,16 @@ export const functionGrop = (node: t.Node): node is t.MemberExpression => {
           return oneOfIdentifier(node.property, arrayKeys);
       }
     }
-    else if (t.isMemberExpression(node.object, { computed: false })) {
-      if (
-        t.isIdentifier(node.object.object, { name: 'Array' }) &&
-        t.isIdentifier(node.object.property, { name: 'prototype' })
-      ) {
-        return oneOfIdentifier(node.property, arrayProtoKeys);
+    else if (
+      t.isMemberExpression(node.object, { computed: false }) &&
+      t.isIdentifier(node.object.property, { name: 'prototype' }) &&
+      t.isIdentifier(node.object.object)
+    ) {
+      switch (node.object.object.name) {
+        case 'Array':
+          return oneOfIdentifier(node.property, arrayProtoKeys);
+        case 'String':
+          return oneOfIdentifier(node.property, stringProtoKeys);
       }
     }
   }
