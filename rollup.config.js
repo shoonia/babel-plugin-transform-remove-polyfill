@@ -20,6 +20,9 @@ export default {
       extensions,
       babelHelpers: 'bundled',
       comments: false,
+      plugins: [
+        'babel-plugin-transform-lhs-constants',
+      ],
       presets: [
         '@babel/preset-typescript',
       ],
