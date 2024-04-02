@@ -21,4 +21,21 @@ describe('Object.assign', () => {
   test('tranfrom #4', async () => {
     await expect('Object.assign ?? A').toBeTransform('Object.assign;');
   });
+
+  test('transform polyfill #1', async () => {
+    await expect(
+      `var assign = Object.assign || function (e) {
+        for (var t = 1; t < arguments.length; t++) {
+          var n = arguments[t];
+
+          for (var r in n) {
+            if (Object.prototype.hasOwnProperty.call(n, r)) {
+              e[r] = n[r]
+            }
+          }
+        }
+        return e;
+      };`
+    ).toBeTransform('var assign = Object.assign;');
+  });
 });
