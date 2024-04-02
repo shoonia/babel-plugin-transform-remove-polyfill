@@ -17,4 +17,8 @@ describe('Object.assign', () => {
   test('tranfrom #3', async () => {
     await expect('Object.assign ? 1 : 2').toBeTransform('1;');
   });
+
+  test('tranfrom #4', async () => {
+    await expect('Object.assign ?? A').toBeTransform('Object.assign;');
+  });
 });

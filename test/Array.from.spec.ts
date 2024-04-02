@@ -17,4 +17,8 @@ describe('Array.from', () => {
   test('tranfrom #3', async () => {
     await expect('Array.from ? 1 : 2').toBeTransform('1;');
   });
+
+  test('tranfrom #4', async () => {
+    await expect('Array.from ?? A').toBeTransform('Array.from;');
+  });
 });
