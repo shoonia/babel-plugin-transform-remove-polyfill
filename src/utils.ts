@@ -1,5 +1,6 @@
 import t from '@babel/types';
 
+type A = keyof ArrayConstructor
 type O = keyof ObjectConstructor;
 
 const objectKeys = new Set<string>([
@@ -26,6 +27,12 @@ const objectKeys = new Set<string>([
   'preventExtensions',
 ] satisfies O[]);
 
+const arrayKeys = new Set<string>([
+  'of',
+  'from',
+  'isArray',
+] satisfies A[]);
+
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node) && set.has(node.name);
 
@@ -35,6 +42,8 @@ export const repliceGroup = (node: t.Node): node is t.MemberExpression => {
       switch (node.object.name) {
         case 'Object':
           return oneOfIdentifier(node.property, objectKeys);
+        case 'Array':
+          return oneOfIdentifier(node.property, arrayKeys);
       }
     }
   }
