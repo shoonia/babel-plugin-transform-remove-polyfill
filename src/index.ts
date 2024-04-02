@@ -8,12 +8,50 @@ const plugin = declarePlugin((api) => {
   const t = api.types;
 
   const visitor: Visitor<PluginPass> = {
-    IfStatement(path) {
-      const node = path.node;
+    IfStatement: {
+      exit(path) {
+        const node = path.node;
 
-      if (repliceGroup(node.test)) {
-        node.test = t.booleanLiteral(true);
-      }
+        if (repliceGroup(node.test)) {
+          node.test = t.booleanLiteral(true);
+        }
+      },
+    },
+
+    LogicalExpression: {
+      exit(path) {
+        const node = path.node;
+
+        if (repliceGroup(node.left)) {
+          path.replaceWith(node.operator === '&&' ? node.right : node.left);
+        }
+        else if (t.isBooleanLiteral(node.left)) {
+          path.replaceWith(
+            node.operator === '&&'
+              ? node.left.value
+                ? node.right
+                : node.left
+              : node.operator === '||'
+                ? node.left.value
+                  ? node.left
+                  : node.right
+                : node.left
+          );
+        }
+      },
+    },
+
+    ConditionalExpression: {
+      exit(path) {
+        const node = path.node;
+
+        if (repliceGroup(node.test)) {
+          path.replaceWith(node.consequent);
+        }
+        else if (t.isBooleanLiteral(node.test)) {
+          path.replaceWith(node.test.value ? node.consequent : node.alternate);
+        }
+      },
     },
   };
 
