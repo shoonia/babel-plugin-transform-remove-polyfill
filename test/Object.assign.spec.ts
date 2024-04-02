@@ -19,7 +19,7 @@ describe('Object.assign', () => {
   });
 
   test('tranfrom #4', async () => {
-    await expect('Object.assign ?? A').toBeTransform('Object.assign;');
+    await expect('Object.assign ?? 1').toBeTransform('Object.assign;');
   });
 
   test('transform polyfill #1', async () => {
@@ -37,5 +37,64 @@ describe('Object.assign', () => {
         return e;
       };`
     ).toBeTransform('var assign = Object.assign;');
+  });
+
+  const trueList = [
+    'typeof Object.assign === "function"',
+    'typeof Object.assign == "function"',
+    '"function" === typeof Object.assign',
+    '"function" == typeof Object.assign',
+    // undefined
+    'typeof Object.assign !== "undefined"',
+    'typeof Object.assign != "undefined"',
+    '"undefined" !== typeof Object.assign',
+    '"undefined" != typeof Object.assign',
+  ];
+
+  trueList.forEach((code) => {
+    test(code, async () => {
+      expect(code).toBeTransform('true;');
+    });
+  });
+
+  const falseList = [
+    'typeof Object.assign !== "function"',
+    'typeof Object.assign != "function"',
+    '"function" !== typeof Object.assign',
+    '"function" != typeof Object.assign',
+    // undefined
+    'typeof Object.assign === "undefined"',
+    'typeof Object.assign == "undefined"',
+    '"undefined" === typeof Object.assign',
+    '"undefined" == typeof Object.assign',
+  ];
+
+  falseList.forEach((code) => {
+    test(code, async () => {
+      expect(code).toBeTransform('false;');
+    });
+  });
+
+  const ternaryList = [
+    'typeof Object.assign === "function" ? 1 : 2',
+    'typeof Object.assign !== "function" ? 2 : 1',
+    'typeof Object.assign !== "undefined" ? 1 : 2',
+    'typeof Object.assign === "undefined" ? 2 : 1',
+    // ==
+    'typeof Object.assign == "function" ? 1 : 2',
+    'typeof Object.assign != "function" ? 2 : 1',
+    'typeof Object.assign != "undefined" ? 1 : 2',
+    'typeof Object.assign == "undefined" ? 2 : 1',
+    // ..
+    '"function" === typeof Object.assign ? 1 : 2',
+    '"function" !== typeof Object.assign ? 2 : 1',
+    '"undefined" !== typeof Object.assign ? 1 : 2',
+    '"undefined" === typeof Object.assign ? 2 : 1',
+  ];
+
+  ternaryList.forEach((code) => {
+    test(code, async () => {
+      expect(code).toBeTransform('1;');
+    });
   });
 });
