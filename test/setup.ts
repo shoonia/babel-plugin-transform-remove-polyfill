@@ -4,7 +4,7 @@ import { transformAsync } from '@babel/core';
 import plugin from '../src';
 
 export const expect = (actual: string) => ({
-  toBeTransform: async (expected: string) => {
+  toBeTransform: async (expected: string): Promise<void> => {
     const result = await transformAsync(actual, {
       plugins: [plugin],
       ast: false,
