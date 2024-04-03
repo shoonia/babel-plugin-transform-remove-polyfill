@@ -1,4 +1,3 @@
-npx tsc
 npx eslint --fix
 npm run build
 npm test
