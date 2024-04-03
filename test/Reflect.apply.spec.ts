@@ -38,7 +38,7 @@ describe('Reflect.apply', () => {
 
   trueList.forEach((code) => {
     test(code, async () => {
-      expect(code).toBeTransform('true;');
+      await expect(code).toBeTransform('true;');
     });
   });
 
@@ -56,7 +56,7 @@ describe('Reflect.apply', () => {
 
   falseList.forEach((code) => {
     test(code, async () => {
-      expect(code).toBeTransform('false;');
+      await expect(code).toBeTransform('false;');
     });
   });
 
@@ -79,7 +79,7 @@ describe('Reflect.apply', () => {
 
   ternaryList.forEach((code) => {
     test(code, async () => {
-      expect(code).toBeTransform('1;');
+      await expect(code).toBeTransform('1;');
     });
   });
 });

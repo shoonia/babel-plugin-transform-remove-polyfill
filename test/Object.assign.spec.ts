@@ -55,7 +55,7 @@ describe('Object.assign', () => {
 
   trueList.forEach((code) => {
     test(code, async () => {
-      expect(code).toBeTransform('true;');
+      await expect(code).toBeTransform('true;');
     });
   });
 
@@ -73,7 +73,7 @@ describe('Object.assign', () => {
 
   falseList.forEach((code) => {
     test(code, async () => {
-      expect(code).toBeTransform('false;');
+      await expect(code).toBeTransform('false;');
     });
   });
 
@@ -96,7 +96,7 @@ describe('Object.assign', () => {
 
   ternaryList.forEach((code) => {
     test(code, async () => {
-      expect(code).toBeTransform('1;');
+      await expect(code).toBeTransform('1;');
     });
   });
 });
