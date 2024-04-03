@@ -1,7 +1,8 @@
 import { strictEqual } from 'node:assert/strict';
 import { transformAsync } from '@babel/core';
 
-import plugin from '../src';
+// @ts-expect-error Get from dist
+import plugin from '../dist/index.cjs';
 
 export const expect = (actual: string) => ({
   toBeTransform: async (expected: string): Promise<void> => {
