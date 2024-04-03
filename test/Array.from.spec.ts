@@ -1,6 +1,8 @@
 import { describe, test } from 'node:test';
 import { expect } from './setup';
 
+Array.from;
+
 describe('Array.from', () => {
   test('tranfrom #0', async () => {
     await expect('if (Array.from) {}').toBeTransform('if (true) {}');
