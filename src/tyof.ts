@@ -20,7 +20,7 @@ const isTypeof = (node: t.Node): node is t.UnaryExpression =>
 
 export const matchTypeof = (node: t.BinaryExpression): Result => {
   if (equalities.has(node.operator)) {
-    if (isTypeof(node.left) && t.isStringLiteral(node.right)) {
+    if (isTypeof(node.left) && t.isStringLiteral(node.right, null)) {
       return {
         match: true,
         target: node.left.argument,
@@ -28,7 +28,7 @@ export const matchTypeof = (node: t.BinaryExpression): Result => {
       };
     }
 
-    if (isTypeof(node.right) && t.isStringLiteral(node.left)) {
+    if (isTypeof(node.right) && t.isStringLiteral(node.left, null)) {
       return {
         match: true,
         target: node.right.argument,
