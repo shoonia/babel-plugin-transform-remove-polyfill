@@ -12,28 +12,27 @@ yarn add babel-plugin-transform-remove-polyfill -D
 
 ## Example
 
-TypeScript helper functions `__assign` from [tslib](https://github.com/Microsoft/tslib)
-
 **Before:**
 
 ```js
-var __assign = (this && this.__assign) || function () {
-  __assign = Object.assign || function(t) {
-      for (var s, i = 1, n = arguments.length; i < n; i++) {
-          s = arguments[i];
-          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-              t[p] = s[p];
+var assign = Object.assign || function (e) {
+  for (var t = 1; t < arguments.length; t++) {
+    var n = arguments[t];
+
+    for (var r in n) {
+      if (Object.prototype.hasOwnProperty.call(n, r)) {
+        e[r] = n[r]
       }
-      return t;
-  };
-  return __assign.apply(this, arguments);
+    }
+  }
+  return e;
 };
 ```
 
 **After:**
 
 ```js
-var __assign = Object.assign;
+var assign = Object.assign;
 ```
 
 ## License

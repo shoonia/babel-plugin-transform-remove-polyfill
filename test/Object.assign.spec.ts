@@ -1,86 +1,102 @@
+import { describe, test } from 'node:test';
+import { expect } from './setup';
+
+Object.assign;
+
 describe('Object.assign', () => {
-  it('tranfrom #0', async () => {
+  test('tranfrom #0', async () => {
     await expect('if (Object.assign) {}').toBeTransform('if (true) {}');
   });
 
-  it('tranfrom #1', async () => {
-    await expect('Object.assign || A').toBeTransform('Object.assign;');
+  test('tranfrom #1', async () => {
+    await expect('Object.assign || 1').toBeTransform('Object.assign;');
   });
 
-  it('tranfrom #2', async () => {
-    await expect('Object.assign && A').toBeTransform('A;');
+  test('tranfrom #2', async () => {
+    await expect('Object.assign && 1').toBeTransform('1;');
   });
 
-  it('tranfrom #3', async () => {
-    await expect('Object.assign ? A : B').toBeTransform('A;');
+  test('tranfrom #3', async () => {
+    await expect('Object.assign ? 1 : 2').toBeTransform('1;');
   });
 
-  it('tranfrom #4', async () => {
-    await expect('typeof Object.assign === "function" ? A : B').toBeTransform('A;');
+  test('tranfrom #4', async () => {
+    await expect('Object.assign ?? 1').toBeTransform('Object.assign;');
   });
 
-  it('tranfrom #5', async () => {
-    await expect('typeof Object.assign !== "undefined" ? A : B').toBeTransform('A;');
+  test('transform polyfill #1', async () => {
+    await expect(
+      `var assign = Object.assign || function (e) {
+        for (var t = 1; t < arguments.length; t++) {
+          var n = arguments[t];
+
+          for (var r in n) {
+            if (Object.prototype.hasOwnProperty.call(n, r)) {
+              e[r] = n[r]
+            }
+          }
+        }
+        return e;
+      };`
+    ).toBeTransform('var assign = Object.assign;');
   });
 
-  it('tranfrom #6', async () => {
-    await expect('"undefined" == typeof Object.assign ? A : B').toBeTransform('B;');
+  const trueList = [
+    'typeof Object.assign === "function"',
+    'typeof Object.assign == "function"',
+    '"function" === typeof Object.assign',
+    '"function" == typeof Object.assign',
+    // undefined
+    'typeof Object.assign !== "undefined"',
+    'typeof Object.assign != "undefined"',
+    '"undefined" !== typeof Object.assign',
+    '"undefined" != typeof Object.assign',
+  ];
+
+  trueList.forEach((code) => {
+    test(code, async () => {
+      await expect(code).toBeTransform('true;');
+    });
   });
 
-  it('tranfrom #7', async () => {
-    await expect('Object.assign ?? A').toBeTransform('Object.assign;');
+  const falseList = [
+    'typeof Object.assign !== "function"',
+    'typeof Object.assign != "function"',
+    '"function" !== typeof Object.assign',
+    '"function" != typeof Object.assign',
+    // undefined
+    'typeof Object.assign === "undefined"',
+    'typeof Object.assign == "undefined"',
+    '"undefined" === typeof Object.assign',
+    '"undefined" == typeof Object.assign',
+  ];
+
+  falseList.forEach((code) => {
+    test(code, async () => {
+      await expect(code).toBeTransform('false;');
+    });
   });
 
-  it.each(
-    [
-      'typeof Object.assign === "function"',
-      'typeof Object.assign == "function"',
-      '"function" === typeof Object.assign',
-      '"function" == typeof Object.assign',
-      // undefined
-      'typeof Object.assign !== "undefined"',
-      'typeof Object.assign != "undefined"',
-      '"undefined" !== typeof Object.assign',
-      '"undefined" != typeof Object.assign',
-    ]
-  )('true %#', async (code) => {
-    await expect(code).toBeTransform('true;');
-  });
+  const ternaryList = [
+    'typeof Object.assign === "function" ? 1 : 2',
+    'typeof Object.assign !== "function" ? 2 : 1',
+    'typeof Object.assign !== "undefined" ? 1 : 2',
+    'typeof Object.assign === "undefined" ? 2 : 1',
+    // ==
+    'typeof Object.assign == "function" ? 1 : 2',
+    'typeof Object.assign != "function" ? 2 : 1',
+    'typeof Object.assign != "undefined" ? 1 : 2',
+    'typeof Object.assign == "undefined" ? 2 : 1',
+    // ..
+    '"function" === typeof Object.assign ? 1 : 2',
+    '"function" !== typeof Object.assign ? 2 : 1',
+    '"undefined" !== typeof Object.assign ? 1 : 2',
+    '"undefined" === typeof Object.assign ? 2 : 1',
+  ];
 
-  it.each(
-    [
-      'typeof Object.assign !== "function"',
-      'typeof Object.assign != "function"',
-      '"function" !== typeof Object.assign',
-      '"function" != typeof Object.assign',
-      // undefined
-      'typeof Object.assign === "undefined"',
-      'typeof Object.assign == "undefined"',
-      '"undefined" === typeof Object.assign',
-      '"undefined" == typeof Object.assign',
-    ]
-  )('false %#', async (code) => {
-    await expect(code).toBeTransform('false;');
-  });
-
-  it.each(
-    [
-      'typeof Object.assign === "function" ? A : B',
-      'typeof Object.assign !== "function" ? B : A',
-      'typeof Object.assign !== "undefined" ? A : B',
-      'typeof Object.assign === "undefined" ? B : A',
-      // ==
-      'typeof Object.assign == "function" ? A : B',
-      'typeof Object.assign != "function" ? B : A',
-      'typeof Object.assign != "undefined" ? A : B',
-      'typeof Object.assign == "undefined" ? B : A',
-      // ..
-      '"function" === typeof Object.assign ? A : B',
-      '"function" !== typeof Object.assign ? B : A',
-      '"undefined" !== typeof Object.assign ? A : B',
-      '"undefined" === typeof Object.assign ? B : A',
-    ]
-  )('ternary operator %#', async (code) => {
-    await expect(code).toBeTransform('A;');
+  ternaryList.forEach((code) => {
+    test(code, async () => {
+      await expect(code).toBeTransform('1;');
+    });
   });
 });

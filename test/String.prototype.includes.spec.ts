@@ -1,82 +1,93 @@
+import { describe, test } from 'node:test';
+import { expect } from './setup';
+
+String.prototype.includes;
+
 describe('String.prototype.includes', () => {
-  it.each(
-    [
-      'typeof String.prototype.includes === "function"',
-      'typeof String.prototype.includes == "function"',
-      '"function" === typeof String.prototype.includes',
-      '"function" == typeof String.prototype.includes',
-      // undefined
-      'typeof String.prototype.includes !== "undefined"',
-      'typeof String.prototype.includes != "undefined"',
-      '"undefined" !== typeof String.prototype.includes',
-      '"undefined" != typeof String.prototype.includes',
-    ]
-  )('true %#', async (code) => {
-    await expect(code).toBeTransform('true;');
+  const trueList = [
+    'typeof String.prototype.includes === "function"',
+    'typeof String.prototype.includes == "function"',
+    '"function" === typeof String.prototype.includes',
+    '"function" == typeof String.prototype.includes',
+    // undefined
+    'typeof String.prototype.includes !== "undefined"',
+    'typeof String.prototype.includes != "undefined"',
+    '"undefined" !== typeof String.prototype.includes',
+    '"undefined" != typeof String.prototype.includes',
+  ];
+
+  trueList.forEach((code) => {
+    test(code, async () => {
+      await expect(code).toBeTransform('true;');
+    });
   });
 
-  it.each(
-    [
-      'typeof String.prototype.includes !== "function"',
-      'typeof String.prototype.includes != "function"',
-      '"function" !== typeof String.prototype.includes',
-      '"function" != typeof String.prototype.includes',
-      // undefined
-      'typeof String.prototype.includes === "undefined"',
-      'typeof String.prototype.includes == "undefined"',
-      '"undefined" === typeof String.prototype.includes',
-      '"undefined" == typeof String.prototype.includes',
-    ]
-  )('false %#', async (code) => {
-    await expect(code).toBeTransform('false;');
+  const falseList =  [
+    'typeof String.prototype.includes !== "function"',
+    'typeof String.prototype.includes != "function"',
+    '"function" !== typeof String.prototype.includes',
+    '"function" != typeof String.prototype.includes',
+    // undefined
+    'typeof String.prototype.includes === "undefined"',
+    'typeof String.prototype.includes == "undefined"',
+    '"undefined" === typeof String.prototype.includes',
+    '"undefined" == typeof String.prototype.includes',
+  ];
+
+  falseList.forEach((code) => {
+    test(code, async () => {
+      await expect(code).toBeTransform('false;');
+    });
   });
 
-  it.each(
-    [
-      'typeof String.prototype.includes === "function" ? A : B',
-      'typeof String.prototype.includes !== "function" ? B : A',
-      'typeof String.prototype.includes !== "undefined" ? A : B',
-      'typeof String.prototype.includes === "undefined" ? B : A',
-      // ==
-      'typeof String.prototype.includes == "function" ? A : B',
-      'typeof String.prototype.includes != "function" ? B : A',
-      'typeof String.prototype.includes != "undefined" ? A : B',
-      'typeof String.prototype.includes == "undefined" ? B : A',
-      // ..
-      '"function" === typeof String.prototype.includes ? A : B',
-      '"function" !== typeof String.prototype.includes ? B : A',
-      '"undefined" !== typeof String.prototype.includes ? A : B',
-      '"undefined" === typeof String.prototype.includes ? B : A',
-    ]
-  )('ternary operator %#', async (code) => {
-    await expect(code).toBeTransform('A;');
+  const ternaryList = [
+    'typeof String.prototype.includes === "function" ? 1 : 2',
+    'typeof String.prototype.includes !== "function" ? 2 : 1',
+    'typeof String.prototype.includes !== "undefined" ? 1 : 2',
+    'typeof String.prototype.includes === "undefined" ? 2 : 1',
+    // ==
+    'typeof String.prototype.includes == "function" ? 1 : 2',
+    'typeof String.prototype.includes != "function" ? 2 : 1',
+    'typeof String.prototype.includes != "undefined" ? 1 : 2',
+    'typeof String.prototype.includes == "undefined" ? 2 : 1',
+    // ..
+    '"function" === typeof String.prototype.includes ? 1 : 2',
+    '"function" !== typeof String.prototype.includes ? 2 : 1',
+    '"undefined" !== typeof String.prototype.includes ? 1 : 2',
+    '"undefined" === typeof String.prototype.includes ? 2 : 1',
+  ];
+
+  ternaryList.forEach((code) => {
+    test(code, async () => {
+      await expect(code).toBeTransform('1;');
+    });
   });
 
-  it('tranfrom #0', async () => {
+  test('tranfrom #0', async () => {
     await expect('if (String.prototype.includes) {}').toBeTransform('if (true) {}');
   });
 
-  it('tranfrom #1', async () => {
-    await expect('String.prototype.includes || A').toBeTransform('String.prototype.includes;');
+  test('tranfrom #1', async () => {
+    await expect('String.prototype.includes || 1').toBeTransform('String.prototype.includes;');
   });
 
-  it('tranfrom #2', async () => {
-    await expect('String.prototype.includes && A').toBeTransform('A;');
+  test('tranfrom #2', async () => {
+    await expect('String.prototype.includes && 1').toBeTransform('1;');
   });
 
-  it('tranfrom #3', async () => {
-    await expect('String.prototype.includes ? A : B').toBeTransform('A;');
+  test('tranfrom #3', async () => {
+    await expect('String.prototype.includes ? 1 : 2').toBeTransform('1;');
   });
 
-  it('tranfrom #4', async () => {
-    await expect('typeof String.prototype.includes === "function" ? A : B').toBeTransform('A;');
+  test('tranfrom #4', async () => {
+    await expect('typeof String.prototype.includes === "function" ? 1 : 2').toBeTransform('1;');
   });
 
-  it('tranfrom #5', async () => {
-    await expect('typeof String.prototype.includes !== "undefined" ? A : B').toBeTransform('A;');
+  test('tranfrom #5', async () => {
+    await expect('typeof String.prototype.includes !== "undefined" ? 1 : 2').toBeTransform('1;');
   });
 
-  it('tranfrom #6', async () => {
-    await expect('"undefined" == typeof String.prototype.includes ? A : B').toBeTransform('B;');
+  test('tranfrom #6', async () => {
+    await expect('"undefined" == typeof String.prototype.includes ? 1 : 2').toBeTransform('2;');
   });
 });

@@ -1,7 +1,0 @@
-{
-  "cache": false,
-  "setupFilesAfterEnv": [
-    "<rootDir>/test/jest-setup.ts"
-  ],
-  "extensionsToTreatAsEsm": [".ts"]
-}

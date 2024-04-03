@@ -1,23 +1,35 @@
 import t from '@babel/types';
 
-type AP = keyof Array<unknown>;
+type SP = keyof typeof String.prototype;
+type AP = keyof Array<null>;
 type A = keyof ArrayConstructor
 type O = keyof ObjectConstructor;
-type SM = keyof SymbolConstructor;
-type ST = keyof typeof String.prototype;
 type R = keyof typeof Reflect;
 
 const arrayProtoKeys = new Set<string>([
-  'find',
-  'findIndex',
-  'includes',
+  'keys', //      38
+  'entries', //   38
+  'find', //      45
+  'findIndex', // 45
+  'fill', //      45
+  'includes', //  47
+  'flat', //      69
+  'flatMap', //   69
 ] satisfies AP[]);
 
-const arrayKeys = new Set<string>([
-  'of',
-  'from',
-  'isArray',
-] satisfies A[]);
+const stringProtoKeys = new Set<string>([
+  'trim', //        4
+  'normalize', //   34
+  'includes', //    41
+  'startsWith', //  41
+  'endsWith', //    41
+  'repeat', //      41
+  'codePointAt', // 41
+  'padStart', //    57
+  'padEnd', //      57
+  'trimStart', //   66
+  'trimEnd', //     66
+] satisfies SP[]);
 
 const objectKeys = new Set<string>([
   'assign',
@@ -43,6 +55,12 @@ const objectKeys = new Set<string>([
   'preventExtensions',
 ] satisfies O[]);
 
+const arrayKeys = new Set<string>([
+  'of',
+  'from',
+  'isArray',
+] satisfies A[]);
+
 const reflectKeys = new Set<string>([
   'apply',
   'construct',
@@ -58,16 +76,6 @@ const reflectKeys = new Set<string>([
   'set',
   'setPrototypeOf',
 ] satisfies R[]);
-
-const symbolKeys = new Set<string>([
-  'for',
-  'keyFor',
-] satisfies SM[]);
-
-const wellKnownSymbols = new Set<string>([
-  'iterator',
-  'toStringTag',
-] satisfies SM[]);
 
 const builtInObjects = new Set<string>([
   'ArrayBuffer',
@@ -90,43 +98,27 @@ const builtInObjects = new Set<string>([
   'Proxy',
   'Promise',
   'BigInt',
-  'URLSearchParams',
 ] as const);
 
-const stringProtoKeys = new Set<string>([
-  'includes',
-  'startsWith',
-  'endsWith',
-  'padStart',
-  'padEnd',
-  'trimStart',
-  'trimEnd',
-  'repeat',
-  'normalize',
-  'localeCompare',
-] satisfies ST[]);
-
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
-  t.isIdentifier(node) && set.has(node.name);
+  t.isIdentifier(node, null) && set.has(node.name);
 
-export const functionGrop = (node: t.Node): node is t.MemberExpression => {
+export const repliceGroup = (node: t.Node): node is t.MemberExpression => {
   if (t.isMemberExpression(node, { computed: false })) {
-    if (t.isIdentifier(node.object)) {
+    if (t.isIdentifier(node.object, null)) {
       switch (node.object.name) {
         case 'Object':
           return oneOfIdentifier(node.property, objectKeys);
-        case 'Symbol':
-          return oneOfIdentifier(node.property, symbolKeys);
-        case 'Reflect':
-          return oneOfIdentifier(node.property, reflectKeys);
         case 'Array':
           return oneOfIdentifier(node.property, arrayKeys);
+        case 'Reflect':
+          return oneOfIdentifier(node.property, reflectKeys);
       }
     }
     else if (
       t.isMemberExpression(node.object, { computed: false }) &&
       t.isIdentifier(node.object.property, { name: 'prototype' }) &&
-      t.isIdentifier(node.object.object)
+      t.isIdentifier(node.object.object, null)
     ) {
       switch (node.object.object.name) {
         case 'Array':
@@ -142,21 +134,3 @@ export const functionGrop = (node: t.Node): node is t.MemberExpression => {
 
 export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInObjects);
-
-export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
-  t.isMemberExpression(node, { computed: false }) &&
-  t.isIdentifier(node.object, { name: 'Symbol' }) &&
-  oneOfIdentifier(node.property, wellKnownSymbols);
-
-export const objectMember = (property: O): t.MemberExpression => ({
-  type: 'MemberExpression',
-  object: {
-    type: 'Identifier',
-    name: 'Object',
-  },
-  computed: false,
-  property: {
-    type: 'Identifier',
-    name: property,
-  },
-});
