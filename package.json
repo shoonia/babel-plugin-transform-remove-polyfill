@@ -7,9 +7,9 @@
   "types": "./index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
+    "build": "NODE_NO_WARNINGS=1 rollup -c",
     "lint": "tsc && eslint",
-    "test": "node --experimental-specifier-resolution=node --experimental-loader ts-node/esm --test test/*.spec.ts"
+    "test": "NODE_NO_WARNINGS=1 node --experimental-specifier-resolution=node --experimental-loader ts-node/esm --test test/*.spec.ts"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -22,12 +22,12 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/babel__helper-plugin-utils": "^7.10.3",
-    "@types/node": "^20.12.2",
+    "@types/node": "^20.12.3",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "babel-plugin-transform-lhs-constants": "^1.0.0",
     "eslint": "^8.57.0",
-    "rollup": "^4.13.2",
+    "rollup": "^4.14.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
   },
