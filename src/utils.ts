@@ -7,14 +7,16 @@ type O = keyof ObjectConstructor;
 type R = keyof typeof Reflect;
 
 const arrayProtoKeys = new Set<string>([
-  'keys', //      38
-  'entries', //   38
-  'find', //      45
-  'findIndex', // 45
-  'fill', //      45
-  'includes', //  47
-  'flat', //      69
-  'flatMap', //   69
+  'reduce', //      3
+  'reduceRight', // 3
+  'keys', //        38
+  'entries', //     38
+  'find', //        45
+  'findIndex', //   45
+  'fill', //        45
+  'includes', //    47
+  'flat', //        69
+  'flatMap', //     69
 ] satisfies AP[]);
 
 const stringProtoKeys = new Set<string>([
@@ -29,6 +31,7 @@ const stringProtoKeys = new Set<string>([
   'padEnd', //      57
   'trimStart', //   66
   'trimEnd', //     66
+  'replaceAll', //  85
 ] satisfies SP[]);
 
 const objectKeys = new Set<string>([
