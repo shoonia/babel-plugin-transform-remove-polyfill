@@ -2,8 +2,12 @@ import type { Visitor, PluginPass } from '@babel/core';
 import t from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
-import { isBuiltInConstructor, functionGroup } from './utils';
 import { matchTypeof } from './tyof';
+import {
+  functionGroup,
+  isBuiltInMember,
+  isBuiltInConstructor,
+} from './utils';
 
 const plugin = declarePlugin((api) => {
   api.assertVersion(7);
@@ -64,6 +68,12 @@ const plugin = declarePlugin((api) => {
           path.replaceWith({
             type: 'BooleanLiteral',
             value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
+          });
+        }
+        else if (isBuiltInMember(tyof.target)) {
+          path.replaceWith({
+            type: 'BooleanLiteral',
+            value: node.operator.startsWith(tyof.expect === 'object' ? '=' : '!'),
           });
         }
       }

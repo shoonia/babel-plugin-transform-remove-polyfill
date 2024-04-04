@@ -102,6 +102,11 @@ const builtInConstructor = new Set<string>([
   'WeakRef', //           84
 ] as const);
 
+const builtInMember = new Set<string>([
+  'Reflect', // 49
+  'Atomics', // 68
+] as const);
+
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node, null) && set.has(node.name);
 
@@ -136,3 +141,6 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
 
 export const isBuiltInConstructor = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInConstructor);
+
+export const isBuiltInMember = (node: t.Node): node is t.Identifier =>
+  oneOfIdentifier(node, builtInMember);
