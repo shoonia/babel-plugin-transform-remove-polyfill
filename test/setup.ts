@@ -22,4 +22,4 @@ export const expect = <T>(actual: T) => ({
 
     return strictEqual(expected, result?.code);
   },
-});
+} as const);

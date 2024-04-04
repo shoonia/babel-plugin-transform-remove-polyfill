@@ -28,23 +28,6 @@ describe('Object.assign', () => {
     await expect('Object.assign ?? 1').toBeTransform('Object.assign;');
   });
 
-  test('transform polyfill #1', async () => {
-    await expect(
-      `var assign = Object.assign || function (e) {
-        for (var t = 1; t < arguments.length; t++) {
-          var n = arguments[t];
-
-          for (var r in n) {
-            if (Object.prototype.hasOwnProperty.call(n, r)) {
-              e[r] = n[r]
-            }
-          }
-        }
-        return e;
-      };`
-    ).toBeTransform('var assign = Object.assign;');
-  });
-
   const trueList = [
     'typeof Object.assign === "function"',
     'typeof Object.assign == "function"',
@@ -102,5 +85,42 @@ describe('Object.assign', () => {
     test(code, async () => {
       await expect(code).toBeTransform('1;');
     });
+  });
+
+  test('transform polyfill #1', async () => {
+    await expect(
+      `var assign = Object.assign || function (e) {
+        for (var t = 1; t < arguments.length; t++) {
+          var n = arguments[t];
+
+          for (var r in n) {
+            if (Object.prototype.hasOwnProperty.call(n, r)) {
+              e[r] = n[r]
+            }
+          }
+        }
+        return e;
+      };`
+    ).toBeTransform('var assign = Object.assign;');
+  });
+
+  test('transform polyfill #2', async () => {
+    await expect(
+      `var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        }
+        return __assign.apply(this, arguments);
+    };`
+    ).toBeTransform(
+      `var __assign = function () {
+  __assign = Object.assign;
+  return __assign.apply(this, arguments);
+};`
+    );
   });
 });
