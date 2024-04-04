@@ -13,8 +13,12 @@
   },
   "ignorePatterns": [
     "node_modules/",
-    "dist/"
+    "dist/",
+    "rollup.config.js"
   ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
     "require-await": "error",
     "comma-dangle": [
