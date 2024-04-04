@@ -4,6 +4,10 @@ import { expect } from './setup';
 Array.prototype.find;
 
 describe('Array.prototype.find', () => {
+  test('typeof', () => {
+    expect(typeof Array.prototype.find).toBe('function');
+  });
+
   const trueList = [
     'typeof Array.prototype.find === "function"',
     'typeof Array.prototype.find == "function"',

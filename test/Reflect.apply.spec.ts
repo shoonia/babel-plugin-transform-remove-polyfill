@@ -4,6 +4,10 @@ import { expect } from './setup';
 Reflect.apply;
 
 describe('Reflect.apply', () => {
+  test('typeof', () => {
+    expect(typeof Reflect.apply).toBe('function');
+  });
+
   test('tranfrom #0', async () => {
     await expect('if (Reflect.apply) {}').toBeTransform('if (true) {}');
   });

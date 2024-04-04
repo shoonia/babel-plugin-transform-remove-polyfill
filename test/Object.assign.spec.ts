@@ -4,6 +4,10 @@ import { expect } from './setup';
 Object.assign;
 
 describe('Object.assign', () => {
+  test('typeof', () => {
+    expect(typeof Object.assign).toBe('function');
+  });
+
   test('tranfrom #0', async () => {
     await expect('if (Object.assign) {}').toBeTransform('if (true) {}');
   });

@@ -4,6 +4,10 @@ import { expect } from './setup';
 String.prototype.includes;
 
 describe('String.prototype.includes', () => {
+  test('typeof', () => {
+    expect(typeof String.prototype.includes).toBe('function');
+  });
+
   const trueList = [
     'typeof String.prototype.includes === "function"',
     'typeof String.prototype.includes == "function"',

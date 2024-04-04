@@ -4,6 +4,10 @@ import { expect } from './setup';
 WeakMap;
 
 describe('WeakMap', () => {
+  test('typeof', () => {
+    expect(typeof WeakMap).toBe('function');
+  });
+
   const trueList = [
     // function
     'typeof WeakMap === "function"',

@@ -4,6 +4,10 @@ import { expect } from './setup';
 Array.from;
 
 describe('Array.from', () => {
+  test('typeof', () => {
+    expect(typeof Array.from).toBe('function');
+  });
+
   test('tranfrom #0', async () => {
     await expect('if (Array.from) {}').toBeTransform('if (true) {}');
   });
