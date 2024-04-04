@@ -5,6 +5,7 @@ type AP = keyof Array<null>;
 type A = keyof ArrayConstructor
 type O = keyof ObjectConstructor;
 type R = keyof typeof Reflect;
+type S = keyof SymbolConstructor
 
 const arrayProtoKeys = new Set<string>([
   'reduce', //      3
@@ -80,6 +81,11 @@ const reflectKeys = new Set<string>([
   'setPrototypeOf', //           49
 ] satisfies R[]);
 
+const symbolKeys = new Set<string>([
+  'for', //    40
+  'keyFor', // 40
+] satisfies S[]);
+
 const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
   'Int8Array', //         7
@@ -123,6 +129,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return oneOfIdentifier(node.property, arrayKeys);
         case 'Reflect':
           return oneOfIdentifier(node.property, reflectKeys);
+        case 'Symbol':
+          return oneOfIdentifier(node.property, symbolKeys);
       }
     }
     else if (
