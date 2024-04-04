@@ -2,7 +2,7 @@ import type { Visitor, PluginPass } from '@babel/core';
 import t from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
-import { isBuiltInObject, repliceGroup } from './utils';
+import { isBuiltInConstructor, functionGroup } from './utils';
 import { matchTypeof } from './tyof';
 
 const plugin = declarePlugin((api) => {
@@ -13,7 +13,7 @@ const plugin = declarePlugin((api) => {
       exit(path) {
         const node = path.node;
 
-        if (repliceGroup(node.test)) {
+        if (functionGroup(node.test)) {
           node.test = t.booleanLiteral(true);
         }
       },
@@ -23,7 +23,7 @@ const plugin = declarePlugin((api) => {
       exit(path) {
         const node = path.node;
 
-        if (repliceGroup(node.left)) {
+        if (functionGroup(node.left)) {
           path.replaceWith(node.operator === '&&' ? node.right : node.left);
         }
         else if (t.isBooleanLiteral(node.left, null)) {
@@ -46,7 +46,7 @@ const plugin = declarePlugin((api) => {
       exit(path) {
         const node = path.node;
 
-        if (repliceGroup(node.test)) {
+        if (functionGroup(node.test)) {
           path.replaceWith(node.consequent);
         }
         else if (t.isBooleanLiteral(node.test, null)) {
@@ -60,7 +60,7 @@ const plugin = declarePlugin((api) => {
       const tyof = matchTypeof(node);
 
       if (tyof.match) {
-        if (repliceGroup(tyof.target) || isBuiltInObject(tyof.target)) {
+        if (functionGroup(tyof.target) || isBuiltInConstructor(tyof.target)) {
           path.replaceWith({
             type: 'BooleanLiteral',
             value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),

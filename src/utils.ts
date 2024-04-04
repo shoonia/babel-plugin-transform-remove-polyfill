@@ -32,78 +32,80 @@ const stringProtoKeys = new Set<string>([
 ] satisfies SP[]);
 
 const objectKeys = new Set<string>([
-  'assign',
-  'create',
-  'setPrototypeOf',
-  'getPrototypeOf',
-  'keys',
-  'values',
-  'entries',
-  'fromEntries',
-  'getOwnPropertyNames',
-  'getOwnPropertySymbols',
-  'getOwnPropertyDescriptor',
-  'getOwnPropertyDescriptors',
-  'defineProperty',
-  'defineProperties',
-  'is',
-  'freeze',
-  'isFrozen',
-  'seal',
-  'isSealed',
-  'isExtensible',
-  'preventExtensions',
+  'create', //                    5
+  'keys', //                      5
+  'getPrototypeOf', //            5
+  'defineProperty', //            5
+  'defineProperties', //          5
+  'getOwnPropertyDescriptor', //  5
+  'getOwnPropertyNames', //       5
+  'freeze', //                    6
+  'isFrozen', //                  6
+  'seal', //                      6
+  'isSealed', //                  6
+  'isExtensible', //              6
+  'preventExtensions', //         6
+  'is', //                        19
+  'setPrototypeOf', //            34
+  'getOwnPropertySymbols', //     38
+  'assign', //                    45
+  'values', //                    54
+  'entries', //                   54
+  'getOwnPropertyDescriptors', // 54
+  'fromEntries', //               73
 ] satisfies O[]);
 
 const arrayKeys = new Set<string>([
-  'of',
-  'from',
-  'isArray',
+  'isArray', // 4
+  'of', //      45
+  'from', //    45
 ] satisfies A[]);
 
 const reflectKeys = new Set<string>([
-  'apply',
-  'construct',
-  'defineProperty',
-  'deleteProperty',
-  'get',
-  'getOwnPropertyDescriptor',
-  'getPrototypeOf',
-  'has',
-  'isExtensible',
-  'ownKeys',
-  'preventExtensions',
-  'set',
-  'setPrototypeOf',
+  'apply', //                    49
+  'construct', //                49
+  'defineProperty', //           49
+  'deleteProperty', //           49
+  'get', //                      49
+  'getOwnPropertyDescriptor', // 49
+  'getPrototypeOf', //           49
+  'has', //                      49
+  'isExtensible', //             49
+  'ownKeys', //                  49
+  'preventExtensions', //        49
+  'set', //                      49
+  'setPrototypeOf', //           49
 ] satisfies R[]);
 
-const builtInObjects = new Set<string>([
-  'ArrayBuffer',
-  'Int8Array',
-  'Int16Array',
-  'Int32Array',
-  'Uint8Array',
-  'Uint16Array',
-  'Uint32Array',
-  'Float32Array',
-  'Float64Array',
-  'Uint8ClampedArray',
-  'DataView',
-  'Set',
-  'Map',
-  'Symbol',
-  'WeakMap',
-  'WeakSet',
-  'WeakRef',
-  'Proxy',
-  'Promise',
-  'BigInt',
+const builtInConstructor = new Set<string>([
+  'ArrayBuffer', //       7
+  'Int8Array', //         7
+  'Uint8Array', //        7
+  'Uint8ClampedArray', // 7
+  'Int16Array', //        7
+  'Uint16Array', //       7
+  'Int32Array', //        7
+  'Uint32Array', //       7
+  'Float32Array', //      7
+  'Float64Array', //      7
+  'DataView', //          9
+  'Promise', //           32
+  'WeakMap', //           36
+  'WeakSet', //           36
+  'Set', //               38
+  'Map', //               38
+  'Symbol', //            38
+  'Proxy', //             49
+  'BigInt',         //    67
+  'BigInt64Array',  //    67
+  'BigUint64Array', //    67
+  'WeakRef', //           84
 ] as const);
 
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node, null) && set.has(node.name);
 
-export const repliceGroup = (node: t.Node): node is t.MemberExpression => {
+export const functionGroup = (node: t.Node): node is t.MemberExpression => {
   if (t.isMemberExpression(node, { computed: false })) {
     if (t.isIdentifier(node.object, null)) {
       switch (node.object.name) {
@@ -132,5 +134,5 @@ export const repliceGroup = (node: t.Node): node is t.MemberExpression => {
   return false;
 };
 
-export const isBuiltInObject = (node: t.Node): node is t.Identifier =>
-  oneOfIdentifier(node, builtInObjects);
+export const isBuiltInConstructor = (node: t.Node): node is t.Identifier =>
+  oneOfIdentifier(node, builtInConstructor);
