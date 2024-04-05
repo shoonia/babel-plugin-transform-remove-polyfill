@@ -88,8 +88,7 @@ describe('Object.assign', () => {
   });
 
   test('transform polyfill #1', async () => {
-    await expect(
-      `var assign = Object.assign || function (e) {
+    await expect(`var assign = Object.assign || function (e) {
         for (var t = 1; t < arguments.length; t++) {
           var n = arguments[t];
 
@@ -105,8 +104,7 @@ describe('Object.assign', () => {
   });
 
   test('transform polyfill #2', async () => {
-    await expect(
-      `var __assign = function() {
+    await expect(`var __assign = function() {
         __assign = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
@@ -116,10 +114,40 @@ describe('Object.assign', () => {
         }
         return __assign.apply(this, arguments);
     };`
-    ).toBeTransform(
-      `var __assign = function () {
+    ).toBeTransform(`var __assign = function () {
   __assign = Object.assign;
   return __assign.apply(this, arguments);
+};`
+    );
+  });
+
+  test('transform polyfill #3', async () => {
+    await expect(`var i = this && this.__assign || function () {
+        return i = Object.assign || function (e) {
+          for (var t, n = 1, r = arguments.length; n < r; n++)
+            for (var o in t = arguments[n])
+              Object.prototype.hasOwnProperty.call(t, o) && (e[o] = t[o]);
+          return e;
+        },
+        i.apply(this, arguments);
+      };`
+    ).toBeTransform(`var i = this && this.__assign || function () {
+  return i = Object.assign, i.apply(this, arguments);
+};`
+    );
+  });
+
+  test('transform polyfill #4', async () => {
+    await expect(`var c = function() {
+        return (c = Object.assign || function(t) {
+            for (var n, r = 1, e = arguments.length; r < e; r++)
+                for (var i in n = arguments[r])
+                    Object.prototype.hasOwnProperty.call(n, i) && (t[i] = n[i]);
+            return t
+        }).apply(this, arguments)
+    };`
+    ).toBeTransform(`var c = function () {
+  return (c = Object.assign).apply(this, arguments);
 };`
     );
   });

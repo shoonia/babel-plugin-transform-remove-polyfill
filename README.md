@@ -46,6 +46,8 @@ With a configuration file [`babel.config.json`](https://babel.dev/docs/config-fi
 
 `boolean`, defaults to `false`.
 
+Transform `Object.prototype.hasOwnProperty.call(obj, key)` to `Object.hasOwn(obj, key)`
+
 ```json
 {
   "plugins": [

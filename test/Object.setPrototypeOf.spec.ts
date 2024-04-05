@@ -8,7 +8,7 @@ describe('Object.setPrototypeOf', () => {
     expect(typeof Object.setPrototypeOf).toBe('function');
   });
 
-  test('transform', async () => {
+  test('transform #1', async () => {
     await expect(
       `var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -22,5 +22,28 @@ describe('Object.setPrototypeOf', () => {
   return extendStatics(d, b);
 };`
     );
+  });
+
+  test('transform #2', async () => {
+    await expect(`var a = Object.setPrototypeOf || ({ __proto__: [] } instanceof Array ? function(t, n) {
+        return t.__proto__ = n, t
+      } : function(t, n) {
+        for (var r in n) t.hasOwnProperty(r) || (t[r] = n[r]);
+        return t
+      });`
+    ).toBeTransform('var a = Object.setPrototypeOf;');
+  });
+
+  test('transform #3', async () => {
+    await expect(`var n = function(t, r) {
+        return (n = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(t, n) {
+            t.__proto__ = n
+        } || function(t, n) {
+            for (var r in n) n.hasOwnProperty(r) && (t[r] = n[r])
+        })(t, r)
+    };`
+    ).toBeTransform(`var n = function (t, r) {
+  return (n = Object.setPrototypeOf)(t, r);
+};`);
   });
 });
