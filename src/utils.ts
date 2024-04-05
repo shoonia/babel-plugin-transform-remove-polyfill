@@ -131,6 +131,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return oneOfIdentifier(node.property, reflectKeys);
         case 'Symbol':
           return oneOfIdentifier(node.property, symbolKeys);
+        case 'ArrayBuffer':
+          return t.isIdentifier(node.property, { name: 'isView' /* 32 */ });
       }
     }
     else if (
