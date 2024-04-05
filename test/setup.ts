@@ -2,7 +2,7 @@ import { strictEqual, fail } from 'node:assert/strict';
 import { transformAsync } from '@babel/core';
 
 // @ts-expect-error Get from dist
-import plugin from '../dist/index.cjs';
+import removePolyfillPlugin from '../dist/index.cjs';
 
 export const expect = <T>(actual: T) => ({
   toBe: (expected: T) =>
@@ -14,7 +14,16 @@ export const expect = <T>(actual: T) => ({
     }
 
     const result = await transformAsync(actual, {
-      plugins: [plugin],
+      plugins: [
+        [
+          removePolyfillPlugin,
+          {
+            transform: {
+              'Object.hasOwn': true,
+            },
+          },
+        ],
+      ],
       ast: false,
       babelrc: false,
       sourceMaps: false,

@@ -9,7 +9,7 @@ import {
   isBuiltInConstructor,
 } from './utils';
 
-const plugin = declarePlugin((api) => {
+const plugin = declarePlugin((api, options = {}) => {
   api.assertVersion(7);
 
   const visitor: Visitor<PluginPass> = {
@@ -79,6 +79,33 @@ const plugin = declarePlugin((api) => {
       }
     },
   };
+
+  if (options.transform?.['Object.hasOwn']) {
+    const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+
+    visitor.CallExpression = (path) => {
+      const node = path.node;
+
+      if (
+        isObjectHasOwn(node.callee) &&
+        node.arguments.length === 2 &&
+        node.arguments.every((a) => t.isIdentifier(a, null))
+      ) {
+        node.callee = {
+          type: 'MemberExpression',
+          object: {
+            type: 'Identifier',
+            name: 'Object',
+          },
+          computed: false,
+          property: {
+            type: 'Identifier',
+            name: 'hasOwn',
+          },
+        };
+      }
+    };
+  }
 
   return {
     name: 'transform-remove-polyfill',
