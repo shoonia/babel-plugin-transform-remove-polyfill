@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-remove-polyfill",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "",
   "main": "dist/index.cjs",
   "exports": "./dist/index.cjs",
@@ -30,7 +30,7 @@
     "eslint": "^8.57.0",
     "rollup": "^4.14.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.4"
   },
   "files": [
     "dist",
