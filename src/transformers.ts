@@ -1,9 +1,9 @@
 import t from '@babel/types';
 
-export interface TransformOptions {
-  readonly 'Object.hasOwn'?: unknown;
-  readonly 'Array.from'?: unknown;
-}
+export type TransformOptions = boolean | null | undefined | Readonly<{
+  'Object.hasOwn'?: unknown;
+  'Array.from'?: unknown;
+}>;
 
 export interface Options {
   readonly transform?: TransformOptions;
@@ -12,9 +12,11 @@ export interface Options {
 type Transformer = (node: t.CallExpression) => boolean;
 
 export const transformerCallExpression = (options?: TransformOptions): Transformer[] => {
-  if (options == null) {
+  if (options == null || options === false) {
     return [];
   }
+
+  const useAll = options === true;
 
   const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
   const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
@@ -28,7 +30,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
     );
 
   return [
-    !!options['Object.hasOwn'] && ((node: t.CallExpression) => {
+    (useAll || !!options['Object.hasOwn']) && ((node: t.CallExpression) => {
       if (
         isObjectHasOwn(node.callee) &&
         node.arguments.length === 2 &&
@@ -41,7 +43,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       return false;
     }),
 
-    !!options['Array.from'] && ((node: t.CallExpression) => {
+    (useAll || !!options['Array.from']) && ((node: t.CallExpression) => {
       if (
         isArraySlice(node.callee) &&
         node.arguments.length === 1 &&
@@ -53,5 +55,5 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
 
       return false;
     }),
-  ].filter((i): i is Transformer => i !== false);
+  ].filter((t): t is Transformer => typeof t === 'function');
 };
