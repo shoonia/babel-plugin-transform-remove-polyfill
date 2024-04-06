@@ -48,13 +48,13 @@ describe('Object.setPrototypeOf', () => {
   });
 
   test('transform #4', async () => {
-    await expect(`function de(e) {
-      return de = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function(e) {
-          return e.__proto__ || Object.getPrototypeOf(e)
-      }, de(e)
-    }`
-    ).toBeTransform(`function de(e) {
-  return de = Object.getPrototypeOf.bind(), de(e);
+    await expect(`function p8(e, t) {
+      return p8 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function(e, t) {
+          return e.__proto__ = t, e
+      }, p8(e, t)
+  }`
+    ).toBeTransform(`function p8(e, t) {
+  return p8 = Object.setPrototypeOf.bind(), p8(e, t);
 }`);
   });
 });

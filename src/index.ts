@@ -2,6 +2,7 @@ import type { Visitor, PluginPass } from '@babel/core';
 import t from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
+import { type Options, transformerCallExpression } from './transformers';
 import { matchTypeof } from './tyof';
 import {
   functionGroup,
@@ -9,7 +10,7 @@ import {
   isBuiltInConstructor,
 } from './utils';
 
-const plugin = declarePlugin((api, options = {}) => {
+const plugin = declarePlugin((api, options: Options = {}) => {
   api.assertVersion(7);
 
   const visitor: Visitor<PluginPass> = {
@@ -80,24 +81,11 @@ const plugin = declarePlugin((api, options = {}) => {
     },
   };
 
-  if (options.transform?.['Object.hasOwn']) {
-    const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+  const transformers = transformerCallExpression(options.transform);
 
+  if (transformers.length > 0) {
     visitor.CallExpression = (path) => {
-      const node = path.node;
-
-      if (
-        isObjectHasOwn(node.callee) &&
-        node.arguments.length === 2 &&
-        node.arguments.every((a) => t.isIdentifier(a, null))
-      ) {
-        node.callee = t.memberExpression(
-          t.identifier('Object'),
-          t.identifier('hasOwn'),
-          false,
-          false,
-        );
-      }
+      transformers.some((t) => t(path.node));
     };
   }
 
