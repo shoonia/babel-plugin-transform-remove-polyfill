@@ -44,12 +44,15 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
     }),
 
     (useAll || !!options['Array.from']) && ((node: t.CallExpression) => {
-      if (
-        isArraySlice(node.callee) &&
-        node.arguments.length === 1 &&
-        node.arguments.every((a) => t.isIdentifier(a, null))
-      ) {
-        node.callee = memberExpression('Array', 'from');
+      if (isArraySlice(node.callee) && t.isIdentifier(node.arguments[0], null)) {
+        if (node.arguments.length === 1) {
+          node.callee = memberExpression('Array', 'from');
+        }
+        else if (node.arguments.length === 2 && t.isNumericLiteral(node.arguments[1], { value: 0 })) {
+          node.callee = memberExpression('Array', 'from');
+          node.arguments.pop();
+        }
+
         return true;
       }
 
