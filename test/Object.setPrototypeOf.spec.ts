@@ -46,4 +46,15 @@ describe('Object.setPrototypeOf', () => {
   return (n = Object.setPrototypeOf)(t, r);
 };`);
   });
+
+  test('transform #4', async () => {
+    await expect(`function de(e) {
+      return de = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function(e) {
+          return e.__proto__ || Object.getPrototypeOf(e)
+      }, de(e)
+    }`
+    ).toBeTransform(`function de(e) {
+  return de = Object.getPrototypeOf.bind(), de(e);
+}`);
+  });
 });

@@ -151,4 +151,21 @@ describe('Object.assign', () => {
 };`
     );
   });
+
+  test('transform polyfill #5', async () => {
+    await expect(`function a() {
+      return a = Object.assign ? Object.assign.bind() : function(e) {
+          for (var t = 1; t < arguments.length; t++) {
+              var n = arguments[t];
+              for (var r in n)
+                  Object.prototype.hasOwnProperty.call(n, r) && (e[r] = n[r])
+          }
+          return e
+      }, a.apply(this, arguments)
+    }`
+    ).toBeTransform(`function a() {
+  return a = Object.assign.bind(), a.apply(this, arguments);
+}`
+    );
+  });
 });
