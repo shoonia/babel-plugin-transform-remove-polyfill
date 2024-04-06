@@ -65,7 +65,7 @@ describe('Keys: Math', () => {
   });
 });
 
-describe('Object', () => {
+describe('Keys: Object', () => {
   objectKeys.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
