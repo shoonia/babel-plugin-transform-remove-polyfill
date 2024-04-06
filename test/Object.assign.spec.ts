@@ -168,4 +168,15 @@ describe('Object.assign', () => {
 }`
     );
   });
+
+  test('transform #6', async () => {
+    await expect(`var pa = "function" == typeof Object.assign ? Object.assign : function(a, b) {
+        for (var c = 1; c < arguments.length; c++) {
+            var d = arguments[c];
+            if (d) for (var e in d) Object.prototype.hasOwnProperty.call(d, e) && (a[e] = d[e])
+        }
+        return a
+    }`
+    ).toBeTransform('var pa = Object.assign;');
+  });
 });
