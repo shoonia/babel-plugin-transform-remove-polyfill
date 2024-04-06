@@ -63,16 +63,39 @@ Transform `Object.prototype.hasOwnProperty.call(obj, key)` to `Object.hasOwn(obj
 }
 ```
 
-**Before:**
+**Example:**
 
-```js
-if (Object.prototype.hasOwnProperty.call(obj, key)) { /*...*/ }
+```diff
+- if (Object.prototype.hasOwnProperty.call(obj, key)) { /*...*/ }
++ if (Object.hasOwn(obj, key)) { /*...*/ }
 ```
 
-**After:**
+`"Array.from"`
 
-```ts
-if (Object.hasOwn(obj, key)) { /*...*/ }
+`boolean`, defaults to `false`.
+
+Transform `Array.prototype.slice.call(arraylike)` to `Array.from(arraylike)`
+
+```json
+{
+  "plugins": [
+    [
+      "babel-plugin-transform-remove-polyfill",
+      {
+        "transform": {
+          "Array.from": true
+        }
+      }
+    ]
+  ]
+}
+```
+
+**Example:**
+
+```diff
+- let list = Array.prototype.slice.call(arguments);
++ let list = Array.from(arguments);
 ```
 
 ## License
