@@ -42,6 +42,25 @@ With a configuration file [`babel.config.json`](https://babel.dev/docs/config-fi
 
 ## Transform options
 
+`transform`
+
+Set to `true` to enable all transformers
+
+```json
+{
+  "plugins": [
+    [
+      "babel-plugin-transform-remove-polyfill",
+      {
+        "transform": true
+      }
+    ]
+  ]
+}
+```
+
+or customization transform features
+
 `"Object.hasOwn"`
 
 `boolean`, defaults to `false`.
