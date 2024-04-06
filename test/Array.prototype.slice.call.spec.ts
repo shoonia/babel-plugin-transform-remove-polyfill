@@ -11,13 +11,24 @@ describe('Array.prototype.slice.call(a) -> Array.from(a)', () => {
   });
 
   test('transform', async () => {
-    await expect('Array.prototype.slice.call(a)')
+    await expect('Array.prototype.slice.call(arguments)')
+      .toBeTransform('Array.from(arguments);');
+  });
+
+  test('transform if second argument is 0', async () => {
+    await expect('Array.prototype.slice.call(a, 0)')
       .toBeTransform('Array.from(a);');
   });
 
-  test('NO transform', async () => {
-    const code = 'Array.prototype.slice.call(a, 1);';
+  const noTransform = [
+    'Array.prototype.slice.call(a, 1);',
+    'Array.prototype.slice.call(a, b);',
+    'Array.prototype.slice.call(a, b, 0);',
+  ];
 
-    await expect(code).toBeTransform(code);
+  noTransform.forEach((code, i) => {
+    test(`NO transform #${i}`, async () => {
+      await expect(code).toBeTransform(code);
+    });
   });
 });
