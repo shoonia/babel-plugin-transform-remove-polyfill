@@ -56,6 +56,7 @@ export const stringProtoKeys = new Set<string>([
   'replace', //           1
   'split', //             1
   'substring', //         1
+  'search', //            1
   'toLocaleLowerCase', // 1
   'toLocaleUpperCase', // 1
   'toLowerCase', //       1
