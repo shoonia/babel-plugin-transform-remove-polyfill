@@ -21,6 +21,8 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "verbatimModuleSyntax": true,
+    "checkJs": false,
+    "skipLibCheck": true,
     "lib": [
       "ES2023"
     ]
