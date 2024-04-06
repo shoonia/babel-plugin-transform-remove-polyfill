@@ -1,7 +1,8 @@
 import t from '@babel/types';
 
 export interface TransformOptions {
-  readonly 'Object.hasOwn'?: unknown
+  readonly 'Object.hasOwn'?: unknown;
+  readonly 'Array.from'?: unknown;
 }
 
 export interface Options {
@@ -16,6 +17,15 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
   }
 
   const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+  const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
+
+  const memberExpression = (object: string, property: string) =>
+    t.memberExpression(
+      t.identifier(object),
+      t.identifier(property),
+      false,
+      false,
+    );
 
   return [
     !!options['Object.hasOwn'] && ((node: t.CallExpression) => {
@@ -24,13 +34,20 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
         node.arguments.length === 2 &&
         node.arguments.every((a) => t.isIdentifier(a, null))
       ) {
-        node.callee = t.memberExpression(
-          t.identifier('Object'),
-          t.identifier('hasOwn'),
-          false,
-          false,
-        );
+        node.callee = memberExpression('Object', 'hasOwn');
+        return true;
+      }
 
+      return false;
+    }),
+
+    !!options['Array.from'] && ((node: t.CallExpression) => {
+      if (
+        isArraySlice(node.callee) &&
+        node.arguments.length === 1 &&
+        node.arguments.every((a) => t.isIdentifier(a, null))
+      ) {
+        node.callee = memberExpression('Array', 'from');
         return true;
       }
 

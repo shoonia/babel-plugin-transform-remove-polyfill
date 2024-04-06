@@ -1,8 +1,16 @@
 import { strictEqual, fail } from 'node:assert/strict';
 import { transformAsync } from '@babel/core';
 
+import type { Options } from '../src/transformers';
 // @ts-expect-error Get from dist
 import removePolyfillPlugin from '../dist/index.cjs';
+
+const options: Options = {
+  transform: {
+    'Object.hasOwn': true,
+    'Array.from': true,
+  },
+};
 
 export const expect = <T>(actual: T) => ({
   toBe: (expected: T) =>
@@ -17,11 +25,7 @@ export const expect = <T>(actual: T) => ({
       plugins: [
         [
           removePolyfillPlugin,
-          {
-            transform: {
-              'Object.hasOwn': true,
-            },
-          },
+          options,
         ],
       ],
       ast: false,
