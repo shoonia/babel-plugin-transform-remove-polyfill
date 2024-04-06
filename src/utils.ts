@@ -6,36 +6,79 @@ type A = keyof ArrayConstructor
 type O = keyof ObjectConstructor;
 type R = keyof typeof Reflect;
 type S = keyof SymbolConstructor
+type M = keyof typeof Math;
 
-const arrayProtoKeys = new Set<string>([
-  'reduce', //      3
-  'reduceRight', // 3
-  'keys', //        38
-  'entries', //     38
-  'find', //        45
-  'findIndex', //   45
-  'fill', //        45
-  'includes', //    47
-  'flat', //        69
-  'flatMap', //     69
+export const arrayProtoKeys = new Set<string>([
+  'indexOf', //        1
+  'lastIndexOf', //    1
+  'forEach', //        1
+  'filter', //         1
+  'concat', //         1
+  'every', //          1
+  'some', //           1
+  'map', //            1
+  'join', //           1
+  'shift', //          1
+  'unshift', //        1
+  'sort', //           1
+  'slice', //          1
+  'splice', //         1
+  'pop', //            1
+  'push', //           1
+  'reverse', //        1
+  'toLocaleString', // 1
+  'toString', //       1
+  'reduce', //         3
+  'reduceRight', //    3
+  'keys', //           38
+  'entries', //        38
+  'copyWithin', //     45
+  'find', //           45
+  'findIndex', //      45
+  'fill', //           45
+  'includes', //       47
+  'values', //         66
+  'flat', //           69
+  'flatMap', //        69
+  // 'at', //             92
+  // 'findLast', //       97
+  // 'findLastIndex', //  97
+  // 'toReversed', //     110
+  // 'toSorted', //       110
+  // 'toSpliced', //      110
+  // 'with', //           110
 ] satisfies AP[]);
 
-const stringProtoKeys = new Set<string>([
-  'trim', //        4
-  'normalize', //   34
-  'includes', //    41
-  'startsWith', //  41
-  'endsWith', //    41
-  'repeat', //      41
-  'codePointAt', // 41
-  'padStart', //    57
-  'padEnd', //      57
-  'trimStart', //   66
-  'trimEnd', //     66
-  'replaceAll', //  85
+export const stringProtoKeys = new Set<string>([
+  'indexOf', //           1
+  'localeCompare', //     1
+  'match', //             1
+  'replace', //           1
+  'split', //             1
+  'substring', //         1
+  'toLocaleLowerCase', // 1
+  'toLocaleUpperCase', // 1
+  'toLowerCase', //       1
+  'toUpperCase', //       1
+  'toString', //          1
+  'valueOf', //           1
+  'trim', //              4
+  'normalize', //         34
+  'includes', //          41
+  'startsWith', //        41
+  'endsWith', //          41
+  'repeat', //            41
+  'codePointAt', //       41
+  'padStart', //          57
+  'padEnd', //            57
+  'trimStart', //         66
+  'trimEnd', //           66
+  'matchAll', //          73
+  'replaceAll', //        85
+  // 'toWellFormed', //      111
 ] satisfies SP[]);
 
-const objectKeys = new Set<string>([
+export const objectKeys = new Set<string>([
   'create', //                    5
   'keys', //                      5
   'getPrototypeOf', //            5
@@ -57,15 +100,16 @@ const objectKeys = new Set<string>([
   'entries', //                   54
   'getOwnPropertyDescriptors', // 54
   'fromEntries', //               73
+  // 'groupBy', //                   117
 ] satisfies O[]);
 
-const arrayKeys = new Set<string>([
+export const arrayKeys = new Set<string>([
   'isArray', // 4
   'of', //      45
   'from', //    45
 ] satisfies A[]);
 
-const reflectKeys = new Set<string>([
+export const reflectKeys = new Set<string>([
   'apply', //                    49
   'construct', //                49
   'defineProperty', //           49
@@ -81,10 +125,48 @@ const reflectKeys = new Set<string>([
   'setPrototypeOf', //           49
 ] satisfies R[]);
 
-const symbolKeys = new Set<string>([
+export const symbolKeys = new Set<string>([
   'for', //    40
   'keyFor', // 40
 ] satisfies S[]);
+
+export const mathKeys = new Set<string>([
+  'abs', //    1
+  'acos', //   1
+  'asin', //   1
+  'atan', //   1
+  'atan2', //  1
+  'ceil', //   1
+  'cos', //    1
+  'exp', //    1
+  'floor', //  1
+  'log', //    1
+  'max', //    1
+  'min', //    1
+  'pow', //    1
+  'random', // 1
+  'round', //  1
+  'sin', //    1
+  'sqrt', //   1
+  'tan', //    1
+  'imul', //   28
+  'acosh', //  38
+  'asinh', //  38
+  'atanh', //  38
+  'cbrt', //   38
+  'clz32', //  38
+  'cosh', //   38
+  'expm1', //  38
+  'fround', // 38
+  'hypot', //  38
+  'log10', //  38
+  'log1p', //  38
+  'log2', //   38
+  'sign', //   38
+  'sinh', //   38
+  'tanh', //   38
+  'trunc', //  38
+] satisfies M[]);
 
 const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
@@ -133,6 +215,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return oneOfIdentifier(node.property, symbolKeys);
         case 'ArrayBuffer':
           return t.isIdentifier(node.property, { name: 'isView' /* 32 */ });
+        case 'Math':
+          return oneOfIdentifier(node.property, mathKeys);
       }
     }
     else if (

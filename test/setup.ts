@@ -5,11 +5,19 @@ import type { Options } from '../src/transformers';
 // @ts-expect-error Get from dist
 import removePolyfillPlugin from '../dist/index.cjs';
 
-const options: Options = {
-  transform: {
-    'Object.hasOwn': true,
-    'Array.from': true,
-  },
+export const transform = async (code: string, options?: Options) => {
+  const result = await transformAsync(code, {
+    plugins: [
+      options
+        ? [removePolyfillPlugin, options]
+        : removePolyfillPlugin,
+    ],
+    ast: false,
+    babelrc: false,
+    sourceMaps: false,
+  });
+
+  return result?.code ?? '';
 };
 
 export const expect = <T>(actual: T) => ({
@@ -21,18 +29,10 @@ export const expect = <T>(actual: T) => ({
       return fail();
     }
 
-    const result = await transformAsync(actual, {
-      plugins: [
-        [
-          removePolyfillPlugin,
-          options,
-        ],
-      ],
-      ast: false,
-      babelrc: false,
-      sourceMaps: false,
+    const code = await transform(actual, {
+      transform: true,
     });
 
-    return strictEqual(expected, result?.code);
+    return strictEqual(expected, code);
   },
 } as const);
