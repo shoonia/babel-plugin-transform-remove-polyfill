@@ -8,31 +8,73 @@ type R = keyof typeof Reflect;
 type S = keyof SymbolConstructor
 
 const arrayProtoKeys = new Set<string>([
-  'reduce', //      3
-  'reduceRight', // 3
-  'keys', //        38
-  'entries', //     38
-  'find', //        45
-  'findIndex', //   45
-  'fill', //        45
-  'includes', //    47
-  'flat', //        69
-  'flatMap', //     69
+  'indexOf', //        1
+  'lastIndexOf', //    1
+  'forEach', //        1
+  'filter', //         1
+  'concat', //         1
+  'every', //          1
+  'some', //           1
+  'map', //            1
+  'join', //           1
+  'shift', //          1
+  'unshift', //        1
+  'sort', //           1
+  'slice', //          1
+  'splice', //         1
+  'pop', //            1
+  'push', //           1
+  'reverse', //        1
+  'toLocaleString', // 1
+  'toString', //       1
+  'reduce', //         3
+  'reduceRight', //    3
+  'keys', //           38
+  'entries', //        38
+  'copyWithin', //     45
+  'find', //           45
+  'findIndex', //      45
+  'fill', //           45
+  'includes', //       47
+  'values', //         66
+  'flat', //           69
+  'flatMap', //        69
+  // 'at', //             92
+  // 'findLast', //       97
+  // 'findLastIndex', //  97
+  // 'toReversed', //     110
+  // 'toSorted', //       110
+  // 'toSpliced', //      110
+  // 'with', //           110
 ] satisfies AP[]);
 
 const stringProtoKeys = new Set<string>([
-  'trim', //        4
-  'normalize', //   34
-  'includes', //    41
-  'startsWith', //  41
-  'endsWith', //    41
-  'repeat', //      41
-  'codePointAt', // 41
-  'padStart', //    57
-  'padEnd', //      57
-  'trimStart', //   66
-  'trimEnd', //     66
-  'replaceAll', //  85
+  'indexOf', //           1
+  'localeCompare', //     1
+  'match', //             1
+  'replace', //           1
+  'split', //             1
+  'substring', //         1
+  'toLocaleLowerCase', // 1
+  'toLocaleUpperCase', // 1
+  'toLowerCase', //       1
+  'toUpperCase', //       1
+  'toString', //          1
+  'valueOf', //           1
+  'trim', //              4
+  'normalize', //         34
+  'includes', //          41
+  'startsWith', //        41
+  'endsWith', //          41
+  'repeat', //            41
+  'codePointAt', //       41
+  'padStart', //          57
+  'padEnd', //            57
+  'trimStart', //         66
+  'trimEnd', //           66
+  'matchAll', //          73
+  'replaceAll', //        85
+  // 'toWellFormed', //      111
 ] satisfies SP[]);
 
 const objectKeys = new Set<string>([
@@ -57,6 +99,7 @@ const objectKeys = new Set<string>([
   'entries', //                   54
   'getOwnPropertyDescriptors', // 54
   'fromEntries', //               73
+  // 'groupBy', //                   117
 ] satisfies O[]);
 
 const arrayKeys = new Set<string>([
