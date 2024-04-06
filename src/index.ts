@@ -91,18 +91,12 @@ const plugin = declarePlugin((api, options = {}) => {
         node.arguments.length === 2 &&
         node.arguments.every((a) => t.isIdentifier(a, null))
       ) {
-        node.callee = {
-          type: 'MemberExpression',
-          object: {
-            type: 'Identifier',
-            name: 'Object',
-          },
-          computed: false,
-          property: {
-            type: 'Identifier',
-            name: 'hasOwn',
-          },
-        };
+        node.callee = t.memberExpression(
+          t.identifier('Object'),
+          t.identifier('hasOwn'),
+          false,
+          false,
+        );
       }
     };
   }
