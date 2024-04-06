@@ -42,7 +42,7 @@ With a configuration file [`babel.config.json`](https://babel.dev/docs/config-fi
 
 ## Transform options
 
-`transform`
+### `transform`
 
 Set to `true` to enable all transformers
 
@@ -61,7 +61,7 @@ Set to `true` to enable all transformers
 
 or customization transform features
 
-`"Object.hasOwn"`
+### `"Object.hasOwn"`
 
 `boolean`, defaults to `false`.
 
@@ -89,11 +89,11 @@ Transform `Object.prototype.hasOwnProperty.call(obj, key)` to `Object.hasOwn(obj
 + if (Object.hasOwn(obj, key)) { /*...*/ }
 ```
 
-`"Array.from"`
+### `"Array.from"`
 
 `boolean`, defaults to `false`.
 
-Transform `Array.prototype.slice.call(arraylike)` to `Array.from(arraylike)`
+Transform `Array.prototype.slice.call(arrayLike)` to `Array.from(arrayLike)`
 
 ```json
 {
@@ -115,6 +115,31 @@ Transform `Array.prototype.slice.call(arraylike)` to `Array.from(arraylike)`
 ```diff
 - let list = Array.prototype.slice.call(arguments);
 + let list = Array.from(arguments);
+```
+
+> **⚠️ Warning** Unsafe transformation
+
+```js
+// Object with a length property
+const arrayLike = { length: 2 }
+
+/**
+ * Return empty array with length == 2
+ *
+ * [empty × 2]
+ *   length: 2
+ */
+console.log(Array.prototype.slice.call(arrayLike));
+
+/**
+ * Return array with undefined values and length == 2
+ *
+ * [undefined, undefined]
+ *   0: undefined
+ *   1: undefined
+ *   length: 2
+ */
+console.log(Array.from(arrayLike));
 ```
 
 ## License
