@@ -179,4 +179,26 @@ describe('Object.assign', () => {
     }`
     ).toBeTransform('var pa = Object.assign;');
   });
+
+  test('flat #0', async () => {
+    await expect('Object.assign(Object.assign(Object.assign({}, e), s), { x: 1 });')
+      .toBeTransform('Object.assign({}, e, s, {\n  x: 1\n});');
+  });
+
+  test('flat #1', async () => {
+    await expect(`Object.assign(Object.assign(Object.assign({}, a), function(e) {
+  e = e || {};
+  const t = Object.keys(e).reduce(((t,n)=>Object.assign(Object.assign({}, t), {
+    [n.toLowerCase()]: e[n]
+  })), {});
+  return t
+}(s)), l)`)
+      .toBeTransform(`Object.assign({}, a, function (e) {
+  e = e || {};
+  const t = Object.keys(e).reduce((t, n) => Object.assign({}, t, {
+    [n.toLowerCase()]: e[n]
+  }), {});
+  return t;
+}(s), l);`);
+  });
 });
