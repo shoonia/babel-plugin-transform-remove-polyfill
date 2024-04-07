@@ -57,4 +57,34 @@ describe('Object.setPrototypeOf', () => {
   return p8 = Object.setPrototypeOf.bind(), p8(e, t);
 }`);
   });
+
+  test('transform #5', async () => {
+    await expect(`var ra;
+    if ("function" == typeof Object.setPrototypeOf)
+      ra = Object.setPrototypeOf;
+    else {
+      var sa;
+      a: {
+        var ta = {
+            a: !0
+          },
+          ua = {};
+        try {
+          ua.__proto__ = ta;
+          sa = ua.a;
+          break a;
+        } catch (a) {}
+        sa = !1;
+      }
+      ra = sa
+        ? function (a, b) {
+            a.__proto__ = b;
+            if (a.__proto__ !== b)
+              throw new TypeError(a + " is not extensible");
+            return a;
+          }
+        : null;
+    }`
+    ).toBeTransform('var ra;\nif (true) ra = Object.setPrototypeOf;');
+  });
 });
