@@ -70,6 +70,14 @@ const plugin = declarePlugin((api, options: Options = {}) => {
       },
     },
 
+    UnaryExpression(path) {
+      const node = path.node;
+
+      if (node.operator === '!' && functionGroup(node.argument)) {
+        path.replaceWith(t.booleanLiteral(false));
+      }
+    },
+
     BinaryExpression(path) {
       const node = path.node;
       const tyof = matchTypeof(node);
