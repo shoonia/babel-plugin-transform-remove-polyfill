@@ -214,23 +214,26 @@ export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Ident
   t.isIdentifier(node, null) && set.has(node.name);
 
 export const functionGroup = (node: t.Node): node is t.MemberExpression => {
-  if (t.isMemberExpression(node, { computed: false })) {
+  if (
+    t.isMemberExpression(node, { computed: false }) &&
+    t.isIdentifier(node.property, null)
+  ) {
     if (t.isIdentifier(node.object, null)) {
       switch (node.object.name) {
         case 'Object':
-          return oneOfIdentifier(node.property, objectKeys);
+          return objectKeys.has(node.property.name);
         case 'Array':
-          return oneOfIdentifier(node.property, arrayKeys);
+          return arrayKeys.has(node.property.name);
         case 'Reflect':
-          return oneOfIdentifier(node.property, reflectKeys);
+          return reflectKeys.has(node.property.name);
         case 'Symbol':
-          return oneOfIdentifier(node.property, symbolKeys);
+          return symbolKeys.has(node.property.name);
         case 'ArrayBuffer':
-          return t.isIdentifier(node.property, { name: 'isView' /* 32 */ });
+          return node.property.name === 'isView'; // 32
         case 'Math':
-          return oneOfIdentifier(node.property, mathKeys);
+          return mathKeys.has(node.property.name);
         case 'Promise':
-          return oneOfIdentifier(node.property, promiseKeys);
+          return promiseKeys.has(node.property.name);
       }
     }
     else if (
@@ -240,9 +243,9 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
     ) {
       switch (node.object.object.name) {
         case 'Array':
-          return oneOfIdentifier(node.property, arrayProtoKeys);
+          return arrayProtoKeys.has(node.property.name);
         case 'String':
-          return oneOfIdentifier(node.property, stringProtoKeys);
+          return stringProtoKeys.has(node.property.name);
       }
     }
   }
