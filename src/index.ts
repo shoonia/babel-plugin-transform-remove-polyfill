@@ -19,6 +19,10 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         const node = path.node;
 
         if (functionGroup(node.test)) {
+          if (node.alternate) {
+            node.alternate = undefined;
+          }
+
           node.test = t.booleanLiteral(true);
         }
       },

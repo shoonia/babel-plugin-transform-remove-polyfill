@@ -16,4 +16,16 @@ describe('Object.defineProperties', () => {
       return a
   }`).toBeTransform('var ca = Object.defineProperty;');
   });
+
+  test('transform #2 (drop `else`)', async () => {
+    await expect(`if (Object.defineProperties) {
+      var d = Object.getOwnPropertyDescriptor(b, c);
+      d && Object.defineProperty(a, c, d)
+    } else
+      a[c] = b[c];`
+    ).toBeTransform(`if (true) {
+  var d = Object.getOwnPropertyDescriptor(b, c);
+  d && Object.defineProperty(a, c, d);
+}`);
+  });
 });
