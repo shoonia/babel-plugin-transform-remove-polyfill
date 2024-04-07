@@ -65,8 +65,6 @@ or customization transform features
 
 `boolean`, defaults to `false`.
 
-Transform `Object.prototype.hasOwnProperty.call(obj, key)` to `Object.hasOwn(obj, key)`
-
 ```json
 {
   "plugins": [
@@ -85,15 +83,13 @@ Transform `Object.prototype.hasOwnProperty.call(obj, key)` to `Object.hasOwn(obj
 **Example:**
 
 ```diff
-- if (Object.prototype.hasOwnProperty.call(obj, key)) { /*...*/ }
-+ if (Object.hasOwn(obj, key)) { /*...*/ }
+- Object.prototype.hasOwnProperty.call(obj, key)
++ Object.hasOwn(obj, key))
 ```
 
 ### `"Array.from"`
 
 `boolean`, defaults to `false`.
-
-Transform `Array.prototype.slice.call(arrayLike)` to `Array.from(arrayLike)`
 
 ```json
 {
@@ -113,8 +109,8 @@ Transform `Array.prototype.slice.call(arrayLike)` to `Array.from(arrayLike)`
 **Example:**
 
 ```diff
-- let list = Array.prototype.slice.call(arguments);
-+ let list = Array.from(arguments);
+- Array.prototype.slice.call(arguments)
++ Array.from(arguments)
 ```
 
 > **⚠️ Warning** Unsafe transformation
