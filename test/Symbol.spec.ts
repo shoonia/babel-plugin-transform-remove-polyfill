@@ -57,4 +57,16 @@ describe('Symbol', () => {
 };`
     );
   });
+
+  test('transform #4', async () => {
+    await expect(`for (var g = a[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"](), a; !(d = (a = g.next()).done); d = !0) {
+      c.push(a.value);
+      if (b && c.length === b) break
+    }`
+    ).toBeTransform(`for (var g = a[Symbol.iterator](), a; !(d = (a = g.next()).done); d = !0) {
+  c.push(a.value);
+  if (b && c.length === b) break;
+}`
+    );
+  });
 });

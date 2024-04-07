@@ -87,4 +87,27 @@ describe('Object.setPrototypeOf', () => {
     }`
     ).toBeTransform('var ra;\nif (true) ra = Object.setPrototypeOf;');
   });
+
+  test('transform #6', async () => {
+    await expect(`function S(d, t) {
+      return (S = Object.setPrototypeOf || function(d, t) {
+          return d.__proto__ = t, d
+      })(d, t)
+  }`
+    ).toBeTransform(`function S(d, t) {
+  return (S = Object.setPrototypeOf)(d, t);
+}`);
+  });
+
+  test('transform #7', async () => {
+    await expect(`function A(d) {
+      return (A = Object.setPrototypeOf ? Object.getPrototypeOf : function(d) {
+          return d.__proto__ || Object.getPrototypeOf(d)
+      })(d)
+  }`
+    ).toBeTransform(`function A(d) {
+  return (A = Object.getPrototypeOf)(d);
+}`
+    );
+  });
 });
