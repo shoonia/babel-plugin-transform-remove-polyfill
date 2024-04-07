@@ -113,7 +113,7 @@ or customization transform features
 + Array.from(arguments)
 ```
 
-> **⚠️ Warning** Unsafe transformation
+> **⚠️ Warning:** Unsafe transformation
 
 ```js
 // Object with a length property

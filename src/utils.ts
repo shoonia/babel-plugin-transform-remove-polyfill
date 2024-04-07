@@ -246,6 +246,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return arrayProtoKeys.has(node.property.name);
         case 'String':
           return stringProtoKeys.has(node.property.name);
+        case 'Function':
+          return node.property.name === 'bind';
       }
     }
   }
