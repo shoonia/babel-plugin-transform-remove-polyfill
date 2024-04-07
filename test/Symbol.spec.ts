@@ -43,4 +43,18 @@ describe('Symbol', () => {
       'var n = e[Symbol.iterator] || e["@@iterator"];'
     );
   });
+
+  test('transform #3', async () => {
+    await expect(`var g = typeof Symbol === "function" && typeof (typeof Symbol === "function" ? Symbol.iterator : "@@iterator") === "symbol" ? function(a) {
+      return typeof a
+    } : function(a) {
+      return a && typeof Symbol === "function" && a.constructor === Symbol && a !== (typeof Symbol === "function" ? Symbol.prototype : "@@prototype") ? "symbol" : typeof a
+    }`
+    ).toBeTransform(`var g = typeof Symbol.iterator === "symbol" ? function (a) {
+  return typeof a;
+} : function (a) {
+  return a && true && a.constructor === Symbol && a !== Symbol.prototype ? "symbol" : typeof a;
+};`
+    );
+  });
 });
