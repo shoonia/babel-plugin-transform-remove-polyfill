@@ -33,6 +33,6 @@ export const expect = <T>(actual: T) => ({
       transform: true,
     });
 
-    return strictEqual(expected, code);
+    return strictEqual(code, expected);
   },
 } as const);
