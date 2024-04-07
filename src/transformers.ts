@@ -31,11 +31,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
 
   return [
     (useAll || !!options['Object.hasOwn']) && ((node: t.CallExpression) => {
-      if (
-        isObjectHasOwn(node.callee) &&
-        node.arguments.length === 2 &&
-        node.arguments.every((a) => t.isIdentifier(a, null))
-      ) {
+      if (isObjectHasOwn(node.callee) && node.arguments.length === 2) {
         node.callee = memberExpression('Object', 'hasOwn');
         return true;
       }
