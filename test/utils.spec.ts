@@ -9,6 +9,7 @@ import {
   arrayKeys,
   reflectKeys,
   mathKeys,
+  promiseKeys,
 } from '../src/utils';
 
 describe('Keys: Array', () => {
@@ -70,6 +71,15 @@ describe('Keys: Object', () => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Object[key]).toBe('function');
+    });
+  });
+});
+
+describe('Keys: Promise', () => {
+  promiseKeys.forEach((key) => {
+    test(key, () => {
+      // @ts-expect-error Test
+      expect(typeof Promise[key]).toBe('function');
     });
   });
 });

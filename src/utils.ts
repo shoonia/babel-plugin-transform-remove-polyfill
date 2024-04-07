@@ -7,6 +7,7 @@ type O = keyof ObjectConstructor;
 type R = keyof typeof Reflect;
 type S = keyof SymbolConstructor
 type M = keyof typeof Math;
+type P = keyof PromiseConstructor
 
 export const arrayProtoKeys = new Set<string>([
   'indexOf', //        1
@@ -169,6 +170,16 @@ export const mathKeys = new Set<string>([
   'trunc', //  38
 ] satisfies M[]);
 
+export const promiseKeys = new Set<string>([
+  'all', //           32
+  'race', //          32
+  'reject', //        32
+  'resolve', //       32
+  'allSettled', //    76
+  'any', //           85
+  // 'withResolvers', // 119
+] satisfies P[]);
+
 const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
   'Int8Array', //         7
@@ -218,6 +229,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return t.isIdentifier(node.property, { name: 'isView' /* 32 */ });
         case 'Math':
           return oneOfIdentifier(node.property, mathKeys);
+        case 'Promise':
+          return oneOfIdentifier(node.property, promiseKeys);
       }
     }
     else if (
