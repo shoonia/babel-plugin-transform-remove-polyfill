@@ -8,7 +8,7 @@ describe('Object.create', () => {
     expect(typeof Object.create).toBe('function');
   });
 
-  test('transform #1', async () => {
+  test('transform #0', async () => {
     await expect(`var qa = "function" == typeof Object.create ? Object.create : function(a) {
       var b = function() {};
       b.prototype = a;
@@ -16,7 +16,7 @@ describe('Object.create', () => {
   }`).toBeTransform('var qa = Object.create;');
   });
 
-  test('transform #2', async () => {
+  test('transform #1', async () => {
     await expect(`var g = Object.create ? function(e, t, n, r) {
       void 0 === r && (r = n);
       var o = Object.getOwnPropertyDescriptor(t, n);
@@ -40,5 +40,32 @@ describe('Object.create', () => {
     }
   }), Object.defineProperty(e, r, o);
 };`);
+  });
+
+  test('transform #2', async () => {
+    await expect(`if (!Object.create) {
+      var b;
+      Object.prototype.__proto__ === null ? b = function() {
+          return {
+              __proto__: null
+          }
+      } : b = function() {
+          var e = {};
+          for (var t in e) e[t] = null;
+          return e.constructor = e.hasOwnProperty = e.propertyIsEnumerable = e.isPrototypeOf = e.toLocaleString = e.toString = e.valueOf = e.__proto__ = null, e
+      },
+      Object.create = function(t, n) {
+          var r;
+          if (t === null) r = b();
+          else {
+              if (typeof t != "object") throw new TypeError("typeof prototype[" + typeof t + "] != 'object'");
+              var i = function() {};
+              i.prototype = t,
+              r = new i,
+              r.__proto__ = t
+          }
+          return n !== void 0 && Object.defineProperties(r, n), r
+      }
+  }`).toBeTransform('');
   });
 });
