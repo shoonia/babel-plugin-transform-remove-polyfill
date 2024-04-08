@@ -3,6 +3,7 @@ import t from '@babel/types';
 export type TransformOptions = boolean | null | undefined | Readonly<{
   'Object.hasOwn'?: unknown;
   'Array.from'?: unknown;
+  'optimize:Object.assign'?: unknown;
 }>;
 
 export interface Options {
@@ -20,6 +21,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
 
   const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
   const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
+  const isObjectAssign = t.buildMatchMemberExpression('Object.assign', false);
 
   const memberExpression = (object: string, property: string) =>
     t.memberExpression(
@@ -47,6 +49,20 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
         else if (node.arguments.length === 2 && t.isNumericLiteral(node.arguments[1], { value: 0 })) {
           node.callee = memberExpression('Array', 'from');
           node.arguments.pop();
+        }
+
+        return true;
+      }
+
+      return false;
+    }),
+
+    (useAll || !!options['optimize:Object.assign']) && ((node: t.CallExpression) => {
+      if (isObjectAssign(node.callee) && node.arguments.length > 0) {
+        const arg = node.arguments[0];
+
+        if (t.isCallExpression(arg, null) && isObjectAssign(arg.callee)) {
+          node.arguments.splice(0, 1, ...arg.arguments);
         }
 
         return true;

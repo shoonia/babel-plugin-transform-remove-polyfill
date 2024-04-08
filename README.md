@@ -138,5 +138,31 @@ console.log(Array.prototype.slice.call(arrayLike));
 console.log(Array.from(arrayLike));
 ```
 
+### `"optimize:Object.assign"`
+
+`boolean`, defaults to `false`.
+
+```json
+{
+  "plugins": [
+    [
+      "babel-plugin-transform-remove-polyfill",
+      {
+        "transform": {
+          "optimize:Object.assign": true
+        }
+      }
+    ]
+  ]
+}
+```
+
+**Example:**
+
+```diff
+- Object.assign(Object.assign({}, e), o);
++ Object.assign({}, e, o);
+```
+
 ## License
 [MIT](./LICENSE)

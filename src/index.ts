@@ -15,7 +15,6 @@ const plugin = declarePlugin((api, options: Options = {}) => {
   api.assertVersion(7);
 
   const transformers = transformerCallExpression(options.transform);
-  const isObjectAssign = t.buildMatchMemberExpression('Object.assign', false);
 
   const visitor: Visitor<PluginPass> = {
     IfStatement: {
@@ -104,26 +103,13 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         }
       }
     },
-
-    CallExpression: {
-      exit(path) {
-        const node = path.node;
-
-        if (isObjectAssign(node.callee) && node.arguments.length > 0) {
-          const arg = node.arguments[0];
-
-          if (t.isCallExpression(arg, null) && isObjectAssign(arg.callee)) {
-            node.arguments.splice(0, 1, ...arg.arguments);
-          }
-        }
-      },
-    },
   };
 
   if (transformers.length > 0) {
-    // @ts-expect-error: We know, the CallExpression is the object and exists
-    visitor.CallExpression.enter = (path) => {
-      transformers.some((t) => t(path.node));
+    visitor.CallExpression = {
+      exit(path) {
+        transformers.some((t) => t(path.node));
+      },
     };
   }
 
