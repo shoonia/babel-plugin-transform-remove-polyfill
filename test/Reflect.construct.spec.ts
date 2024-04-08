@@ -27,7 +27,6 @@ describe('Reflect.construct', () => {
         return !1
     }
   }`).toBeTransform(`function A() {
-  if (false) return !1;
   if (Reflect.construct.sham) return !1;
   if (true) return !0;
   try {
