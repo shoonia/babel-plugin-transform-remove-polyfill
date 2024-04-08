@@ -23,4 +23,28 @@ describe('Array.prototype.indexOf', () => {
   return Array.prototype.indexOf.call(a, b, void 0);
 };`);
   });
+
+  test('transform #2', async () => {
+    expect(!Array.prototype.indexOf || [0, 1].indexOf(1, 2) != -1).toBe(false);
+
+    await expect(`if (!Array.prototype.indexOf || [0, 1].indexOf(1, 2) != -1) Array.prototype.indexOf = function(t) {
+          var n = g && a(this) == "[object String]" ? this.split("") : F(this),
+            r = n.length >>> 0;
+          if (!r)  return -1;
+          var i = 0;
+          arguments.length > 1 && (i = H(arguments[1])),
+          i = i >= 0 ? i : Math.max(0, r + i);
+          for (; i < r; i++)  if (i in n && n[i] === t)  return i;
+          return -1
+      };`
+    ).toBeTransform(`if ([0, 1].indexOf(1, 2) != -1) Array.prototype.indexOf = function (t) {
+  var n = g && a(this) == "[object String]" ? this.split("") : F(this),
+    r = n.length >>> 0;
+  if (!r) return -1;
+  var i = 0;
+  arguments.length > 1 && (i = H(arguments[1])), i = i >= 0 ? i : Math.max(0, r + i);
+  for (; i < r; i++) if (i in n && n[i] === t) return i;
+  return -1;
+};`);
+  });
 });
