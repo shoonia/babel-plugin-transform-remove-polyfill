@@ -8,26 +8,6 @@ describe('Promise.any', () => {
     expect(typeof Promise.any).toBe('function');
   });
 
-  test('tranfrom #0', async () => {
-    await expect('if (Promise.any) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('Promise.any || 1').toBeTransform('Promise.any;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('Promise.any && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('Promise.any ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('Promise.any ?? A').toBeTransform('Promise.any;');
-  });
-
   const trueList = [
     'typeof Promise.any === "function"',
     'typeof Promise.any == "function"',

@@ -30,6 +30,6 @@ describe('Array.prototype.reduceRight', () => {
           o in this && (s = t.call(void 0, s, r[o], o, n));
       while (o--);
       return s
-  });`).toBeTransform('Array.prototype.reduceRight;');
+  });`).toBeTransform('');
   });
 });

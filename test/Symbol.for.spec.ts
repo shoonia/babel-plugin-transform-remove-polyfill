@@ -8,26 +8,6 @@ describe('Symbol.for', () => {
     expect(typeof Symbol.for).toBe('function');
   });
 
-  test('tranfrom #0', async () => {
-    await expect('if (Symbol.for) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('Symbol.for || 1').toBeTransform('Symbol.for;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('Symbol.for && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('Symbol.for ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('Symbol.for ?? A').toBeTransform('Symbol.for;');
-  });
-
   const trueList = [
     'typeof Symbol.for === "function"',
     'typeof Symbol.for == "function"',

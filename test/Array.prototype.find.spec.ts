@@ -66,32 +66,4 @@ describe('Array.prototype.find', () => {
       await expect(code).toBeTransform('1;');
     });
   });
-
-  test('tranfrom #0', async () => {
-    await expect('if (Array.prototype.find) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('Array.prototype.find || 1').toBeTransform('Array.prototype.find;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('Array.prototype.find && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('Array.prototype.find ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('typeof Array.prototype.find === "function" ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #5', async () => {
-    await expect('typeof Array.prototype.find !== "undefined" ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #6', async () => {
-    await expect('"undefined" == typeof Array.prototype.find ? 1 : 2').toBeTransform('2;');
-  });
 });

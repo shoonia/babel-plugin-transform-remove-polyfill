@@ -105,6 +105,16 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         }
       }
     },
+
+    ExpressionStatement: {
+      exit(path) {
+        const exp = path.node.expression;
+
+        if (functionGroup(exp)) {
+          path.remove();
+        }
+      },
+    },
   };
 
   if (transformers.length > 0) {

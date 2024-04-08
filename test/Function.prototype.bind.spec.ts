@@ -37,6 +37,6 @@ describe('Function.prototype.bind', () => {
   r.prototype = null),
   s
 });`
-    ).toBeTransform('Function.prototype.bind;');
+    ).toBeTransform('');
   });
 });

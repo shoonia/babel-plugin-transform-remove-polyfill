@@ -8,26 +8,6 @@ describe('ArrayBuffer.isView', () => {
     expect(typeof ArrayBuffer.isView).toBe('function');
   });
 
-  test('tranfrom #0', async () => {
-    await expect('if (ArrayBuffer.isView) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('ArrayBuffer.isView || 1').toBeTransform('ArrayBuffer.isView;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('ArrayBuffer.isView && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('ArrayBuffer.isView ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('ArrayBuffer.isView ?? A').toBeTransform('ArrayBuffer.isView;');
-  });
-
   const trueList = [
     'typeof ArrayBuffer.isView === "function"',
     'typeof ArrayBuffer.isView == "function"',

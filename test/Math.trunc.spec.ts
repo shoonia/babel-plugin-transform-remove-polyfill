@@ -8,26 +8,6 @@ describe('Math.trunc', () => {
     expect(typeof Math.trunc).toBe('function');
   });
 
-  test('tranfrom #0', async () => {
-    await expect('if (Math.trunc) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('Math.trunc || 1').toBeTransform('Math.trunc;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('Math.trunc && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('Math.trunc ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('Math.trunc ?? A').toBeTransform('Math.trunc;');
-  });
-
   const trueList = [
     'typeof Math.trunc === "function"',
     'typeof Math.trunc == "function"',

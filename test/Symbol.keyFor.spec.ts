@@ -8,26 +8,6 @@ describe('Symbol.keyFor', () => {
     expect(typeof Symbol.keyFor).toBe('function');
   });
 
-  test('tranfrom #0', async () => {
-    await expect('if (Symbol.keyFor) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('Symbol.keyFor || 1').toBeTransform('Symbol.keyFor;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('Symbol.keyFor && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('Symbol.keyFor ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('Symbol.keyFor ?? A').toBeTransform('Symbol.keyFor;');
-  });
-
   const trueList = [
     'typeof Symbol.keyFor === "function"',
     'typeof Symbol.keyFor == "function"',

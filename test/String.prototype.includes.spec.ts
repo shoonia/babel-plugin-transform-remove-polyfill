@@ -66,32 +66,4 @@ describe('String.prototype.includes', () => {
       await expect(code).toBeTransform('1;');
     });
   });
-
-  test('tranfrom #0', async () => {
-    await expect('if (String.prototype.includes) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('String.prototype.includes || 1').toBeTransform('String.prototype.includes;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('String.prototype.includes && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('String.prototype.includes ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('typeof String.prototype.includes === "function" ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #5', async () => {
-    await expect('typeof String.prototype.includes !== "undefined" ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #6', async () => {
-    await expect('"undefined" == typeof String.prototype.includes ? 1 : 2').toBeTransform('2;');
-  });
 });

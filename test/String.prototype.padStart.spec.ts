@@ -14,6 +14,6 @@ describe('String.prototype.padStart', () => {
       t = String(void 0 !== t ? t : " "),
       this.length >= e ? String(this) : ((e -= this.length) > t.length && (t += t.repeat(e / t.length)),
       t.slice(0, e) + String(this))
-  })`).toBeTransform('String.prototype.padStart;');
+  })`).toBeTransform('');
   });
 });

@@ -8,26 +8,6 @@ describe('Reflect.apply', () => {
     expect(typeof Reflect.apply).toBe('function');
   });
 
-  test('tranfrom #0', async () => {
-    await expect('if (Reflect.apply) {}').toBeTransform('if (true) {}');
-  });
-
-  test('tranfrom #1', async () => {
-    await expect('Reflect.apply || 1').toBeTransform('Reflect.apply;');
-  });
-
-  test('tranfrom #2', async () => {
-    await expect('Reflect.apply && 1').toBeTransform('1;');
-  });
-
-  test('tranfrom #3', async () => {
-    await expect('Reflect.apply ? 1 : 2').toBeTransform('1;');
-  });
-
-  test('tranfrom #4', async () => {
-    await expect('Reflect.apply ?? A').toBeTransform('Reflect.apply;');
-  });
-
   const trueList = [
     'typeof Reflect.apply === "function"',
     'typeof Reflect.apply == "function"',

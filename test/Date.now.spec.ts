@@ -11,6 +11,6 @@ describe('Date.now', () => {
   test('transform #1', async () => {
     await expect(`Date.now || (Date.now = function() {
       return (new Date).getTime()
-  });`).toBeTransform('Date.now;');
+  });`).toBeTransform('');
   });
 });
