@@ -8,6 +8,7 @@ import {
   functionGroup,
   isBuiltInMember,
   isBuiltInConstructor,
+  isWellKnownSymbol,
 } from './utils';
 
 const plugin = declarePlugin((api, options: Options = {}) => {
@@ -93,6 +94,12 @@ const plugin = declarePlugin((api, options: Options = {}) => {
           path.replaceWith({
             type: 'BooleanLiteral',
             value: node.operator.startsWith(tyof.expect === 'object' ? '=' : '!'),
+          });
+        }
+        else if (isWellKnownSymbol(tyof.target)) {
+          path.replaceWith({
+            type: 'BooleanLiteral',
+            value: node.operator.startsWith(tyof.expect === 'symbol' ? '=' : '!'),
           });
         }
       }

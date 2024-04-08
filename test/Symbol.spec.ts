@@ -45,20 +45,20 @@ describe('Symbol', () => {
   });
 
   test('transform #3', async () => {
+    expect(typeof Symbol === 'function' && typeof (typeof Symbol === 'function' ? Symbol.iterator : '@@iterator') === 'symbol').toBe(true);
+
     await expect(`var g = typeof Symbol === "function" && typeof (typeof Symbol === "function" ? Symbol.iterator : "@@iterator") === "symbol" ? function(a) {
       return typeof a
     } : function(a) {
       return a && typeof Symbol === "function" && a.constructor === Symbol && a !== (typeof Symbol === "function" ? Symbol.prototype : "@@prototype") ? "symbol" : typeof a
     }`
-    ).toBeTransform(`var g = typeof Symbol.iterator === "symbol" ? function (a) {
-  return typeof a;
-} : function (a) {
-  return a && true && a.constructor === Symbol && a !== Symbol.prototype ? "symbol" : typeof a;
-};`
+    ).toBeTransform('var g = function (a) {\n  return typeof a;\n};'
     );
   });
 
   test('transform #4', async () => {
+    expect(typeof Symbol === 'function' ? Symbol.iterator : '@@iterator').toBe(Symbol.iterator);
+
     await expect(`for (var g = a[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"](), a; !(d = (a = g.next()).done); d = !0) {
       c.push(a.value);
       if (b && c.length === b) break

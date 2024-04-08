@@ -132,6 +132,22 @@ export const symbolKeys = new Set<string>([
   'keyFor', // 40
 ] satisfies S[]);
 
+export const wellKnownSymbols = new Set<string>([
+  'unscopables', //        38
+  'iterator', //           43
+  'toPrimitive', //        47
+  'isConcatSpreadable', // 48
+  'toStringTag', //        49
+  'hasInstance', //        50
+  'match', //              50
+  'replace', //            50
+  'search', //             50
+  'split', //              50
+  'species', //            51
+  'asyncIterator', //      63
+  'matchAll', //           73
+] satisfies S[]);
+
 export const mathKeys = new Set<string>([
   'abs', //    1
   'acos', //   1
@@ -260,3 +276,8 @@ export const isBuiltInConstructor = (node: t.Node): node is t.Identifier =>
 
 export const isBuiltInMember = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInMember);
+
+export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
+  t.isMemberExpression(node, { computed: false }) &&
+  t.isIdentifier(node.object, { name: 'Symbol' }) &&
+  oneOfIdentifier(node.property, wellKnownSymbols);

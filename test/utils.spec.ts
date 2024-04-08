@@ -10,6 +10,7 @@ import {
   reflectKeys,
   mathKeys,
   promiseKeys,
+  wellKnownSymbols,
 } from '../src/utils';
 
 describe('Keys: Array', () => {
@@ -44,6 +45,15 @@ describe('Keys: Symbol', () => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Symbol[key]).toBe('function');
+    });
+  });
+});
+
+describe('well-known symbols', () => {
+  wellKnownSymbols.forEach((key) => {
+    test(key, () => {
+      // @ts-expect-error Test
+      expect(typeof Symbol[key]).toBe('symbol');
     });
   });
 });
