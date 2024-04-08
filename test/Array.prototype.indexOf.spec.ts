@@ -8,7 +8,7 @@ describe('Array.prototype.indexOf', () => {
     expect(typeof Array.prototype.indexOf).toBe('function');
   });
 
-  test('transform', async () => {
+  test('transform #0', async () => {
     await expect(`var nc = Array.prototype.indexOf ? function(a, b) {
         return Array.prototype.indexOf.call(a, b, void 0)
     } : function(a, b) {
@@ -24,7 +24,7 @@ describe('Array.prototype.indexOf', () => {
 };`);
   });
 
-  test('transform #2', async () => {
+  test('transform #1', async () => {
     expect(!Array.prototype.indexOf || [0, 1].indexOf(1, 2) != -1).toBe(false);
 
     await expect(`if (!Array.prototype.indexOf || [0, 1].indexOf(1, 2) != -1) Array.prototype.indexOf = function(t) {
@@ -46,5 +46,18 @@ describe('Array.prototype.indexOf', () => {
   for (; i < r; i++) if (i in n && n[i] === t) return i;
   return -1;
 };`);
+  });
+
+  test('transform #2', async () => {
+    await expect(`function u(e, t, n) {
+      if (Array.prototype.indexOf) return e.indexOf(t, n);
+      for (var r = n || 0; r < e.length; r++) if (e[r] === t) return r;
+      return -1
+  }`
+    ).toBeTransform(`function u(e, t, n) {
+  if (true) return e.indexOf(t, n);
+  for (var r = n || 0; r < e.length; r++) if (e[r] === t) return r;
+  return -1;
+}`);
   });
 });
