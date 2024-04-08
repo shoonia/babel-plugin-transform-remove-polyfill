@@ -10,6 +10,7 @@ import {
   reflectKeys,
   mathKeys,
   promiseKeys,
+  promiseProtoKeys,
   wellKnownSymbols,
   dateKeys,
 } from '../src/utils';
@@ -91,6 +92,15 @@ describe('Keys: Promise', () => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Promise[key]).toBe('function');
+    });
+  });
+});
+
+describe('Keys: Promise.prototype', () => {
+  promiseProtoKeys.forEach((key) => {
+    test(key, () => {
+      // @ts-expect-error Test
+      expect(typeof Promise.prototype[key]).toBe('function');
     });
   });
 });

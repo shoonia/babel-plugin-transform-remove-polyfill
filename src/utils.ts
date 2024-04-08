@@ -2,12 +2,13 @@ import t from '@babel/types';
 
 type SP = keyof typeof String.prototype;
 type AP = keyof Array<null>;
-type A = keyof ArrayConstructor
+type A = keyof ArrayConstructor;
 type O = keyof ObjectConstructor;
 type R = keyof typeof Reflect;
-type S = keyof SymbolConstructor
+type S = keyof SymbolConstructor;
 type M = keyof typeof Math;
-type P = keyof PromiseConstructor
+type P = keyof PromiseConstructor;
+type PP = keyof typeof Promise.prototype;
 type D = keyof DateConstructor;
 
 export const arrayProtoKeys = new Set<string>([
@@ -197,6 +198,12 @@ export const promiseKeys = new Set<string>([
   // 'withResolvers', // 119
 ] satisfies P[]);
 
+export const promiseProtoKeys = new Set<string>([
+  'then', //    32
+  'catch', //   32
+  'finally', // 63
+] satisfies PP[]);
+
 export const dateKeys = new Set<string>([
   'now', //   1
   'parse', // 1
@@ -241,24 +248,26 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
     t.isMemberExpression(node, { computed: false }) &&
     t.isIdentifier(node.property, null)
   ) {
+    const name = node.property.name;
+
     if (t.isIdentifier(node.object, null)) {
       switch (node.object.name) {
         case 'Object':
-          return objectKeys.has(node.property.name);
+          return objectKeys.has(name);
         case 'Array':
-          return arrayKeys.has(node.property.name);
+          return arrayKeys.has(name);
         case 'Symbol':
-          return symbolKeys.has(node.property.name);
+          return symbolKeys.has(name);
         case 'Reflect':
-          return reflectKeys.has(node.property.name);
+          return reflectKeys.has(name);
         case 'ArrayBuffer':
-          return node.property.name === 'isView'; // 32
+          return name === 'isView'; // 32
         case 'Promise':
-          return promiseKeys.has(node.property.name);
+          return promiseKeys.has(name);
         case 'Math':
-          return mathKeys.has(node.property.name);
+          return mathKeys.has(name);
         case 'Date':
-          return dateKeys.has(node.property.name);
+          return dateKeys.has(name);
       }
     }
     else if (
@@ -268,11 +277,13 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
     ) {
       switch (node.object.object.name) {
         case 'Array':
-          return arrayProtoKeys.has(node.property.name);
+          return arrayProtoKeys.has(name);
         case 'String':
-          return stringProtoKeys.has(node.property.name);
+          return stringProtoKeys.has(name);
+        case 'Promise':
+          return promiseProtoKeys.has(name);
         case 'Function':
-          return node.property.name === 'bind';
+          return name === 'bind';
       }
     }
   }
