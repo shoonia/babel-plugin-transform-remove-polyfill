@@ -8,6 +8,7 @@ type R = keyof typeof Reflect;
 type S = keyof SymbolConstructor
 type M = keyof typeof Math;
 type P = keyof PromiseConstructor
+type D = keyof DateConstructor;
 
 export const arrayProtoKeys = new Set<string>([
   'indexOf', //        1
@@ -196,6 +197,12 @@ export const promiseKeys = new Set<string>([
   // 'withResolvers', // 119
 ] satisfies P[]);
 
+export const dateKeys = new Set<string>([
+  'now', //   1
+  'parse', // 1
+  'UTC', //   1
+] satisfies D[]);
+
 const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
   'Int8Array', //         7
@@ -240,16 +247,18 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return objectKeys.has(node.property.name);
         case 'Array':
           return arrayKeys.has(node.property.name);
-        case 'Reflect':
-          return reflectKeys.has(node.property.name);
         case 'Symbol':
           return symbolKeys.has(node.property.name);
+        case 'Reflect':
+          return reflectKeys.has(node.property.name);
         case 'ArrayBuffer':
           return node.property.name === 'isView'; // 32
-        case 'Math':
-          return mathKeys.has(node.property.name);
         case 'Promise':
           return promiseKeys.has(node.property.name);
+        case 'Math':
+          return mathKeys.has(node.property.name);
+        case 'Date':
+          return dateKeys.has(node.property.name);
       }
     }
     else if (

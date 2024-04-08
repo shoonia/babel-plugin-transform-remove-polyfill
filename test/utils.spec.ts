@@ -11,6 +11,7 @@ import {
   mathKeys,
   promiseKeys,
   wellKnownSymbols,
+  dateKeys,
 } from '../src/utils';
 
 describe('Keys: Array', () => {
@@ -90,6 +91,15 @@ describe('Keys: Promise', () => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Promise[key]).toBe('function');
+    });
+  });
+});
+
+describe('Keys: Date', () => {
+  dateKeys.forEach((key) => {
+    test(key, () => {
+      // @ts-expect-error Test
+      expect(typeof Date[key]).toBe('function');
     });
   });
 });
