@@ -20,12 +20,13 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "@typescript-eslint/semi": "error",
+    "@typescript-eslint/no-extra-semi": "error",
     "require-await": "error",
     "comma-dangle": [
       "error",
       "always-multiline"
     ],
-    "semi": "error",
     "indent": [
       "error",
       2,
