@@ -24,4 +24,17 @@ describe('Symbol.toStringTag', () => {
   });
 };`);
   });
+
+  test('transform #2', async () => {
+    expect(!!Symbol.toStringTag).toBe(!false);
+
+    await expect(`var r = n(6073);
+e.exports = function() {
+  return r() && !!Symbol.toStringTag
+}`
+    ).toBeTransform(`var r = n(6073);
+e.exports = function () {
+  return r() && !false;
+};`);
+  });
 });

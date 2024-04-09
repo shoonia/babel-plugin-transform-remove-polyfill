@@ -75,8 +75,10 @@ const plugin = declarePlugin((api, options: Options = {}) => {
     UnaryExpression(path) {
       const node = path.node;
 
-      if (node.operator === '!' && functionGroup(node.argument)) {
-        path.replaceWith(t.booleanLiteral(false));
+      if (node.operator === '!') {
+        if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
+          path.replaceWith(t.booleanLiteral(false));
+        }
       }
     },
 

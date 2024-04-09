@@ -10,17 +10,17 @@ describe('Symbol', () => {
 
   test('transform #1', async () => {
     await expect(`function a(t) {
-        var n = "function" == typeof Symbol && t[Symbol.iterator],
-        r = 0;
-        return n ? n.call(t) : {
-          next: function() {
-            return t && r >= t.length && (t = void 0), {
-              value: t && t[r++],
-              done: !t
-            }
-          }
+    var n = "function" == typeof Symbol && t[Symbol.iterator],
+      r = 0;
+    return n ? n.call(t) : {
+      next: function() {
+        return t && r >= t.length && (t = void 0), {
+          value: t && t[r++],
+          done: !t
         }
-      }`
+      }
+    }
+  }`
     ).toBeTransform(`function a(t) {
   var n = t[Symbol.iterator],
     r = 0;
@@ -78,15 +78,14 @@ describe('Symbol', () => {
     n = t && e[t],
     r = 0;
   if (n) return n.call(e);
-  if (e && "number" == typeof e.length)
-      return {
-          next: function() {
-              return e && r >= e.length && (e = void 0), {
-                  value: e && e[r++],
-                  done: !e
-              }
-          }
-      };
+  if (e && "number" == typeof e.length) return {
+    next: function() {
+      return e && r >= e.length && (e = void 0), {
+        value: e && e[r++],
+        done: !e
+      }
+    }
+  };
   throw new TypeError(t ? "Object is not iterable." : "Symbol.iterator is not defined.")
 }`
     ).toBeTransform(`function Ht(e) {
@@ -95,7 +94,7 @@ describe('Symbol', () => {
     r = 0;
   if (n) return n.call(e);
   if (e && "number" == typeof e.length) return {
-      next: function () {
+    next: function () {
       return e && r >= e.length && (e = void 0), {
         value: e && e[r++],
         done: !e
@@ -104,5 +103,10 @@ describe('Symbol', () => {
   };
   throw new TypeError(t ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }`);
+  });
+
+  test('transform #6', async () => {
+    await expect('var n = "function" == typeof Symbol && Symbol.for')
+      .toBeTransform('var n = Symbol.for;');
   });
 });
