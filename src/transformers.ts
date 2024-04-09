@@ -33,7 +33,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
 
   return [
     (useAll || !!options['Object.hasOwn']) && ((node: t.CallExpression) => {
-      if (isObjectHasOwn(node.callee) && node.arguments.length === 2) {
+      if (node.arguments.length === 2 && isObjectHasOwn(node.callee)) {
         node.callee = memberExpression('Object', 'hasOwn');
         return true;
       }
@@ -60,7 +60,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
     }),
 
     (useAll || !!options['optimize:Object.assign']) && ((node: t.CallExpression) => {
-      if (node.arguments.length > 0 && isObjectAssign(node.callee)) {
+      if (node.arguments.length > 1 && isObjectAssign(node.callee)) {
         const arg = node.arguments[0];
 
         if (t.isCallExpression(arg, null) && isObjectAssign(arg.callee)) {
