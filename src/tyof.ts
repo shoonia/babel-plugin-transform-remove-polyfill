@@ -16,7 +16,7 @@ const equalities = new Set<t.BinaryExpression['operator']>([
 ]);
 
 const isTypeof = (node: t.Node): node is t.UnaryExpression =>
-  t.isUnaryExpression(node, { operator: 'typeof', prefix: true });
+  t.isUnaryExpression(node, { operator: 'typeof' });
 
 export const matchTypeof = (node: t.BinaryExpression): Result => {
   if (equalities.has(node.operator)) {
