@@ -26,11 +26,16 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         }
 
         if (t.isBooleanLiteral(node.test, null)) {
-          if (node.test.value && node.alternate != null) {
-            node.alternate = undefined;
+          if (node.test.value) {
+            if (node.alternate != null) {
+              node.alternate = undefined;
+            }
           }
-          else if (!node.test.value && node.alternate == null) {
+          else if (node.alternate == null) {
             path.remove();
+          }
+          else {
+            node.consequent = t.emptyStatement();
           }
         }
       },
