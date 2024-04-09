@@ -281,8 +281,7 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
         case 'Number':
           return numberKeys.has(name);
       }
-    }
-    else if (
+    } else if (
       t.isMemberExpression(node.object, { computed: false }) &&
       t.isIdentifier(node.object.property, { name: 'prototype' }) &&
       t.isIdentifier(node.object.object, null)

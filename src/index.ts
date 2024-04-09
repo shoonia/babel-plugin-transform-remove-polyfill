@@ -30,11 +30,9 @@ const plugin = declarePlugin((api, options: Options = {}) => {
             if (node.alternate != null) {
               node.alternate = undefined;
             }
-          }
-          else if (node.alternate == null) {
+          } else if (node.alternate == null) {
             path.remove();
-          }
-          else {
+          } else {
             node.consequent = t.emptyStatement();
           }
         }
@@ -47,8 +45,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
 
         if (functionGroup(node.left) || isWellKnownSymbol(node.left)) {
           path.replaceWith(node.operator === '&&' ? node.right : node.left);
-        }
-        else if (t.isBooleanLiteral(node.left, null)) {
+        } else if (t.isBooleanLiteral(node.left, null)) {
           path.replaceWith(
             node.operator === '&&'
               ? node.left.value
@@ -70,8 +67,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
 
         if (functionGroup(node.test)) {
           path.replaceWith(node.consequent);
-        }
-        else if (t.isBooleanLiteral(node.test, null)) {
+        } else if (t.isBooleanLiteral(node.test, null)) {
           path.replaceWith(node.test.value ? node.consequent : node.alternate);
         }
       },
@@ -97,14 +93,12 @@ const plugin = declarePlugin((api, options: Options = {}) => {
             type: 'BooleanLiteral',
             value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
           });
-        }
-        else if (isBuiltInMember(tyof.target)) {
+        } else if (isBuiltInMember(tyof.target)) {
           path.replaceWith({
             type: 'BooleanLiteral',
             value: node.operator.startsWith(tyof.expect === 'object' ? '=' : '!'),
           });
-        }
-        else if (isWellKnownSymbol(tyof.target)) {
+        } else if (isWellKnownSymbol(tyof.target)) {
           path.replaceWith({
             type: 'BooleanLiteral',
             value: node.operator.startsWith(tyof.expect === 'symbol' ? '=' : '!'),
