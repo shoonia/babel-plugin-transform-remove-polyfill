@@ -13,6 +13,7 @@ import {
   promiseProtoKeys,
   wellKnownSymbols,
   dateKeys,
+  numberKeys,
 } from '../src/utils';
 
 describe('Keys: Array', () => {
@@ -110,6 +111,15 @@ describe('Keys: Date', () => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Date[key]).toBe('function');
+    });
+  });
+});
+
+describe('Keys: Number', () => {
+  numberKeys.forEach((key) => {
+    test(key, () => {
+      // @ts-expect-error Test
+      expect(typeof Number[key]).toBe('function');
     });
   });
 });

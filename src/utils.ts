@@ -10,6 +10,7 @@ type M = keyof typeof Math;
 type P = keyof PromiseConstructor;
 type PP = keyof typeof Promise.prototype;
 type D = keyof DateConstructor;
+type N = keyof NumberConstructor;
 
 export const arrayProtoKeys = new Set<string>([
   'indexOf', //        1
@@ -210,6 +211,15 @@ export const dateKeys = new Set<string>([
   'UTC', //   1
 ] satisfies D[]);
 
+export const numberKeys = new Set<string>([
+  'isFinite', //      19
+  'isNaN', //         25
+  'isInteger', //     34
+  'isSafeInteger', // 34
+  'parseFloat', //    34
+  'parseInt', //      34
+] as N[]);
+
 const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
   'Int8Array', //         7
@@ -268,6 +278,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return mathKeys.has(name);
         case 'Date':
           return dateKeys.has(name);
+        case 'Number':
+          return numberKeys.has(name);
       }
     }
     else if (
