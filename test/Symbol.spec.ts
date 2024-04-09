@@ -69,4 +69,40 @@ describe('Symbol', () => {
 }`
     );
   });
+
+  test('transform #5', async () => {
+    expect('function' == typeof Symbol && Symbol.iterator).toBe(Symbol.iterator);
+
+    await expect(`function Ht(e) {
+  var t = "function" == typeof Symbol && Symbol.iterator,
+    n = t && e[t],
+    r = 0;
+  if (n) return n.call(e);
+  if (e && "number" == typeof e.length)
+      return {
+          next: function() {
+              return e && r >= e.length && (e = void 0), {
+                  value: e && e[r++],
+                  done: !e
+              }
+          }
+      };
+  throw new TypeError(t ? "Object is not iterable." : "Symbol.iterator is not defined.")
+}`
+    ).toBeTransform(`function Ht(e) {
+  var t = Symbol.iterator,
+    n = t && e[t],
+    r = 0;
+  if (n) return n.call(e);
+  if (e && "number" == typeof e.length) return {
+      next: function () {
+      return e && r >= e.length && (e = void 0), {
+        value: e && e[r++],
+        done: !e
+      };
+    }
+  };
+  throw new TypeError(t ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}`);
+  });
 });
