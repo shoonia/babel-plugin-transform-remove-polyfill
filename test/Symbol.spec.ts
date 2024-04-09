@@ -109,4 +109,9 @@ describe('Symbol', () => {
     await expect('var n = "function" == typeof Symbol && Symbol.for')
       .toBeTransform('var n = Symbol.for;');
   });
+
+  test('transform #7', async () => {
+    await expect('if ("undefined" != typeof Symbol && Symbol && Symbol.toStringTag && "Map Iterator" === n[Symbol.toStringTag]) {}')
+      .toBeTransform('if (Symbol && Symbol.toStringTag && "Map Iterator" === n[Symbol.toStringTag]) {}');
+  });
 });
