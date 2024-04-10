@@ -110,4 +110,29 @@ describe('Object.setPrototypeOf', () => {
 }`
     );
   });
+
+  test('transform #8', async () => {
+    await expect(`function a(e, n, t) {
+  var i = t(4),
+    a = t(35),
+    r = t(298);
+  e.exports = Object.setPrototypeOf || ("__proto__"in {} ? function() {
+      var e, n = !1, t = {};
+      try {
+          (e = i(Object.getOwnPropertyDescriptor(Object.prototype, "__proto__").set))(t, []),
+          n = t instanceof Array
+      } catch (o) {}
+      return function(t, i) {
+        return a(t), r(i), n ? e(t, i) : t.__proto__ = i, t
+      }
+  }() : void 0)
+}`
+    ).toBeTransform(`function a(e, n, t) {
+  var i = t(4),
+    a = t(35),
+    r = t(298);
+  e.exports = Object.setPrototypeOf;
+}`
+    );
+  });
 });

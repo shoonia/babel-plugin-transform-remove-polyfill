@@ -295,6 +295,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return promiseProtoKeys.has(name);
         case 'Function':
           return name === 'bind';
+        case 'ArrayBuffer':
+          return name === 'slice';
       }
     }
   }
