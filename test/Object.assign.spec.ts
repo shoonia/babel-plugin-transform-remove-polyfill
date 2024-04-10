@@ -160,6 +160,24 @@ describe('Object.assign', () => {
     ).toBeTransform('var pa = Object.assign;');
   });
 
+  test('transform #7', async () => {
+    // TODO: NOT WORKING
+    await expect(`var __assign = (this && this.__assign) || Object.assign || function(t) {
+  for (var s, i = 1, n = arguments.length; i < n; i++) {
+    s = arguments[i];
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+  }
+  return t;
+};`
+    ).toBeTransform(`var __assign = this && this.__assign || Object.assign || function (t) {
+  for (var s, i = 1, n = arguments.length; i < n; i++) {
+    s = arguments[i];
+    for (var p in s) if (Object.hasOwn(s, p)) t[p] = s[p];
+  }
+  return t;
+};`);
+  });
+
   test('flat #0', async () => {
     await expect('Object.assign(Object.assign(Object.assign({}, e), s), { x: 1 });')
       .toBeTransform('Object.assign({}, e, s, {\n  x: 1\n});');
