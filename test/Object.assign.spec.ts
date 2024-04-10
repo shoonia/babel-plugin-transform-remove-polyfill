@@ -119,6 +119,25 @@ describe('Object.assign', () => {
 };`);
   });
 
+  test('transform #8', async () => {
+    await expect(`"function" != typeof Object.assign && Object.defineProperty(Object, "assign", {
+      value: function(e, t) {
+          if (null == e)
+              throw new TypeError("Cannot convert undefined or null to object");
+          for (var o = Object(e), n = 1; n < arguments.length; n++) {
+              var r = arguments[n];
+              if (null != r)
+                  for (var i in r)
+                      Object.prototype.hasOwnProperty.call(r, i) && (o[i] = r[i])
+          }
+          return o
+      },
+      writable: !0,
+      configurable: !0
+  })`
+    ).toBeTransform('false;');
+  });
+
   test('flat #0', async () => {
     await expect('Object.assign(Object.assign(Object.assign({}, e), s), { x: 1 });')
       .toBeTransform('Object.assign({}, e, s, {\n  x: 1\n});');
