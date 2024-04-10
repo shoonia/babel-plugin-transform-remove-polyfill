@@ -44,7 +44,11 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         const node = path.node;
 
         if (functionGroup(node.left) || isWellKnownSymbol(node.left)) {
-          path.replaceWith(node.operator === '&&' ? node.right : node.left);
+          path.replaceWith(
+            node.operator === '&&'
+              ? node.right
+              : node.left
+          );
         } else if (t.isBooleanLiteral(node.left, null)) {
           path.replaceWith(
             node.operator === '&&'
