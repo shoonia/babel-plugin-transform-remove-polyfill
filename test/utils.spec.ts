@@ -14,6 +14,7 @@ import {
   wellKnownSymbols,
   dateKeys,
   numberKeys,
+  jsonKeys,
 } from '../src/utils';
 
 describe('Keys: Array', () => {
@@ -120,6 +121,15 @@ describe('Keys: Number', () => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Number[key]).toBe('function');
+    });
+  });
+});
+
+describe('Keys: JSON', () => {
+  jsonKeys.forEach((key) => {
+    test(key, () => {
+      // @ts-expect-error Test
+      expect(typeof JSON[key]).toBe('function');
     });
   });
 });

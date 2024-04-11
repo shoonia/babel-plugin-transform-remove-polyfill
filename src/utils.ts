@@ -11,6 +11,7 @@ type P = keyof PromiseConstructor;
 type PP = keyof typeof Promise.prototype;
 type D = keyof DateConstructor;
 type N = keyof NumberConstructor;
+type J = keyof JSON;
 
 export const arrayProtoKeys = new Set<string>([
   'indexOf', //        1
@@ -218,7 +219,12 @@ export const numberKeys = new Set<string>([
   'isSafeInteger', // 34
   'parseFloat', //    34
   'parseInt', //      34
-] as N[]);
+] satisfies N[]);
+
+export const jsonKeys = new Set<string>([
+  'parse',     // 3
+  'stringify', // 3
+] satisfies J[]);
 
 const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
@@ -246,6 +252,7 @@ const builtInConstructor = new Set<string>([
 ] as const);
 
 const builtInMember = new Set<string>([
+  'JSON',    // 3
   'Reflect', // 49
   'Atomics', // 68
 ] as const);
@@ -280,6 +287,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return dateKeys.has(name);
         case 'Number':
           return numberKeys.has(name);
+        case 'JSON':
+          return jsonKeys.has(name);
       }
     } else if (
       t.isMemberExpression(node.object, { computed: false }) &&
