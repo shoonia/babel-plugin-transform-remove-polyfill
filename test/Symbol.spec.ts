@@ -112,6 +112,6 @@ describe('Symbol', () => {
 
   test('transform #7', async () => {
     await expect('if ("undefined" != typeof Symbol && Symbol && Symbol.toStringTag && "Map Iterator" === n[Symbol.toStringTag]) {}')
-      .toBeTransform('if (Symbol && Symbol.toStringTag && "Map Iterator" === n[Symbol.toStringTag]) {}');
+      .toBeTransform('if ("Map Iterator" === n[Symbol.toStringTag]) {}');
   });
 });

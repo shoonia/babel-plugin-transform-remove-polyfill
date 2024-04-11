@@ -43,7 +43,11 @@ const plugin = declarePlugin((api, options: Options = {}) => {
       exit(path) {
         const node = path.node;
 
-        if (functionGroup(node.left) || isWellKnownSymbol(node.left)) {
+        if (
+          functionGroup(node.left) ||
+          isWellKnownSymbol(node.left) ||
+          isBuiltInConstructor(node.left)
+        ) {
           path.replaceWith(
             node.operator === '&&'
               ? node.right
