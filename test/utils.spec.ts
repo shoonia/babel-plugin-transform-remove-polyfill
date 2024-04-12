@@ -2,23 +2,13 @@ import { describe, test } from 'node:test';
 import { expect } from './setup';
 
 import {
-  arrayProtoKeys,
-  stringProtoKeys,
-  objectKeys,
-  symbolKeys,
-  arrayKeys,
-  reflectKeys,
-  mathKeys,
-  promiseKeys,
-  promiseProtoKeys,
+  keys,
+  prototypeKeys,
   wellKnownSymbols,
-  dateKeys,
-  numberKeys,
-  jsonKeys,
 } from '../src/utils';
 
 describe('Keys: Array', () => {
-  arrayKeys.forEach((key) => {
+  keys.get('Array')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Array[key]).toBe('function');
@@ -27,7 +17,7 @@ describe('Keys: Array', () => {
 });
 
 describe('Keys: Array.prototype', () => {
-  arrayProtoKeys.forEach((key) => {
+  prototypeKeys.get('Array')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Array.prototype[key]).toBe('function');
@@ -36,7 +26,7 @@ describe('Keys: Array.prototype', () => {
 });
 
 describe('Keys: String.prototype', () => {
-  stringProtoKeys.forEach((key) => {
+  prototypeKeys.get('String')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof String.prototype[key]).toBe('function');
@@ -45,7 +35,7 @@ describe('Keys: String.prototype', () => {
 });
 
 describe('Keys: Symbol', () => {
-  symbolKeys.forEach((key) => {
+  keys.get('Symbol')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Symbol[key]).toBe('function');
@@ -63,7 +53,7 @@ describe('well-known symbols', () => {
 });
 
 describe('Keys: Reflect', () => {
-  reflectKeys.forEach((key) => {
+  keys.get('Reflect')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Reflect[key]).toBe('function');
@@ -72,7 +62,7 @@ describe('Keys: Reflect', () => {
 });
 
 describe('Keys: Math', () => {
-  mathKeys.forEach((key) => {
+  keys.get('Math')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Math[key]).toBe('function');
@@ -81,7 +71,7 @@ describe('Keys: Math', () => {
 });
 
 describe('Keys: Object', () => {
-  objectKeys.forEach((key) => {
+  keys.get('Object')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Object[key]).toBe('function');
@@ -90,7 +80,7 @@ describe('Keys: Object', () => {
 });
 
 describe('Keys: Promise', () => {
-  promiseKeys.forEach((key) => {
+  keys.get('Promise')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Promise[key]).toBe('function');
@@ -99,7 +89,7 @@ describe('Keys: Promise', () => {
 });
 
 describe('Keys: Promise.prototype', () => {
-  promiseProtoKeys.forEach((key) => {
+  prototypeKeys.get('Promise')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Promise.prototype[key]).toBe('function');
@@ -108,7 +98,7 @@ describe('Keys: Promise.prototype', () => {
 });
 
 describe('Keys: Date', () => {
-  dateKeys.forEach((key) => {
+  keys.get('Date')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Date[key]).toBe('function');
@@ -117,7 +107,7 @@ describe('Keys: Date', () => {
 });
 
 describe('Keys: Number', () => {
-  numberKeys.forEach((key) => {
+  keys.get('Number')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof Number[key]).toBe('function');
@@ -126,7 +116,7 @@ describe('Keys: Number', () => {
 });
 
 describe('Keys: JSON', () => {
-  jsonKeys.forEach((key) => {
+  keys.get('JSON')!.forEach((key) => {
     test(key, () => {
       // @ts-expect-error Test
       expect(typeof JSON[key]).toBe('function');
