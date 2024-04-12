@@ -3,10 +3,9 @@ import t from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { type Options, transformerCallExpression } from './transformers';
-import { matchTypeof } from './tyof';
+import { evaluate } from './tyof';
 import {
   functionGroup,
-  isBuiltInMember,
   isBuiltInConstructor,
   isWellKnownSymbol,
 } from './utils';
@@ -92,34 +91,16 @@ const plugin = declarePlugin((api, options: Options = {}) => {
     },
 
     BinaryExpression(path) {
-      const node = path.node;
-      const tyof = matchTypeof(node);
+      const result = evaluate(path.node);
 
-      if (tyof.match) {
-        if (functionGroup(tyof.target) || isBuiltInConstructor(tyof.target)) {
-          path.replaceWith({
-            type: 'BooleanLiteral',
-            value: node.operator.startsWith(tyof.expect === 'function' ? '=' : '!'),
-          });
-        } else if (isBuiltInMember(tyof.target)) {
-          path.replaceWith({
-            type: 'BooleanLiteral',
-            value: node.operator.startsWith(tyof.expect === 'object' ? '=' : '!'),
-          });
-        } else if (isWellKnownSymbol(tyof.target)) {
-          path.replaceWith({
-            type: 'BooleanLiteral',
-            value: node.operator.startsWith(tyof.expect === 'symbol' ? '=' : '!'),
-          });
-        }
+      if (result !== null) {
+        path.replaceWith(t.booleanLiteral(result));
       }
     },
 
     ExpressionStatement: {
       exit(path) {
-        const exp = path.node.expression;
-
-        if (functionGroup(exp)) {
+        if (functionGroup(path.node.expression)) {
           path.remove();
         }
       },
