@@ -3,6 +3,7 @@ import { expect } from './setup';
 
 describe('no-transform', () => {
   const list = [
+    '"use strict";',
     'typeof identifier === "function" ? 0 : 1;',
     'typeof identifier !== "function" ? 0 : 1;',
     '"undefined" == typeof identifier ? 0 : 1;',
