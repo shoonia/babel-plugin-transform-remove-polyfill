@@ -289,6 +289,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
           return numberKeys.has(name);
         case 'JSON':
           return jsonKeys.has(name);
+        case 'Proxy':
+          return name === 'revocable'; // 63
       }
     } else if (
       t.isMemberExpression(node.object, { computed: false }) &&
