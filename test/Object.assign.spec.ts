@@ -135,7 +135,7 @@ describe('Object.assign', () => {
       writable: !0,
       configurable: !0
   })`
-    ).toBeTransform('false;');
+    ).toBeTransform('');
   });
 
   test('flat #0', async () => {

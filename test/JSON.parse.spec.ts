@@ -31,6 +31,6 @@ describe('JSON.parse', () => {
           }, "") : j;
       throw new SyntaxError("JSON.parse")
   }
-  )`).toBeTransform('false;');
+  )`).toBeTransform('');
   });
 });

@@ -100,7 +100,9 @@ const plugin = declarePlugin((api, options: Options = {}) => {
 
     ExpressionStatement: {
       exit(path) {
-        if (functionGroup(path.node.expression)) {
+        const exp = path.node.expression;
+
+        if (functionGroup(exp) || t.isLiteral(exp, null)) {
           path.remove();
         }
       },

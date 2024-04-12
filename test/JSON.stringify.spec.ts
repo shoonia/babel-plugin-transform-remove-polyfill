@@ -21,6 +21,6 @@ describe('JSON.stringify', () => {
         "": e
       });
       throw new Error("JSON.stringify")
-  })`).toBeTransform('false;');
+  })`).toBeTransform('');
   });
 });
