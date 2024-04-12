@@ -2,7 +2,6 @@ import t from '@babel/types';
 
 import {
   functionGroup,
-  isBuiltInConstructor,
   isBuiltInMember,
   isWellKnownSymbol,
 } from './utils';
@@ -56,7 +55,7 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
     const tyof = matchTypeof(node);
 
     if (tyof.match) {
-      if (functionGroup(tyof.target) || isBuiltInConstructor(tyof.target)) {
+      if (functionGroup(tyof.target)) {
         return node.operator.startsWith(tyof.expect === 'function' ? '=' : '!');
       } else if (isBuiltInMember(tyof.target)) {
         return node.operator.startsWith(tyof.expect === 'object' ? '=' : '!');

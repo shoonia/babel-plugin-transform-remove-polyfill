@@ -285,7 +285,7 @@ export const prototypeKeys = new Map<string, Set<string>>([
 export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
   t.isIdentifier(node, null) && set.has(node.name);
 
-export const functionGroup = (node: t.Node): node is t.MemberExpression => {
+export const functionGroup = (node: t.Node): boolean => {
   if (
     t.isMemberExpression(node, { computed: false }) &&
     t.isIdentifier(node.property, null)
@@ -301,11 +301,8 @@ export const functionGroup = (node: t.Node): node is t.MemberExpression => {
     }
   }
 
-  return false;
+  return oneOfIdentifier(node, builtInConstructor);
 };
-
-export const isBuiltInConstructor = (node: t.Node): node is t.Identifier =>
-  oneOfIdentifier(node, builtInConstructor);
 
 export const isBuiltInMember = (node: t.Node): node is t.Identifier =>
   oneOfIdentifier(node, builtInMember);

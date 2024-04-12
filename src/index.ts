@@ -4,11 +4,7 @@ import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { type Options, transformerCallExpression } from './transformers';
 import { evaluate } from './evaluate';
-import {
-  functionGroup,
-  isBuiltInConstructor,
-  isWellKnownSymbol,
-} from './utils';
+import { functionGroup, isWellKnownSymbol } from './utils';
 
 const plugin = declarePlugin((api, options: Options = {}) => {
   api.assertVersion(7);
@@ -42,11 +38,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
       exit(path) {
         const node = path.node;
 
-        if (
-          functionGroup(node.left) ||
-          isWellKnownSymbol(node.left) ||
-          isBuiltInConstructor(node.left)
-        ) {
+        if (functionGroup(node.left) || isWellKnownSymbol(node.left)) {
           path.replaceWith(
             node.operator === '&&'
               ? node.right
