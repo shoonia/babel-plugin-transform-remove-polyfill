@@ -3,7 +3,7 @@ import t from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { type Options, transformerCallExpression } from './transformers';
-import { evaluate } from './tyof';
+import { evaluate } from './evaluate';
 import {
   functionGroup,
   isBuiltInConstructor,
