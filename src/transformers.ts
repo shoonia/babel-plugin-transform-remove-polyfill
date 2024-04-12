@@ -2,7 +2,7 @@ import t from '@babel/types';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
   'Object.hasOwn'?: unknown;
-  'Array.from'?: unknown;
+  'unsafe:Array.from'?: unknown;
   'optimize:Object.assign'?: unknown;
 }>;
 
@@ -41,7 +41,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       return false;
     }),
 
-    (useAll || !!options['Array.from']) && ((node: t.CallExpression) => {
+    (useAll || !!options['unsafe:Array.from']) && ((node: t.CallExpression) => {
       if (isArraySlice(node.callee) && t.isIdentifier(node.arguments[0], null)) {
         if (node.arguments.length === 1) {
           node.callee = memberExpression('Array', 'from');

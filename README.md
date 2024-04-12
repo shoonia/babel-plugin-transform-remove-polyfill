@@ -87,7 +87,7 @@ or customization transform features
 + Object.hasOwn(obj, key))
 ```
 
-### `"Array.from"`
+### `"unsafe:Array.from"`
 
 `boolean`, defaults to `false`.
 
@@ -98,7 +98,7 @@ or customization transform features
       "babel-plugin-transform-remove-polyfill",
       {
         "transform": {
-          "Array.from": true
+          "unsafe:Array.from": true
         }
       }
     ]

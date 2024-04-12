@@ -36,13 +36,13 @@ let d = Object.assign(Object.assign({}, e), o);`
     undefined,
     {},
     {
-      'Array.from': false,
+      'unsafe:Array.from': false,
     },
     {
       'Object.hasOwn': false,
     },
     {
-      'Array.from': false,
+      'unsafe:Array.from': false,
       'Object.hasOwn': false,
     },
   ];
@@ -76,7 +76,7 @@ let d = Object.assign({}, e, o);`
   test('should transform all', async () => {
     const result = await transform(code, {
       transform: {
-        'Array.from': true,
+        'unsafe:Array.from': true,
         'Object.hasOwn': true,
         'optimize:Object.assign': true,
       },
@@ -106,7 +106,7 @@ let d = Object.assign(Object.assign({}, e), o);`
   test('should transform only `Array.from`', async () => {
     const result = await transform(code, {
       transform: {
-        'Array.from': true,
+        'unsafe:Array.from': true,
       },
     });
 
