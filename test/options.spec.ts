@@ -1,12 +1,12 @@
 import { describe, test } from 'node:test';
-import { expect, transform } from './setup';
+
 import type { TransformOptions } from '../src/transformers';
+import { expect, transform } from './setup';
 
 const code = `
 let a = typeof Object.defineProperties === 'function';
 let b = Array.prototype.slice.call(x);
-let c = Object.prototype.hasOwnProperty.call(e, s);
-let d = Object.assign(Object.assign({}, e), o);
+let c = Object.assign(Object.assign({}, e), o);
 `;
 
 describe('Options', () => {
@@ -15,8 +15,7 @@ describe('Options', () => {
 
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.prototype.hasOwnProperty.call(e, s);
-let d = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);`
     );
   });
 
@@ -25,8 +24,7 @@ let d = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.prototype.hasOwnProperty.call(e, s);
-let d = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);`
     );
   });
 
@@ -39,11 +37,7 @@ let d = Object.assign(Object.assign({}, e), o);`
       'unsafe:Array.from': false,
     },
     {
-      'Object.hasOwn': false,
-    },
-    {
-      'unsafe:Array.from': false,
-      'Object.hasOwn': false,
+      'optimize:Object.assign': false,
     },
   ];
 
@@ -55,8 +49,7 @@ let d = Object.assign(Object.assign({}, e), o);`
 
       expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.prototype.hasOwnProperty.call(e, s);
-let d = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);`
       );
     });
   });
@@ -68,8 +61,7 @@ let d = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
-let c = Object.hasOwn(e, s);
-let d = Object.assign({}, e, o);`
+let c = Object.assign({}, e, o);`
     );
   });
 
@@ -77,29 +69,13 @@ let d = Object.assign({}, e, o);`
     const result = await transform(code, {
       transform: {
         'unsafe:Array.from': true,
-        'Object.hasOwn': true,
         'optimize:Object.assign': true,
       },
     });
 
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
-let c = Object.hasOwn(e, s);
-let d = Object.assign({}, e, o);`
-    );
-  });
-
-  test('should transform only `Object.hasOwn`', async () => {
-    const result = await transform(code, {
-      transform: {
-        'Object.hasOwn': true,
-      },
-    });
-
-    expect(result).toBe(`let a = true;
-let b = Array.prototype.slice.call(x);
-let c = Object.hasOwn(e, s);
-let d = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign({}, e, o);`
     );
   });
 
@@ -112,8 +88,7 @@ let d = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
-let c = Object.prototype.hasOwnProperty.call(e, s);
-let d = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);`
     );
   });
 
@@ -126,8 +101,7 @@ let d = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.prototype.hasOwnProperty.call(e, s);
-let d = Object.assign({}, e, o);`
+let c = Object.assign({}, e, o);`
     );
   });
 });

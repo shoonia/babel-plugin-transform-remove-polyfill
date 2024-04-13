@@ -99,15 +99,13 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         }
       },
     },
-  };
 
-  if (transformers.length > 0) {
-    visitor.CallExpression = {
+    CallExpression: {
       exit(path) {
         transformers.some((t) => t(path.node));
       },
-    };
-  }
+    },
+  };
 
   return {
     name: 'transform-remove-polyfill',

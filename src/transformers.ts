@@ -1,7 +1,6 @@
 import t from '@babel/types';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
-  'Object.hasOwn'?: unknown;
   'unsafe:Array.from'?: unknown;
   'optimize:Object.assign'?: unknown;
 }>;
@@ -32,14 +31,14 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
     );
 
   return [
-    (useAll || !!options['Object.hasOwn']) && ((node: t.CallExpression) => {
+    (node: t.CallExpression) => {
       if (node.arguments.length === 2 && isObjectHasOwn(node.callee)) {
         node.callee = memberExpression('Object', 'hasOwn');
         return true;
       }
 
       return false;
-    }),
+    },
 
     (useAll || !!options['unsafe:Array.from']) && ((node: t.CallExpression) => {
       if (isArraySlice(node.callee) && t.isIdentifier(node.arguments[0], null)) {

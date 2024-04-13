@@ -61,32 +61,6 @@ Set to `true` to enable all transformers
 
 or customization transform features
 
-### `"Object.hasOwn"`
-
-`boolean`, defaults to `false`.
-
-```json
-{
-  "plugins": [
-    [
-      "babel-plugin-transform-remove-polyfill",
-      {
-        "transform": {
-          "Object.hasOwn": true
-        }
-      }
-    ]
-  ]
-}
-```
-
-**Example:**
-
-```diff
-- Object.prototype.hasOwnProperty.call(obj, key)
-+ Object.hasOwn(obj, key))
-```
-
 ### `"unsafe:Array.from"`
 
 `boolean`, defaults to `false`.

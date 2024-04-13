@@ -73,7 +73,7 @@ export const keys = new Map<string, Set<string>>([
       'entries', //                   54
       'getOwnPropertyDescriptors', // 54
       'fromEntries', //               73
-      // 'hasOwn', //                    93
+      'hasOwn', //                    93
       // 'groupBy', //                   117
     ] satisfies (keyof ObjectConstructor)[]),
   ],
@@ -226,7 +226,7 @@ export const prototypeKeys = new Map<string, Set<string>>([
       'values', //         66
       'flat', //           69
       'flatMap', //        69
-      // 'at', //             92
+      'at', //             92
       // 'findLast', //       97
       // 'findLastIndex', //  97
       // 'toReversed', //     110
@@ -263,7 +263,7 @@ export const prototypeKeys = new Map<string, Set<string>>([
       'trimEnd', //           66
       'matchAll', //          73
       'replaceAll', //        85
-      // 'at', //                92
+      'at', //                92
       // 'toWellFormed', //      111
     ] satisfies (keyof typeof String.prototype)[]),
   ],
