@@ -5,7 +5,7 @@ import {
   keys,
   prototypeKeys,
   wellKnownSymbols,
-} from '../src/utils';
+} from '../src/keys';
 
 describe('Keys: Array', () => {
   keys.get('Array')!.forEach((key) => {

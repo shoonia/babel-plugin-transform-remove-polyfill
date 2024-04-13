@@ -4,7 +4,7 @@ import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { type Options, transformerCallExpression } from './transformers';
 import { evaluate } from './evaluate';
-import { functionGroup, isWellKnownSymbol } from './utils';
+import { functionGroup, isWellKnownSymbol } from './keys';
 
 const plugin = declarePlugin((api, options: Options = {}) => {
   api.assertVersion(7);
