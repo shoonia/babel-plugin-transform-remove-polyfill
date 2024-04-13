@@ -12,7 +12,6 @@ describe('Proxy.revocable', () => {
     expect('undefined' != typeof Proxy && void 0 !== Proxy.revocable && 'undefined' != typeof Reflect).toBe(true);
 
     await expect('var H = "undefined" != typeof Proxy && void 0 !== Proxy.revocable && "undefined" != typeof Reflect;')
-    // TODO: improve result
       .toBeTransform('var H = true;');
   });
 });

@@ -11,6 +11,8 @@ describe('no-transform', () => {
     'Object.getOwnPropertyDescriptor(r, t);',
     'typeof Symbol + "__tag";',
     'Reflect.__proto__;',
+    '"randomKeyName" in Object;',
+    '"append" in Element.prototype;',
   ];
 
   list.forEach((code) => {

@@ -1,6 +1,8 @@
 import t from '@babel/types';
 
 import {
+  keys,
+  prototypeKeys,
   functionGroup,
   isBuiltInMember,
   isWellKnownSymbol,
@@ -69,6 +71,20 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
       isUndefined(node.right) && functionGroup(node.left)
     ) {
       return node.operator.startsWith('!');
+    }
+  } else if (node.operator === 'in' && t.isStringLiteral(node.left, null)) {
+    if (t.isIdentifier(node.right, null)) {
+      if (keys.get(node.right.name)?.has(node.left.value) === true) {
+        return true;
+      }
+    } else if (
+      t.isMemberExpression(node.right, { computed: false }) &&
+      t.isIdentifier(node.right.property, { name: 'prototype' }) &&
+      t.isIdentifier(node.right.object, null)
+    ) {
+      if (prototypeKeys.get(node.right.object.name)?.has(node.left.value) === true) {
+        return true;
+      }
     }
   }
 
