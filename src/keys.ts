@@ -263,6 +263,7 @@ export const prototypeKeys = new Map<string, Set<string>>([
       'trimEnd', //           66
       'matchAll', //          73
       'replaceAll', //        85
+      // 'at', //                92
       // 'toWellFormed', //      111
     ] satisfies (keyof typeof String.prototype)[]),
   ],
