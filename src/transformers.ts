@@ -12,16 +12,6 @@ export interface Options {
 type Transformer = (node: t.CallExpression) => boolean;
 
 export const transformerCallExpression = (options?: TransformOptions): Transformer[] => {
-  if (options == null || options === false) {
-    return [];
-  }
-
-  const useAll = options === true;
-
-  const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
-  const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
-  const isObjectAssign = t.buildMatchMemberExpression('Object.assign', false);
-
   const memberExpression = (object: string, property: string) =>
     t.memberExpression(
       t.identifier(object),
@@ -30,17 +20,29 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       false,
     );
 
-  return [
-    (node: t.CallExpression) => {
+  const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+  const transformers: Transformer[] = [
+    (node) => {
       if (node.arguments.length === 2 && isObjectHasOwn(node.callee)) {
         node.callee = memberExpression('Object', 'hasOwn');
+
         return true;
       }
 
       return false;
     },
+  ];
 
-    (useAll || !!options['unsafe:Array.from']) && ((node: t.CallExpression) => {
+  if (options == null || options === false) {
+    return transformers;
+  }
+
+  const useAll = options === true;
+
+  if (useAll || !!options['unsafe:Array.from']) {
+    const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
+
+    transformers.push((node) => {
       if (isArraySlice(node.callee) && t.isIdentifier(node.arguments[0], null)) {
         if (node.arguments.length === 1) {
           node.callee = memberExpression('Array', 'from');
@@ -56,9 +58,13 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       }
 
       return false;
-    }),
+    });
+  }
 
-    (useAll || !!options['optimize:Object.assign']) && ((node: t.CallExpression) => {
+  if (useAll || !!options['optimize:Object.assign']) {
+    const isObjectAssign = t.buildMatchMemberExpression('Object.assign', false);
+
+    transformers.push((node) => {
       if (node.arguments.length > 1 && isObjectAssign(node.callee)) {
         const arg = node.arguments[0];
 
@@ -70,6 +76,8 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       }
 
       return false;
-    }),
-  ].filter((t): t is Transformer => typeof t === 'function');
+    });
+  }
+
+  return transformers;
 };

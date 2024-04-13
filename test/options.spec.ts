@@ -7,6 +7,7 @@ const code = `
 let a = typeof Object.defineProperties === 'function';
 let b = Array.prototype.slice.call(x);
 let c = Object.assign(Object.assign({}, e), o);
+let d = Object.prototype.hasOwnProperty.call(e, s);
 `;
 
 describe('Options', () => {
@@ -15,7 +16,8 @@ describe('Options', () => {
 
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);
+let d = Object.hasOwn(e, s);`
     );
   });
 
@@ -24,7 +26,8 @@ let c = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);
+let d = Object.hasOwn(e, s);`
     );
   });
 
@@ -49,7 +52,8 @@ let c = Object.assign(Object.assign({}, e), o);`
 
       expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);
+let d = Object.hasOwn(e, s);`
       );
     });
   });
@@ -61,7 +65,8 @@ let c = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
-let c = Object.assign({}, e, o);`
+let c = Object.assign({}, e, o);
+let d = Object.hasOwn(e, s);`
     );
   });
 
@@ -75,7 +80,8 @@ let c = Object.assign({}, e, o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
-let c = Object.assign({}, e, o);`
+let c = Object.assign({}, e, o);
+let d = Object.hasOwn(e, s);`
     );
   });
 
@@ -88,7 +94,8 @@ let c = Object.assign({}, e, o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
-let c = Object.assign(Object.assign({}, e), o);`
+let c = Object.assign(Object.assign({}, e), o);
+let d = Object.hasOwn(e, s);`
     );
   });
 
@@ -101,7 +108,8 @@ let c = Object.assign(Object.assign({}, e), o);`
 
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
-let c = Object.assign({}, e, o);`
+let c = Object.assign({}, e, o);
+let d = Object.hasOwn(e, s);`
     );
   });
 });
