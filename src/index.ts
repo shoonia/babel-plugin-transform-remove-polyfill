@@ -72,14 +72,18 @@ const plugin = declarePlugin((api, options: Options = {}) => {
       },
     },
 
-    UnaryExpression(path) {
-      const node = path.node;
+    UnaryExpression: {
+      exit(path) {
+        const node = path.node;
 
-      if (node.operator === '!') {
-        if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
-          path.replaceWith(t.booleanLiteral(false));
+        if (node.operator === '!') {
+          if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
+            path.replaceWith(t.booleanLiteral(false));
+          } else if (t.isBooleanLiteral(node.argument, null)) {
+            path.replaceWith(t.booleanLiteral(!node.argument.value));
+          }
         }
-      }
+      },
     },
 
     BinaryExpression(path) {

@@ -26,7 +26,7 @@ describe('Symbol.toStringTag', () => {
   });
 
   test('transform #2', async () => {
-    expect(!!Symbol.toStringTag).toBe(!false);
+    expect(!!Symbol.toStringTag).toBe(true);
 
     await expect(`var r = n(6073);
 e.exports = function() {
@@ -34,7 +34,7 @@ e.exports = function() {
 }`
     ).toBeTransform(`var r = n(6073);
 e.exports = function () {
-  return r() && !false;
+  return r() && true;
 };`);
   });
 });
