@@ -1,4 +1,4 @@
-import t from '@babel/types';
+import { types as t } from '@babel/core';
 import { isIdent, isNumeric } from './utils';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{

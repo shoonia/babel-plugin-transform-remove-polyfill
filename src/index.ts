@@ -1,12 +1,11 @@
-import type { Visitor, PluginPass } from '@babel/core';
-import { declare as declarePlugin } from '@babel/helper-plugin-utils';
+import type { Visitor, PluginPass, ConfigAPI } from '@babel/core';
 
 import { type Options, transformerCallExpression } from './transformers';
 import { evaluate } from './evaluate';
 import { functionGroup, isWellKnownSymbol, literals } from './keys';
 import { isBoolean, bool } from './utils';
 
-const plugin = declarePlugin((api, options: Options = {}) => {
+const plugin = (api: ConfigAPI, options: Options = {}) => {
   api.assertVersion(7);
 
   const transformers = transformerCallExpression(options.transform);
@@ -115,6 +114,6 @@ const plugin = declarePlugin((api, options: Options = {}) => {
     name: 'transform-remove-polyfill',
     visitor,
   };
-});
+};
 
 export { plugin as default };
