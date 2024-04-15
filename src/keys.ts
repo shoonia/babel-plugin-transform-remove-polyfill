@@ -1,6 +1,22 @@
-import t from '@babel/types';
+import type t from '@babel/types';
 
-import { isPrototypeMember } from './utils';
+import {
+  isIdent,
+  isIdentName,
+  isMember,
+  isPrototype,
+} from './utils';
+
+export const literals = new Set<t.Node['type']>([
+  'StringLiteral',
+  'NumericLiteral',
+  'NullLiteral',
+  'BooleanLiteral',
+  'RegExpLiteral',
+  'TemplateLiteral',
+  'BigIntLiteral',
+  'DecimalLiteral',
+]);
 
 export const wellKnownSymbols = new Set<string>([
   'unscopables', //        38
@@ -286,28 +302,25 @@ export const prototypeKeys = new Map<string, Set<string>>([
   ],
 ]);
 
-export const oneOfIdentifier = (node: t.Node, set: Set<string>): node is t.Identifier =>
-  t.isIdentifier(node, null) && set.has(node.name);
+export const oneOf = (node: t.Node, set: Set<string>): node is t.Identifier =>
+  isIdent(node) && set.has(node.name);
 
 export const functionGroup = (node: t.Node): boolean => {
-  if (
-    t.isMemberExpression(node, { computed: false }) &&
-    t.isIdentifier(node.property, null)
-  ) {
-    if (t.isIdentifier(node.object, null)) {
+  if (isMember(node) && isIdent(node.property)) {
+    if (isIdent(node.object)) {
       return keys.get(node.object.name)?.has(node.property.name) ?? false;
-    } else if (isPrototypeMember(node.object)) {
+    } else if (isPrototype(node.object)) {
       return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false;
     }
   }
 
-  return oneOfIdentifier(node, builtInConstructor);
+  return oneOf(node, builtInConstructor);
 };
 
 export const isBuiltInMember = (node: t.Node): node is t.Identifier =>
-  oneOfIdentifier(node, builtInMember);
+  oneOf(node, builtInMember);
 
 export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
-  t.isMemberExpression(node, { computed: false }) &&
-  t.isIdentifier(node.object, { name: 'Symbol' }) &&
-  oneOfIdentifier(node.property, wellKnownSymbols);
+  isMember(node) &&
+  isIdentName(node.object, 'Symbol') &&
+  oneOf(node.property, wellKnownSymbols);

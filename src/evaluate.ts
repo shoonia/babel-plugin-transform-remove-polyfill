@@ -1,4 +1,4 @@
-import t from '@babel/types';
+import type t from '@babel/types';
 
 import {
   keys,
@@ -7,7 +7,13 @@ import {
   isBuiltInMember,
   isWellKnownSymbol,
 } from './keys';
-import { isPrototypeMember, isTypeof, isUndefined } from './utils';
+import {
+  isIdent,
+  isString,
+  isPrototype,
+  isUnary,
+  isUndefined,
+} from './utils';
 
 type Result = {
   readonly match: true;
@@ -25,7 +31,7 @@ const equalities = new Set<t.BinaryExpression['operator']>([
 ]);
 
 const matchTypeof = (node: t.BinaryExpression): Result => {
-  if (isTypeof(node.left) && t.isStringLiteral(node.right, null)) {
+  if (isUnary(node.left, 'typeof') && isString(node.right)) {
     return {
       match: true,
       target: node.left.argument,
@@ -33,7 +39,7 @@ const matchTypeof = (node: t.BinaryExpression): Result => {
     };
   }
 
-  if (isTypeof(node.right) && t.isStringLiteral(node.left, null)) {
+  if (isUnary(node.right, 'typeof') && isString(node.left)) {
     return {
       match: true,
       target: node.right.argument,
@@ -66,12 +72,12 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
     ) {
       return node.operator.startsWith('!');
     }
-  } else if (node.operator === 'in' && t.isStringLiteral(node.left, null)) {
-    if (t.isIdentifier(node.right, null)) {
+  } else if (node.operator === 'in' && isString(node.left)) {
+    if (isIdent(node.right)) {
       if (keys.get(node.right.name)?.has(node.left.value) === true) {
         return true;
       }
-    } else if (isPrototypeMember(node.right)) {
+    } else if (isPrototype(node.right)) {
       if (prototypeKeys.get(node.right.object.name)?.has(node.left.value) === true) {
         return true;
       }

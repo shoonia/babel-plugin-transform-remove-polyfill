@@ -1,10 +1,10 @@
 import type { Visitor, PluginPass } from '@babel/core';
-import t from '@babel/types';
 import { declare as declarePlugin } from '@babel/helper-plugin-utils';
 
 import { type Options, transformerCallExpression } from './transformers';
 import { evaluate } from './evaluate';
-import { functionGroup, isWellKnownSymbol } from './keys';
+import { functionGroup, isWellKnownSymbol, literals } from './keys';
+import { isBoolean, bool } from './utils';
 
 const plugin = declarePlugin((api, options: Options = {}) => {
   api.assertVersion(7);
@@ -17,10 +17,10 @@ const plugin = declarePlugin((api, options: Options = {}) => {
         const node = path.node;
 
         if (functionGroup(node.test)) {
-          node.test = t.booleanLiteral(true);
+          node.test = bool(true);
         }
 
-        if (t.isBooleanLiteral(node.test, null)) {
+        if (isBoolean(node.test)) {
           if (node.test.value) {
             if (node.alternate != null) {
               node.alternate = undefined;
@@ -28,7 +28,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
           } else if (node.alternate == null) {
             path.remove();
           } else {
-            node.consequent = t.emptyStatement();
+            node.consequent = { type: 'EmptyStatement' };
           }
         }
       },
@@ -44,7 +44,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
               ? node.right
               : node.left
           );
-        } else if (t.isBooleanLiteral(node.left, null)) {
+        } else if (isBoolean(node.left)) {
           path.replaceWith(
             node.operator === '&&'
               ? node.left.value
@@ -66,7 +66,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
 
         if (functionGroup(node.test)) {
           path.replaceWith(node.consequent);
-        } else if (t.isBooleanLiteral(node.test, null)) {
+        } else if (isBoolean(node.test)) {
           path.replaceWith(node.test.value ? node.consequent : node.alternate);
         }
       },
@@ -78,19 +78,19 @@ const plugin = declarePlugin((api, options: Options = {}) => {
 
         if (node.operator === '!') {
           if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
-            path.replaceWith(t.booleanLiteral(false));
-          } else if (t.isBooleanLiteral(node.argument, null)) {
-            path.replaceWith(t.booleanLiteral(!node.argument.value));
+            path.replaceWith(bool(false));
+          } else if (isBoolean(node.argument)) {
+            path.replaceWith(bool(!node.argument.value));
           }
         }
       },
     },
 
     BinaryExpression(path) {
-      const result = evaluate(path.node);
+      const value = evaluate(path.node);
 
-      if (result !== null) {
-        path.replaceWith(t.booleanLiteral(result));
+      if (value !== null) {
+        path.replaceWith(bool(value));
       }
     },
 
@@ -98,7 +98,7 @@ const plugin = declarePlugin((api, options: Options = {}) => {
       exit(path) {
         const exp = path.node.expression;
 
-        if (functionGroup(exp) || t.isLiteral(exp, null)) {
+        if (functionGroup(exp) || literals.has(exp.type)) {
           path.remove();
         }
       },

@@ -21,6 +21,9 @@ describe('Array.prototype.slice.call(a) -> Array.from(a)', () => {
   });
 
   const noTransform = [
+    'Array.prototype.slice.call;',
+    'Array.prototype.slice.call();',
+    'Array.prototype.slice.call(0);',
     'Array.prototype.slice.call(a, 1);',
     'Array.prototype.slice.call(a, b);',
     'Array.prototype.slice.call(a, b, 0);',

@@ -1,4 +1,5 @@
 import t from '@babel/types';
+import { isIdent, isNumeric } from './utils';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
   'unsafe:Array.from'?: unknown;
@@ -12,13 +13,13 @@ export interface Options {
 type Transformer = (node: t.CallExpression) => boolean;
 
 export const transformerCallExpression = (options?: TransformOptions): Transformer[] => {
-  const memberExpression = (object: string, property: string) =>
-    t.memberExpression(
-      t.identifier(object),
-      t.identifier(property),
-      false,
-      false,
-    );
+  const memberExpression = (object: string, property: string): t.MemberExpression => ({
+    type: 'MemberExpression',
+    object: { type: 'Identifier', name: object },
+    property: { type: 'Identifier', name: property },
+    computed: false,
+    optional: false,
+  });
 
   const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
   const transformers: Transformer[] = [
@@ -43,15 +44,14 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
     const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
 
     transformers.push((node) => {
-      if (isArraySlice(node.callee) && t.isIdentifier(node.arguments[0], null)) {
-        if (node.arguments.length === 1) {
+      if (isArraySlice(node.callee)) {
+        const args = node.arguments;
+
+        if (args.length === 1 && isIdent(args[0])) {
           node.callee = memberExpression('Array', 'from');
-        } else if (
-          node.arguments.length === 2 &&
-          t.isNumericLiteral(node.arguments[1], { value: 0 })
-        ) {
+        } else if (args.length === 2 && isIdent(args[0]) && isNumeric(args[1], 0)) {
           node.callee = memberExpression('Array', 'from');
-          node.arguments.pop();
+          args.pop();
         }
 
         return true;
@@ -68,7 +68,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       if (node.arguments.length > 1 && isObjectAssign(node.callee)) {
         const arg = node.arguments[0];
 
-        if (t.isCallExpression(arg, null) && isObjectAssign(arg.callee)) {
+        if (arg.type === 'CallExpression' && isObjectAssign(arg.callee)) {
           node.arguments.splice(0, 1, ...arg.arguments);
         }
 
