@@ -47,8 +47,10 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
       if (isArraySlice(node.callee)) {
         const args = node.arguments;
 
-        if (args.length === 1 && isIdent(args[0])) {
-          node.callee = memberExpression('Array', 'from');
+        if (args.length === 1) {
+          if (isIdent(args[0])) {
+            node.callee = memberExpression('Array', 'from');
+          }
         } else if (args.length === 2 && isIdent(args[0]) && isNumeric(args[1], 0)) {
           node.callee = memberExpression('Array', 'from');
           args.pop();

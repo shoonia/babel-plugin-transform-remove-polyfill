@@ -31,15 +31,15 @@ const equalities = new Set<t.BinaryExpression['operator']>([
 ]);
 
 const matchTypeof = (node: t.BinaryExpression): Result => {
-  if (isUnary(node.left, 'typeof') && isString(node.right)) {
-    return {
-      match: true,
-      target: node.left.argument,
-      expect: node.right.value,
-    };
-  }
-
-  if (isUnary(node.right, 'typeof') && isString(node.left)) {
+  if (isUnary(node.left, 'typeof')) {
+    if (isString(node.right)) {
+      return {
+        match: true,
+        target: node.left.argument,
+        expect: node.right.value,
+      };
+    }
+  } else if (isUnary(node.right, 'typeof') && isString(node.left)) {
     return {
       match: true,
       target: node.right.argument,
@@ -59,14 +59,16 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
     if (tyof.match) {
       if (functionGroup(tyof.target)) {
         return node.operator.startsWith(tyof.expect === 'function' ? '=' : '!');
-      } else if (isBuiltInMember(tyof.target)) {
+      }
+
+      if (isBuiltInMember(tyof.target)) {
         return node.operator.startsWith(tyof.expect === 'object' ? '=' : '!');
-      } else if (isWellKnownSymbol(tyof.target)) {
+      }
+
+      if (isWellKnownSymbol(tyof.target)) {
         return node.operator.startsWith(tyof.expect === 'symbol' ? '=' : '!');
       }
-    }
-
-    if (
+    } else if (
       isUndefined(node.left) && functionGroup(node.right) ||
       isUndefined(node.right) && functionGroup(node.left)
     ) {
