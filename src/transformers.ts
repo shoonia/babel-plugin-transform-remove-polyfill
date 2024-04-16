@@ -1,5 +1,5 @@
-import { types as t } from '@babel/core';
-import { isIdent, isNumeric } from './utils';
+import type { types as t } from '@babel/core';
+import { isIdent, isNumeric, matchesPattern } from './utils';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
   'unsafe:Array.from'?: unknown;
@@ -21,7 +21,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
     optional: false,
   });
 
-  const isObjectHasOwn = t.buildMatchMemberExpression('Object.prototype.hasOwnProperty.call', false);
+  const isObjectHasOwn = matchesPattern('Object.prototype.hasOwnProperty.call');
   const transformers: Transformer[] = [
     (node) => {
       if (node.arguments.length === 2 && isObjectHasOwn(node.callee)) {
@@ -41,7 +41,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
   const useAll = options === true;
 
   if (useAll || !!options['unsafe:Array.from']) {
-    const isArraySlice = t.buildMatchMemberExpression('Array.prototype.slice.call', false);
+    const isArraySlice = matchesPattern('Array.prototype.slice.call');
 
     transformers.push((node) => {
       if (isArraySlice(node.callee)) {
@@ -62,7 +62,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
   }
 
   if (useAll || !!options['optimize:Object.assign']) {
-    const isObjectAssign = t.buildMatchMemberExpression('Object.assign', false);
+    const isObjectAssign = matchesPattern('Object.assign');
 
     transformers.push((node) => {
       if (node.arguments.length > 1 && isObjectAssign(node.callee)) {

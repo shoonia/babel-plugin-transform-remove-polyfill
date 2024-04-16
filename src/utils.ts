@@ -38,3 +38,25 @@ export const bool = (value: boolean): t.BooleanLiteral => ({
   type: 'BooleanLiteral',
   value,
 });
+
+export const matchesPattern = (path: string) => {
+  const parts = path.split('.').reverse();
+
+  return (member: t.Node): member is t.MemberExpression => {
+    if (!isMember(member)) {
+      return false;
+    }
+
+    const nodes: t.Node[] = [];
+    let node: t.Node = member;
+
+    do {
+      nodes.push(node.property);
+    } while (isMember(node = node.object));
+
+    nodes.push(node);
+
+    return nodes.length === parts.length &&
+      nodes.every((node, i) => isIdentName(node, parts[i]));
+  };
+};

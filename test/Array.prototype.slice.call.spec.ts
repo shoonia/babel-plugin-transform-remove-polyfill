@@ -27,6 +27,7 @@ describe('Array.prototype.slice.call(a) -> Array.from(a)', () => {
     'Array.prototype.slice.call(a, 1);',
     'Array.prototype.slice.call(a, b);',
     'Array.prototype.slice.call(a, b, 0);',
+    'Array.prototype.slice.call.bind(true);',
   ];
 
   noTransform.forEach((code, i) => {
