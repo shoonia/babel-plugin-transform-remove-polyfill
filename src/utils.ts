@@ -42,13 +42,12 @@ export const bool = (value: boolean): t.BooleanLiteral => ({
 export const matchesPattern = (path: string) => {
   const parts = path.split('.').reverse();
 
-  return (member: t.Node): member is t.MemberExpression => {
-    if (!isMember(member)) {
+  return (node: t.Node): node is t.MemberExpression => {
+    if (!isMember(node)) {
       return false;
     }
 
     const nodes: t.Node[] = [];
-    let node: t.Node = member;
 
     do {
       nodes.push(node.property);
@@ -57,6 +56,6 @@ export const matchesPattern = (path: string) => {
     nodes.push(node);
 
     return nodes.length === parts.length &&
-      nodes.every((node, i) => isIdentName(node, parts[i]));
+      nodes.every((n, i) => isIdentName(n, parts[i]));
   };
 };
