@@ -8,14 +8,10 @@ import {
 } from './utils';
 
 export const literals = new Set<t.Node['type']>([
-  'StringLiteral',
   'NumericLiteral',
   'NullLiteral',
   'BooleanLiteral',
-  'RegExpLiteral',
-  'TemplateLiteral',
   'BigIntLiteral',
-  'DecimalLiteral',
 ]);
 
 export const wellKnownSymbols = new Set<string>([
