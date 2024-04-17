@@ -3,7 +3,10 @@ import type t from '@babel/types';
 interface PrototypeMember extends t.MemberExpression {
   readonly type: 'MemberExpression';
   readonly object: t.Identifier
-  readonly property: t.Identifier
+  readonly property: {
+    readonly type: 'Identifier',
+    readonly name: 'prototype'
+  }
   readonly computed: false;
 }
 
@@ -47,11 +50,11 @@ export const matchesPattern = (path: string) => {
       return false;
     }
 
-    const nodes: t.Node[] = [];
+    const nodes = [node.property];
 
-    do {
+    while (isMember(node = node.object)) {
       nodes.push(node.property);
-    } while (isMember(node = node.object));
+    }
 
     nodes.push(node);
 

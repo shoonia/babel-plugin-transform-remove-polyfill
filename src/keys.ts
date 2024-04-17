@@ -298,25 +298,28 @@ export const prototypeKeys = new Map<string, Set<string>>([
   ],
 ]);
 
-export const oneOf = (node: t.Node, set: Set<string>): node is t.Identifier =>
-  isIdent(node) && set.has(node.name);
-
 export const functionGroup = (node: t.Node): boolean => {
-  if (isMember(node) && isIdent(node.property)) {
-    if (isIdent(node.object)) {
-      return keys.get(node.object.name)?.has(node.property.name) ?? false;
-    } else if (isPrototype(node.object)) {
-      return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false;
+  if (isMember(node)) {
+    if (isIdent(node.property)) {
+      if (isIdent(node.object)) {
+        return keys.get(node.object.name)?.has(node.property.name) ?? false;
+      }
+
+      if (isPrototype(node.object)) {
+        return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false;
+      }
     }
+  } else if (isIdent(node)) {
+    return builtInConstructor.has(node.name);
   }
 
-  return oneOf(node, builtInConstructor);
+  return false;
 };
 
 export const isBuiltInMember = (node: t.Node): node is t.Identifier =>
-  oneOf(node, builtInMember);
+  isIdent(node) && builtInMember.has(node.name);
 
 export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
   isMember(node) &&
   isIdentName(node.object, 'Symbol') &&
-  oneOf(node.property, wellKnownSymbols);
+  isIdent(node.property) && wellKnownSymbols.has(node.property.name);
