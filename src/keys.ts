@@ -30,7 +30,7 @@ export const wellKnownSymbols = new Set<string>([
   'matchAll', //           73
 ] satisfies (keyof SymbolConstructor)[]);
 
-const builtInConstructor = new Set<string>([
+export const builtInConstructor = new Set<string>([
   'ArrayBuffer', //       7
   'Int8Array', //         7
   'Uint8Array', //        7

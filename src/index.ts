@@ -2,7 +2,7 @@ import type { Visitor, PluginPass, ConfigAPI } from '@babel/core';
 
 import { type Options, transformerCallExpression } from './transformers';
 import { evaluate } from './evaluate';
-import { functionGroup, isWellKnownSymbol, literals, builtInMember } from './keys';
+import { functionGroup, isWellKnownSymbol, literals, builtInMember, builtInConstructor } from './keys';
 import { isBoolean, bool } from './utils';
 
 const plugin = (api: ConfigAPI, options: Options = {}) => {
@@ -11,6 +11,12 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
   if (Array.isArray(options.globalObjects)) {
     options.globalObjects.forEach((key) => {
       builtInMember.add(key);
+    });
+  }
+
+  if (Array.isArray(options.globalFunctions)) {
+    options.globalFunctions.forEach((key) => {
+      builtInConstructor.add(key);
     });
   }
 
