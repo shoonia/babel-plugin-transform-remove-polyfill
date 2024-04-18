@@ -2,11 +2,17 @@ import type { Visitor, PluginPass, ConfigAPI } from '@babel/core';
 
 import { type Options, transformerCallExpression } from './transformers';
 import { evaluate } from './evaluate';
-import { functionGroup, isWellKnownSymbol, literals } from './keys';
+import { functionGroup, isWellKnownSymbol, literals, builtInMember } from './keys';
 import { isBoolean, bool } from './utils';
 
 const plugin = (api: ConfigAPI, options: Options = {}) => {
   api.assertVersion(7);
+
+  if (Array.isArray(options.globalObjects)) {
+    options.globalObjects.forEach((key) => {
+      builtInMember.add(key);
+    });
+  }
 
   const transformers = transformerCallExpression(options.transform);
 

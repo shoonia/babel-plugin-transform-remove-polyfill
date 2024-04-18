@@ -8,6 +8,7 @@ export type TransformOptions = boolean | null | undefined | Readonly<{
 
 export interface Options {
   readonly transform?: TransformOptions;
+  readonly globalObjects?: string[];
 }
 
 type Transformer = (node: t.CallExpression) => boolean;

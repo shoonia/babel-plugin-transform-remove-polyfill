@@ -55,7 +55,7 @@ const builtInConstructor = new Set<string>([
   'WeakRef', //           84
 ] as const);
 
-const builtInMember = new Set<string>([
+export const builtInMember = new Set<string>([
   'JSON',    //    3
   'Reflect', //    49
   'Atomics', //    68
