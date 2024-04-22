@@ -31,28 +31,29 @@ export const wellKnownSymbols = new Set<string>([
 ] satisfies (keyof SymbolConstructor)[]);
 
 export const builtInConstructor = new Set<string>([
-  'ArrayBuffer', //       7
-  'Int8Array', //         7
-  'Uint8Array', //        7
-  'Uint8ClampedArray', // 7
-  'Int16Array', //        7
-  'Uint16Array', //       7
-  'Int32Array', //        7
-  'Uint32Array', //       7
-  'Float32Array', //      7
-  'Float64Array', //      7
-  'DataView', //          9
-  'Promise', //           32
-  'WeakMap', //           36
-  'WeakSet', //           36
-  'Set', //               38
-  'Map', //               38
-  'Symbol', //            38
-  'Proxy', //             49
-  'BigInt',         //    67
-  'BigInt64Array',  //    67
-  'BigUint64Array', //    67
-  'WeakRef', //           84
+  'ArrayBuffer', //          7
+  'Int8Array', //            7
+  'Uint8Array', //           7
+  'Uint8ClampedArray', //    7
+  'Int16Array', //           7
+  'Uint16Array', //          7
+  'Int32Array', //           7
+  'Uint32Array', //          7
+  'Float32Array', //         7
+  'Float64Array', //         7
+  'DataView', //             9
+  'Promise', //              32
+  'WeakMap', //              36
+  'WeakSet', //              36
+  'Set', //                  38
+  'Map', //                  38
+  'Symbol', //               38
+  'Proxy', //                49
+  'BigInt',         //       67
+  'BigInt64Array',  //       67
+  'BigUint64Array', //       67
+  'WeakRef', //              84
+  'FinalizationRegistry', // 84
 ] as const);
 
 export const builtInMember = new Set<string>([
