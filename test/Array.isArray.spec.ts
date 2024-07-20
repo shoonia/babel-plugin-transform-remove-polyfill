@@ -11,7 +11,7 @@ describe('Array.isArray', () => {
   test('transform #0', async () => {
     await expect(`var v = Array.isArray ? Array.isArray : function(e) {
       return "[object Array]" === Object.prototype.toString.call(e)
-    }`
+    }`,
     ).toBeTransform('var v = Array.isArray;');
   });
 });

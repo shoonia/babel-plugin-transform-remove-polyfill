@@ -17,7 +17,7 @@ describe('Options', () => {
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
 let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
     );
   });
 
@@ -27,7 +27,7 @@ let d = Object.hasOwn(e, s);`
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
 let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
     );
   });
 
@@ -53,7 +53,7 @@ let d = Object.hasOwn(e, s);`
       expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
 let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
       );
     });
   });
@@ -66,7 +66,7 @@ let d = Object.hasOwn(e, s);`
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
 let c = Object.assign({}, e, o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
     );
   });
 
@@ -81,7 +81,7 @@ let d = Object.hasOwn(e, s);`
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
 let c = Object.assign({}, e, o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
     );
   });
 
@@ -95,7 +95,7 @@ let d = Object.hasOwn(e, s);`
     expect(result).toBe(`let a = true;
 let b = Array.from(x);
 let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
     );
   });
 
@@ -109,7 +109,7 @@ let d = Object.hasOwn(e, s);`
     expect(result).toBe(`let a = true;
 let b = Array.prototype.slice.call(x);
 let c = Object.assign({}, e, o);
-let d = Object.hasOwn(e, s);`
+let d = Object.hasOwn(e, s);`,
     );
   });
 });

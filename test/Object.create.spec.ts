@@ -80,7 +80,7 @@ describe('Object.create', () => {
     }) : (function(o, m, k, k2) {
       if (k2 === undefined) k2 = k;
       o[k2] = m[k];
-    }));`
+    }));`,
     ).toBeTransform(`var __createBinding = this && this.__createBinding || function (o, m, k, k2) {
   if (k2 === undefined) k2 = k;
   var desc = Object.getOwnPropertyDescriptor(m, k);

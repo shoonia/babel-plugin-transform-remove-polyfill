@@ -12,7 +12,7 @@ describe('Object.is', () => {
     await expect(`function hr(e, t) {
   return e === t && (0 !== e || 1 / e == 1 / t) || e != e && t != t
 }
-var gr = "function" == typeof Object.is ? Object.is : hr;`
+var gr = "function" == typeof Object.is ? Object.is : hr;`,
     ).toBeTransform(`function hr(e, t) {
   return e === t && (0 !== e || 1 / e == 1 / t) || e != e && t != t;
 }

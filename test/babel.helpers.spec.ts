@@ -65,7 +65,7 @@ function _toPrimitive(t, r) {
   return ("string" === r ? String : Number)(t);
 }
 var a = _objectSpread({}, {});
-`
+`,
     ).toBeTransform(
       `function _typeof(o) {
   "@babel/helpers - typeof";
@@ -121,7 +121,7 @@ function _toPrimitive(t, r) {
   }
   return ("string" === r ? String : Number)(t);
 }
-var a = _objectSpread({}, {});`
+var a = _objectSpread({}, {});`,
     );
   });
 });

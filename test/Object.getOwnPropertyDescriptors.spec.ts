@@ -21,7 +21,7 @@ describe('Object.getOwnPropertyDescriptors', () => {
           ))
       }
       return e
-  }`
+  }`,
     ).toBeTransform(`function fe(e) {
   for (var t = 1; t < arguments.length; t++) {
     var n = null != arguments[t] ? arguments[t] : {};

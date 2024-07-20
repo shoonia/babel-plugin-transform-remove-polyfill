@@ -34,7 +34,7 @@ describe('Object.getOwnPropertyDescriptor', () => {
           }
           return r.value = t[n], r;
       }
-  }`
+  }`,
     ).toBeTransform('');
   });
 });

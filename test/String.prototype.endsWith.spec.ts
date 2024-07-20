@@ -16,7 +16,7 @@ describe('String.prototype.endsWith', () => {
       },
       writable: !0,
       configurable: !0
-  })`
+  })`,
     ).toBeTransform('');
   });
 });

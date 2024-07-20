@@ -18,7 +18,7 @@ describe('Array.prototype.indexOf', () => {
             if (c in a && a[c] === b)
                 return c;
         return -1
-    };`
+    };`,
     ).toBeTransform(`var nc = function (a, b) {
   return Array.prototype.indexOf.call(a, b, void 0);
 };`);
@@ -36,7 +36,7 @@ describe('Array.prototype.indexOf', () => {
           i = i >= 0 ? i : Math.max(0, r + i);
           for (; i < r; i++)  if (i in n && n[i] === t)  return i;
           return -1
-      };`
+      };`,
     ).toBeTransform(`if ([0, 1].indexOf(1, 2) != -1) Array.prototype.indexOf = function (t) {
   var n = g && a(this) == "[object String]" ? this.split("") : F(this),
     r = n.length >>> 0;
@@ -53,7 +53,7 @@ describe('Array.prototype.indexOf', () => {
       if (Array.prototype.indexOf) return e.indexOf(t, n);
       for (var r = n || 0; r < e.length; r++) if (e[r] === t) return r;
       return -1
-  }`
+  }`,
     ).toBeTransform(`function u(e, t, n) {
   if (true) return e.indexOf(t, n);
   for (var r = n || 0; r < e.length; r++) if (e[r] === t) return r;

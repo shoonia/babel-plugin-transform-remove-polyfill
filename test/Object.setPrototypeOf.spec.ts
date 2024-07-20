@@ -15,12 +15,12 @@ describe('Object.setPrototypeOf', () => {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    };`
+    };`,
     ).toBeTransform(
       `var extendStatics = function (d, b) {
   extendStatics = Object.setPrototypeOf;
   return extendStatics(d, b);
-};`
+};`,
     );
   });
 
@@ -30,7 +30,7 @@ describe('Object.setPrototypeOf', () => {
       } : function(t, n) {
         for (var r in n) t.hasOwnProperty(r) || (t[r] = n[r]);
         return t
-      });`
+      });`,
     ).toBeTransform('var a = Object.setPrototypeOf;');
   });
 
@@ -41,7 +41,7 @@ describe('Object.setPrototypeOf', () => {
         } || function(t, n) {
             for (var r in n) n.hasOwnProperty(r) && (t[r] = n[r])
         })(t, r)
-    };`
+    };`,
     ).toBeTransform(`var n = function (t, r) {
   return (n = Object.setPrototypeOf)(t, r);
 };`);
@@ -52,7 +52,7 @@ describe('Object.setPrototypeOf', () => {
       return p8 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function(e, t) {
           return e.__proto__ = t, e
       }, p8(e, t)
-  }`
+  }`,
     ).toBeTransform(`function p8(e, t) {
   return p8 = Object.setPrototypeOf.bind(), p8(e, t);
 }`);
@@ -84,7 +84,7 @@ describe('Object.setPrototypeOf', () => {
             return a;
           }
         : null;
-    }`
+    }`,
     ).toBeTransform('var ra;\nif (true) ra = Object.setPrototypeOf;');
   });
 
@@ -93,7 +93,7 @@ describe('Object.setPrototypeOf', () => {
       return (S = Object.setPrototypeOf || function(d, t) {
           return d.__proto__ = t, d
       })(d, t)
-  }`
+  }`,
     ).toBeTransform(`function S(d, t) {
   return (S = Object.setPrototypeOf)(d, t);
 }`);
@@ -104,10 +104,10 @@ describe('Object.setPrototypeOf', () => {
       return (A = Object.setPrototypeOf ? Object.getPrototypeOf : function(d) {
           return d.__proto__ || Object.getPrototypeOf(d)
       })(d)
-  }`
+  }`,
     ).toBeTransform(`function A(d) {
   return (A = Object.getPrototypeOf)(d);
-}`
+}`,
     );
   });
 
@@ -126,13 +126,13 @@ describe('Object.setPrototypeOf', () => {
         return a(t), r(i), n ? e(t, i) : t.__proto__ = i, t
       }
   }() : void 0)
-}`
+}`,
     ).toBeTransform(`function a(e, n, t) {
   var i = t(4),
     a = t(35),
     r = t(298);
   e.exports = Object.setPrototypeOf;
-}`
+}`,
     );
   });
 });

@@ -22,7 +22,7 @@ describe('Object.defineProperties', () => {
       var d = Object.getOwnPropertyDescriptor(b, c);
       d && Object.defineProperty(a, c, d)
     } else
-      a[c] = b[c];`
+      a[c] = b[c];`,
     ).toBeTransform(`if (true) {
   var d = Object.getOwnPropertyDescriptor(b, c);
   d && Object.defineProperty(a, c, d);

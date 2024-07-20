@@ -14,7 +14,7 @@ describe('Math.clz32', () => {
   pt = Math.LN2;
 function bt(e) {
   return 0 === (e >>>= 0) ? 32 : 31 - (mt(e) / pt | 0) | 0
-}`
+}`,
     ).toBeTransform(`var ft = Math.clz32,
   mt = Math.log,
   pt = Math.LN2;

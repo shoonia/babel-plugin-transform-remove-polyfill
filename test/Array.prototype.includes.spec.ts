@@ -29,7 +29,7 @@ describe('Array.prototype.includes', () => {
       },
       writable: !0,
       configurable: !0
-  })`
+  })`,
     ).toBeTransform('');
   });
 });

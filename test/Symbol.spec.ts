@@ -20,7 +20,7 @@ describe('Symbol', () => {
         }
       }
     }
-  }`
+  }`,
     ).toBeTransform(`function a(t) {
   var n = t[Symbol.iterator],
     r = 0;
@@ -32,15 +32,15 @@ describe('Symbol', () => {
       };
     }
   };
-}`
+}`,
     );
   });
 
   test('transform #2', async () => {
     await expect(
-      'var n = "undefined" != typeof Symbol && e[Symbol.iterator] || e["@@iterator"];'
+      'var n = "undefined" != typeof Symbol && e[Symbol.iterator] || e["@@iterator"];',
     ).toBeTransform(
-      'var n = e[Symbol.iterator] || e["@@iterator"];'
+      'var n = e[Symbol.iterator] || e["@@iterator"];',
     );
   });
 
@@ -51,8 +51,8 @@ describe('Symbol', () => {
       return typeof a
     } : function(a) {
       return a && typeof Symbol === "function" && a.constructor === Symbol && a !== (typeof Symbol === "function" ? Symbol.prototype : "@@prototype") ? "symbol" : typeof a
-    }`
-    ).toBeTransform('var g = function (a) {\n  return typeof a;\n};'
+    }`,
+    ).toBeTransform('var g = function (a) {\n  return typeof a;\n};',
     );
   });
 
@@ -62,11 +62,11 @@ describe('Symbol', () => {
     await expect(`for (var g = a[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"](), a; !(d = (a = g.next()).done); d = !0) {
       c.push(a.value);
       if (b && c.length === b) break
-    }`
+    }`,
     ).toBeTransform(`for (var g = a[Symbol.iterator](), a; !(d = (a = g.next()).done); d = !0) {
   c.push(a.value);
   if (b && c.length === b) break;
-}`
+}`,
     );
   });
 
@@ -87,7 +87,7 @@ describe('Symbol', () => {
     }
   };
   throw new TypeError(t ? "Object is not iterable." : "Symbol.iterator is not defined.")
-}`
+}`,
     ).toBeTransform(`function Ht(e) {
   var t = Symbol.iterator,
     n = t && e[t],

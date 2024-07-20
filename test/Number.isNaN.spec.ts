@@ -11,7 +11,7 @@ describe('Number.isNaN', () => {
   test('transform #0', async () => {
     await expect(`Number.isNaN = Number.isNaN || function(a) {
     return "number" == typeof a && a !== a;
-  };`
+  };`,
     ).toBeTransform('Number.isNaN = Number.isNaN;');
   });
 });

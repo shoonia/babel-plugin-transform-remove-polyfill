@@ -20,7 +20,7 @@ describe('Object.assign', () => {
           }
         }
         return e;
-      };`
+      };`,
     ).toBeTransform('var assign = Object.assign;');
   });
 
@@ -34,11 +34,11 @@ describe('Object.assign', () => {
             return t;
         }
         return __assign.apply(this, arguments);
-    };`
+    };`,
     ).toBeTransform(`var __assign = function () {
   __assign = Object.assign;
   return __assign.apply(this, arguments);
-};`
+};`,
     );
   });
 
@@ -51,10 +51,10 @@ describe('Object.assign', () => {
           return e;
         },
         i.apply(this, arguments);
-      };`
+      };`,
     ).toBeTransform(`var i = this && this.__assign || function () {
   return i = Object.assign, i.apply(this, arguments);
-};`
+};`,
     );
   });
 
@@ -66,10 +66,10 @@ describe('Object.assign', () => {
                     Object.prototype.hasOwnProperty.call(n, i) && (t[i] = n[i]);
             return t
         }).apply(this, arguments)
-    };`
+    };`,
     ).toBeTransform(`var c = function () {
   return (c = Object.assign).apply(this, arguments);
-};`
+};`,
     );
   });
 
@@ -83,10 +83,10 @@ describe('Object.assign', () => {
           }
           return e
       }, a.apply(this, arguments)
-    }`
+    }`,
     ).toBeTransform(`function a() {
   return a = Object.assign.bind(), a.apply(this, arguments);
-}`
+}`,
     );
   });
 
@@ -97,7 +97,7 @@ describe('Object.assign', () => {
             if (d) for (var e in d) Object.prototype.hasOwnProperty.call(d, e) && (a[e] = d[e])
         }
         return a
-    }`
+    }`,
     ).toBeTransform('var pa = Object.assign;');
   });
 
@@ -109,7 +109,7 @@ describe('Object.assign', () => {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
   }
   return t;
-};`
+};`,
     ).toBeTransform(`var __assign = this && this.__assign || Object.assign || function (t) {
   for (var s, i = 1, n = arguments.length; i < n; i++) {
     s = arguments[i];
@@ -134,7 +134,7 @@ describe('Object.assign', () => {
       },
       writable: !0,
       configurable: !0
-  })`
+  })`,
     ).toBeTransform('');
   });
 

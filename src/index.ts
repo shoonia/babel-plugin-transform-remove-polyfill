@@ -53,7 +53,7 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
           path.replaceWith(
             node.operator === '&&'
               ? node.right
-              : node.left
+              : node.left,
           );
         } else if (isBoolean(node.left)) {
           path.replaceWith(
@@ -65,7 +65,7 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
                 ? node.left.value
                   ? node.left
                   : node.right
-                : node.left
+                : node.left,
           );
         }
       },

@@ -15,7 +15,7 @@ describe('String.prototype.includes', () => {
       },
       writable: !0,
       configurable: !0
-  })`
+  })`,
     ).toBeTransform('');
   });
 });

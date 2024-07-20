@@ -18,7 +18,7 @@ describe('Array.prototype.fill', () => {
               r++;
           return t
       }
-  })`
+  })`,
     ).toBeTransform('');
   });
 });

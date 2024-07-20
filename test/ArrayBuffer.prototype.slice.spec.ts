@@ -23,7 +23,7 @@ describe('ArrayBuffer.prototype.slice', () => {
         s.set(u),
         o)
     }
-}()`
+}()`,
     ).toBeTransform('');
   });
 });

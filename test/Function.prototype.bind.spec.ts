@@ -36,7 +36,7 @@ describe('Function.prototype.bind', () => {
   s.prototype = new r,
   r.prototype = null),
   s
-});`
+});`,
     ).toBeTransform('');
   });
 });

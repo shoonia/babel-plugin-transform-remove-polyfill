@@ -16,7 +16,7 @@ describe('Symbol.iterator', () => {
     next: ba(a)
   };
   throw Error(String(a) + " is not an iterable or ArrayLike");
-}`
+}`,
     ).toBeTransform(`var ma = function (a) {
   var b = a[Symbol.iterator];
   if (b) return b.call(a);

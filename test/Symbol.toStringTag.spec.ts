@@ -15,7 +15,7 @@ describe('Symbol.toStringTag', () => {
   }), Object.defineProperty(e, "__esModule", {
     value: !0
   })
-}`
+}`,
     ).toBeTransform(`o.r = e => {
   Object.defineProperty(e, Symbol.toStringTag, {
     value: "Module"
@@ -31,7 +31,7 @@ describe('Symbol.toStringTag', () => {
     await expect(`var r = n(6073);
 e.exports = function() {
   return r() && !!Symbol.toStringTag
-}`
+}`,
     ).toBeTransform(`var r = n(6073);
 e.exports = function () {
   return r() && true;
