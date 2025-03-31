@@ -11,8 +11,8 @@ export default ts.config(
   ...ts.configs.recommended,
   {
     rules: {
-      '@typescript-eslint/semi': 'error',
-      '@typescript-eslint/no-extra-semi': 'error',
+      'semi': 'error',
+      'no-extra-semi': 'error',
       'require-await': 'error',
       'comma-dangle': [
         'error',

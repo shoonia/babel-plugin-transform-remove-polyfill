@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Symbol.toStringTag;
+void Symbol.toStringTag;
 
 describe('Symbol.toStringTag', () => {
   test('typeof', () => {

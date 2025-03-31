@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Function.prototype.bind;
+void Function.prototype.bind;
 
 describe('Function.prototype.bind', () => {
   test('typeof', () => {

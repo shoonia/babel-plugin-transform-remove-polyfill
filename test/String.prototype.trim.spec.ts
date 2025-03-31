@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-String.prototype.trim;
+void String.prototype.trim;
 
 describe('String.prototype.trim', () => {
   test('typeof', () => {

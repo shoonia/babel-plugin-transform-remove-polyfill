@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Object.values;
+void Object.values;
 
 describe('Object.values', () => {
   test('typeof', () => {

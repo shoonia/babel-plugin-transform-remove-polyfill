@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Reflect.ownKeys;
+void Reflect.ownKeys;
 
 describe('Reflect.ownKeys', () => {
   test('typeof', () => {

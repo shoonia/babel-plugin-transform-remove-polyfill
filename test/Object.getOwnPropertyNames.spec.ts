@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Object.getOwnPropertyNames;
+void Object.getOwnPropertyNames;
 
 describe('Object.getOwnPropertyNames', () => {
   test('typeof', () => {

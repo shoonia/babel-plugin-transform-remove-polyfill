@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "ES2022",
+    "target": "ES2024",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "noEmit": true,
@@ -26,10 +27,6 @@
     "lib": [
       "ES2023"
     ]
-  },
-  "ts-node": {
-    "esm": true,
-    "transpileOnly": true
   },
   "include": [
     "src",

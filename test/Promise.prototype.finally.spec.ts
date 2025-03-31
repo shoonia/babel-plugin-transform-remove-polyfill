@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Promise.prototype.finally;
+void Promise.prototype.finally;
 
 describe('Promise.prototype.finally', () => {
   test('typeof', () => {

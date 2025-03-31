@@ -1,8 +1,8 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Array.prototype.slice.call;
-Array.from;
+void Array.prototype.slice.call;
+void Array.from;
 
 describe('Array.prototype.slice.call(a) -> Array.from(a)', () => {
   test('typeof', () => {

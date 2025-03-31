@@ -1,8 +1,8 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Object.prototype.hasOwnProperty.call;
-Object.hasOwn;
+void Object.prototype.hasOwnProperty.call;
+void Object.hasOwn;
 
 describe('Object.prototype.hasOwnProperty.call(a,b) -> Object.hasOwn(a,b)', () => {
   test('typeof', () => {

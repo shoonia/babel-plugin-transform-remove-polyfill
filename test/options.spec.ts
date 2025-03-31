@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
 
 import type { TransformOptions } from '../src/transformers';
-import { expect, transform } from './setup';
+import { expect, transform } from './setup.ts';
 
 const code = `
 let a = typeof Object.defineProperties === 'function';

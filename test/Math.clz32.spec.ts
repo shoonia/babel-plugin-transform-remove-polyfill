@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Math.clz32;
+void Math.clz32;
 
 describe('Math.clz32', () => {
   test('typeof', () => {

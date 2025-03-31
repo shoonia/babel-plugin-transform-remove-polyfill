@@ -6,14 +6,14 @@ import {
   functionGroup,
   isBuiltInMember,
   isWellKnownSymbol,
-} from './keys';
+} from './keys.ts';
 import {
   isIdent,
   isString,
   isPrototype,
   isUnary,
   isUndefined,
-} from './utils';
+} from './utils.ts';
 
 type Result = {
   readonly match: true;

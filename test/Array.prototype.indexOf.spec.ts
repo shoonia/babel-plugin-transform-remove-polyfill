@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Array.prototype.indexOf;
+void Array.prototype.indexOf;
 
 describe('Array.prototype.indexOf', () => {
   test('typeof', () => {

@@ -1,5 +1,5 @@
 import type { types as t } from '@babel/core';
-import { isIdent, isNumeric, matchesPattern } from './utils';
+import { isIdent, isNumeric, matchesPattern } from './utils.ts';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
   'unsafe:Array.from'?: unknown;

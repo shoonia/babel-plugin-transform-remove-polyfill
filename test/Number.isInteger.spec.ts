@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Number.isInteger;
+void Number.isInteger;
 
 describe('Number.isInteger', () => {
   test('typeof', () => {

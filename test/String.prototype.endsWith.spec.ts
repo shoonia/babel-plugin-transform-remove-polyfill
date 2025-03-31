@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-String.prototype.endsWith;
+void String.prototype.endsWith;
 
 describe('String.prototype.endsWith', () => {
   test('typeof', () => {

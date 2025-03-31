@@ -1,11 +1,11 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
 import {
   keys,
   prototypeKeys,
   wellKnownSymbols,
-} from '../src/keys';
+} from '../src/keys.ts';
 
 describe('Keys: Array', () => {
   keys.get('Array')!.forEach((key) => {

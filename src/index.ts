@@ -1,9 +1,9 @@
 import type { Visitor, PluginPass, ConfigAPI } from '@babel/core';
 
-import { type Options, transformerCallExpression } from './transformers';
-import { evaluate } from './evaluate';
-import { functionGroup, isWellKnownSymbol, literals, builtInMember, builtInConstructor } from './keys';
-import { isBoolean, bool } from './utils';
+import { type Options, transformerCallExpression } from './transformers.ts';
+import { evaluate } from './evaluate.ts';
+import { functionGroup, isWellKnownSymbol, literals, builtInMember, builtInConstructor } from './keys.ts';
+import { isBoolean, bool } from './utils.ts';
 
 const plugin = (api: ConfigAPI, options: Options = {}) => {
   api.assertVersion(7);

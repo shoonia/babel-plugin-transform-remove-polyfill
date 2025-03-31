@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-String.prototype.includes;
+void String.prototype.includes;
 
 describe('String.prototype.includes', () => {
   test('typeof', () => {

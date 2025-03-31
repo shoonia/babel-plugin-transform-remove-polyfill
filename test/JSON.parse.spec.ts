@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-JSON.parse;
+void JSON.parse;
 
 describe('JSON.parse', () => {
   test('typeof', () => {

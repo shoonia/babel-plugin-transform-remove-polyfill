@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Proxy.revocable;
+void Proxy.revocable;
 
 describe('Proxy.revocable', () => {
   test('typeof', () => {

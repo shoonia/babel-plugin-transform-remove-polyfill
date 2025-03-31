@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Object.getOwnPropertySymbols;
+void Object.getOwnPropertySymbols;
 
 describe('Object.getOwnPropertySymbols', () => {
   test('typeof', () => {
@@ -18,9 +18,9 @@ describe('Object.getOwnPropertySymbols', () => {
       .toBeTransform(`function a(t, d) {
   var e,
     n = Object.keys(t);
-  return (e = Object.getOwnPropertySymbols(t), d && (e = e.filter(function (d) {
+  return e = Object.getOwnPropertySymbols(t), d && (e = e.filter(function (d) {
     return Object.getOwnPropertyDescriptor(t, d).enumerable;
-  })), n.push.apply(n, e)), n;
+  })), n.push.apply(n, e), n;
 }`);
   });
 

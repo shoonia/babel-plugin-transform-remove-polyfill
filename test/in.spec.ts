@@ -1,5 +1,5 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
 describe('BinaryExpression (in) replace logic', () => {
   test('should remove IfStatement', async () => {

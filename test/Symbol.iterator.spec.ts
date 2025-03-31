@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Symbol.iterator;
+void Symbol.iterator;
 
 describe('Symbol.iterator', () => {
   test('typeof', () => {

@@ -5,7 +5,7 @@ import {
   isIdentName,
   isMember,
   isPrototype,
-} from './utils';
+} from './utils.ts';
 
 export const literals = new Set<t.Node['type']>([
   'NumericLiteral',

@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Array.prototype.includes;
+void Array.prototype.includes;
 
 describe('Array.prototype.includes', () => {
   test('typeof', () => {

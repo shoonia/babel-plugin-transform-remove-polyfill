@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-String.prototype.startsWith;
+void String.prototype.startsWith;
 
 describe('String.prototype.startsWith', () => {
   test('typeof', () => {

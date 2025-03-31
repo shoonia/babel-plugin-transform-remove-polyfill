@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-ArrayBuffer.prototype.slice;
+void ArrayBuffer.prototype.slice;
 
 describe('ArrayBuffer.prototype.slice', () => {
   test('typeof', () => {

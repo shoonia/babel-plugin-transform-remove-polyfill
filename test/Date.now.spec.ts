@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Date.now;
+void Date.now;
 
 describe('Date.now', () => {
   test('typeof', () => {

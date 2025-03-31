@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Array.prototype.reduceRight;
+void Array.prototype.reduceRight;
 
 describe('Array.prototype.reduceRight', () => {
   test('typeof', () => {

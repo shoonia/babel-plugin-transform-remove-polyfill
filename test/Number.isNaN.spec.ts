@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { expect } from './setup';
+import { expect } from './setup.ts';
 
-Number.isNaN;
+void Number.isNaN;
 
 describe('Number.isNaN', () => {
   test('typeof', () => {
