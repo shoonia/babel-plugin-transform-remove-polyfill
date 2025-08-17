@@ -56,9 +56,11 @@ export const builtInConstructor = new Set<string>([
   'BigUint64Array', //       67
   'WeakRef', //              84
   'FinalizationRegistry', // 84
+  'AggregateError', //       85
 ] as const);
 
 export const builtInMember = new Set<string>([
+  'Math',    //    1
   'JSON',    //    3
   'Intl', //       24
   'Reflect', //    49
