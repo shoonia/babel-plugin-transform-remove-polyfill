@@ -61,6 +61,7 @@ export const builtInMember = new Set<string>([
   'Reflect', //    49
   'Atomics', //    68
   'globalThis', // 71
+  'Intl', //       24
 ] as const);
 
 export const keys = new Map<string, Set<string>>([
