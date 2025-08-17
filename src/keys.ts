@@ -301,18 +301,20 @@ export const prototypeKeys = new Map<string, Set<string>>([
 ]);
 
 export const functionGroup = (node: t.Node): boolean => {
-  if (isMember(node)) {
-    if (isIdent(node.property)) {
-      if (isIdent(node.object)) {
-        return keys.get(node.object.name)?.has(node.property.name) ?? false;
-      }
-
-      if (isPrototype(node.object)) {
-        return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false;
-      }
-    }
-  } else if (isIdent(node)) {
+  if (isIdent(node)) {
     return builtInConstructor.has(node.name);
+  }
+
+  if (!isMember(node) || !isIdent(node.property)) {
+    return false;
+  }
+
+  if (isIdent(node.object)) {
+    return keys.get(node.object.name)?.has(node.property.name) ?? false;
+  }
+
+  if (isPrototype(node.object)) {
+    return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false;
   }
 
   return false;
