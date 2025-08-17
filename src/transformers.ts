@@ -1,8 +1,7 @@
 import type { types as t } from '@babel/core';
-import { isIdent, isNumeric, matchesPattern } from './utils.ts';
+import { matchesPattern } from './utils.ts';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
-  'unsafe:Array.from'?: unknown;
   'optimize:Object.assign'?: unknown;
 }>;
 
@@ -41,29 +40,6 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
   }
 
   const useAll = options === true;
-
-  if (useAll || !!options['unsafe:Array.from']) {
-    const isArraySlice = matchesPattern('Array.prototype.slice.call');
-
-    transformers.push((node) => {
-      if (isArraySlice(node.callee)) {
-        const args = node.arguments;
-
-        if (args.length === 1) {
-          if (isIdent(args[0])) {
-            node.callee = memberExpression('Array', 'from');
-          }
-        } else if (args.length === 2 && isIdent(args[0]) && isNumeric(args[1], 0)) {
-          node.callee = memberExpression('Array', 'from');
-          args.pop();
-        }
-
-        return true;
-      }
-
-      return false;
-    });
-  }
 
   if (useAll || !!options['optimize:Object.assign']) {
     const isObjectAssign = matchesPattern('Object.assign');

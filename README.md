@@ -61,8 +61,6 @@ Set to `true` to enable all transformers
 
 or customization transform features
 
-### `"unsafe:Array.from"`
-
 `boolean`, defaults to `false`.
 
 ```json
@@ -72,7 +70,7 @@ or customization transform features
       "babel-plugin-transform-remove-polyfill",
       {
         "transform": {
-          "unsafe:Array.from": true
+          "optimize:Object.assign": true
         }
       }
     ]
@@ -81,36 +79,6 @@ or customization transform features
 ```
 
 **Example:**
-
-```diff
-- Array.prototype.slice.call(arguments)
-+ Array.from(arguments)
-```
-
-> **⚠️ Warning:** Unsafe transformation
-
-```js
-// Object with a length property
-const arrayLike = { length: 2 }
-
-/**
- * Return empty array with length == 2
- *
- * [empty × 2]
- *   length: 2
- */
-console.log(Array.prototype.slice.call(arrayLike));
-
-/**
- * Return array with undefined values and length == 2
- *
- * [undefined, undefined]
- *   0: undefined
- *   1: undefined
- *   length: 2
- */
-console.log(Array.from(arrayLike));
-```
 
 ### `"optimize:Object.assign"`
 

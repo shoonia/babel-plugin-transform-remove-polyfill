@@ -5,19 +5,17 @@ import { expect, transform } from './setup.ts';
 
 const code = `
 let a = typeof Object.defineProperties === 'function';
-let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);
-let d = Object.prototype.hasOwnProperty.call(e, s);
+let b = Object.assign(Object.assign({}, e), o);
+let c = Object.prototype.hasOwnProperty.call(e, s);
 `;
 
 describe('Options', () => {
-  test('should work widout options', async () => {
+  test('should work without options', async () => {
     const result = await transform(code);
 
     expect(result).toBe(`let a = true;
-let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`,
+let b = Object.assign(Object.assign({}, e), o);
+let c = Object.hasOwn(e, s);`,
     );
   });
 
@@ -25,9 +23,8 @@ let d = Object.hasOwn(e, s);`,
     const result = await transform(code, {});
 
     expect(result).toBe(`let a = true;
-let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`,
+let b = Object.assign(Object.assign({}, e), o);
+let c = Object.hasOwn(e, s);`,
     );
   });
 
@@ -36,9 +33,6 @@ let d = Object.hasOwn(e, s);`,
     null,
     undefined,
     {},
-    {
-      'unsafe:Array.from': false,
-    },
     {
       'optimize:Object.assign': false,
     },
@@ -51,9 +45,8 @@ let d = Object.hasOwn(e, s);`,
       });
 
       expect(result).toBe(`let a = true;
-let b = Array.prototype.slice.call(x);
-let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`,
+let b = Object.assign(Object.assign({}, e), o);
+let c = Object.hasOwn(e, s);`,
       );
     });
   });
@@ -64,38 +57,21 @@ let d = Object.hasOwn(e, s);`,
     });
 
     expect(result).toBe(`let a = true;
-let b = Array.from(x);
-let c = Object.assign({}, e, o);
-let d = Object.hasOwn(e, s);`,
+let b = Object.assign({}, e, o);
+let c = Object.hasOwn(e, s);`,
     );
   });
 
   test('should transform all', async () => {
     const result = await transform(code, {
       transform: {
-        'unsafe:Array.from': true,
         'optimize:Object.assign': true,
       },
     });
 
     expect(result).toBe(`let a = true;
-let b = Array.from(x);
-let c = Object.assign({}, e, o);
-let d = Object.hasOwn(e, s);`,
-    );
-  });
-
-  test('should transform only `Array.from`', async () => {
-    const result = await transform(code, {
-      transform: {
-        'unsafe:Array.from': true,
-      },
-    });
-
-    expect(result).toBe(`let a = true;
-let b = Array.from(x);
-let c = Object.assign(Object.assign({}, e), o);
-let d = Object.hasOwn(e, s);`,
+let b = Object.assign({}, e, o);
+let c = Object.hasOwn(e, s);`,
     );
   });
 
@@ -107,9 +83,8 @@ let d = Object.hasOwn(e, s);`,
     });
 
     expect(result).toBe(`let a = true;
-let b = Array.prototype.slice.call(x);
-let c = Object.assign({}, e, o);
-let d = Object.hasOwn(e, s);`,
+let b = Object.assign({}, e, o);
+let c = Object.hasOwn(e, s);`,
     );
   });
 });
