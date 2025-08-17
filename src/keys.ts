@@ -293,7 +293,7 @@ export const prototypeKeys = new Map<string, Set<string>>([
       'then', //    32
       'catch', //   32
       'finally', // 63
-    ] satisfies (keyof typeof Promise.prototype)[]),
+    ] satisfies (keyof Promise<null>)[]),
   ],
   [
     'ArrayBuffer', new Set([
@@ -303,7 +303,7 @@ export const prototypeKeys = new Map<string, Set<string>>([
   [
     'Function', new Set([
       'bind', // 1
-    ]),
+    ] satisfies (keyof typeof Function.prototype)[]),
   ],
   [
     'Blob', new Set([
