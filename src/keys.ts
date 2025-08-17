@@ -42,6 +42,7 @@ export const builtInConstructor = new Set<string>([
   'Float32Array', //         7
   'Float64Array', //         7
   'DataView', //             9
+  'URL', //                  19
   'Promise', //              32
   'WeakMap', //              36
   'WeakSet', //              36
@@ -49,6 +50,7 @@ export const builtInConstructor = new Set<string>([
   'Map', //                  38
   'Symbol', //               38
   'Proxy', //                49
+  'URLSearchParams', //      49
   'BigInt',         //       67
   'BigInt64Array',  //       67
   'BigUint64Array', //       67
@@ -58,10 +60,10 @@ export const builtInConstructor = new Set<string>([
 
 export const builtInMember = new Set<string>([
   'JSON',    //    3
+  'Intl', //       24
   'Reflect', //    49
   'Atomics', //    68
   'globalThis', // 71
-  'Intl', //       24
 ] as const);
 
 export const keys = new Map<string, Set<string>>([
@@ -136,6 +138,7 @@ export const keys = new Map<string, Set<string>>([
       'allSettled', //    76
       'any', //           85
       // 'withResolvers', // 119
+      // 'try', //           128
     ] satisfies (keyof PromiseConstructor)[]),
   ],
   [
