@@ -2,18 +2,19 @@ import { strictEqual, fail } from 'node:assert/strict';
 import { transformAsync } from '@babel/core';
 
 import type { Options } from '../src/transformers';
-// @ts-expect-error Get from dist
-import removePolyfillPlugin from '../dist/index.cjs';
+import plugin from '../src/index.ts';
 
 export const transform = async (code: string, options?: Options) => {
   const result = await transformAsync(code, {
     plugins: [
       options
-        ? [removePolyfillPlugin, options]
-        : removePolyfillPlugin,
+        ? [plugin, options]
+        : plugin,
     ],
     ast: false,
     babelrc: false,
+    configFile: false,
+    comments: false,
     sourceMaps: false,
   });
 
