@@ -31,6 +31,7 @@ export const wellKnownSymbols = new Set<string>([
 ] satisfies (keyof SymbolConstructor)[]);
 
 export const builtInConstructor = new Set<string>([
+  'Blob', //                 5
   'ArrayBuffer', //          7
   'Int8Array', //            7
   'Uint8Array', //           7
@@ -57,7 +58,7 @@ export const builtInConstructor = new Set<string>([
   'WeakRef', //              84
   'FinalizationRegistry', // 84
   'AggregateError', //       85
-] as const);
+] satisfies (keyof typeof globalThis)[]);
 
 export const builtInMember = new Set<string>([
   'Math',    //    1
@@ -66,7 +67,7 @@ export const builtInMember = new Set<string>([
   'Reflect', //    49
   'Atomics', //    68
   'globalThis', // 71
-] as const);
+] satisfies (keyof typeof globalThis)[]);
 
 export const keys = new Map<string, Set<string>>([
   [
@@ -303,6 +304,14 @@ export const prototypeKeys = new Map<string, Set<string>>([
     'Function', new Set([
       'bind', // 1
     ]),
+  ],
+  [
+    'Blob', new Set([
+      'slice',       // 21
+      'arrayBuffer', // 76
+      'stream',      // 76
+      'text',        // 76
+    ] satisfies (keyof Blob)[]),
   ],
 ]);
 
