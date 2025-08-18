@@ -7,6 +7,8 @@ import {
   isPrototype,
 } from './utils.ts';
 
+type GlobalKeys = keyof typeof globalThis
+
 export const literals = new Set<t.Node['type']>([
   'NumericLiteral',
   'NullLiteral',
@@ -58,7 +60,7 @@ export const builtInConstructor = new Set<string>([
   'WeakRef', //              84
   'FinalizationRegistry', // 84
   'AggregateError', //       85
-] satisfies (keyof typeof globalThis)[]);
+] satisfies GlobalKeys[]);
 
 export const builtInMember = new Set<string>([
   'Math',    //    1
@@ -67,7 +69,7 @@ export const builtInMember = new Set<string>([
   'Reflect', //    49
   'Atomics', //    68
   'globalThis', // 71
-] satisfies (keyof typeof globalThis)[]);
+] satisfies GlobalKeys[]);
 
 export const keys = new Map<string, Set<string>>([
   [
@@ -211,7 +213,12 @@ export const keys = new Map<string, Set<string>>([
       'revocable', // 63
     ] satisfies (keyof ProxyConstructor)[]),
   ],
-]);
+  [
+    'Error', new Set([
+      'captureStackTrace', // 3
+    ] satisfies (keyof ErrorConstructor)[]),
+  ],
+] satisfies [GlobalKeys, Set<string>][]);
 
 export const prototypeKeys = new Map<string, Set<string>>([
   [
