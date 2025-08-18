@@ -44,6 +44,7 @@ export const bool = (value: boolean): t.BooleanLiteral => ({
 
 export const matchesPattern = (path: string) => {
   const parts = path.split('.').reverse();
+  const length = parts.length;
 
   return (node: t.Node): node is t.MemberExpression => {
     if (!isMember(node)) {
@@ -53,12 +54,14 @@ export const matchesPattern = (path: string) => {
     const nodes = [node.property];
 
     while (isMember(node = node.object)) {
-      nodes.push(node.property);
+      if (nodes.push(node.property) >= length) {
+        return false;
+      }
     }
 
     nodes.push(node);
 
-    return nodes.length === parts.length &&
+    return nodes.length === length &&
       nodes.every((n, i) => isIdentName(n, parts[i]));
   };
 };
