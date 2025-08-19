@@ -36,10 +36,12 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
             if (node.alternate != null) {
               node.alternate = undefined;
             }
-          } else if (node.alternate == null) {
-            path.remove();
           } else {
-            node.consequent = { type: 'EmptyStatement' };
+            if (node.alternate == null) {
+              path.remove();
+            } else {
+              node.consequent = { type: 'EmptyStatement' };
+            }
           }
         }
       },
