@@ -289,6 +289,8 @@ export const prototypeKeys = new Map<string, Set<string>>([
       'padEnd', //            57
       'trimStart', //         66
       'trimEnd', //           66
+      'trimLeft', //          66
+      'trimRight', //         66
       'matchAll', //          73
       'replaceAll', //        85
       'at', //                92
