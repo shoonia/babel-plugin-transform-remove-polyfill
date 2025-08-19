@@ -75,12 +75,20 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
       return node.operator.startsWith('!');
     }
   } else if (node.operator === 'in' && isString(node.left)) {
+    const key = node.left.value;
+
     if (isIdent(node.right)) {
-      if (keys.get(node.right.name)?.has(node.left.value) === true) {
+      if (keys.get(node.right.name)?.has(key) === true) {
         return true;
       }
     } else if (isPrototype(node.right)) {
-      if (prototypeKeys.get(node.right.object.name)?.has(node.left.value) === true) {
+      const name = node.right.object.name;
+
+      if (prototypeKeys.get(name)?.has(key) === true) {
+        return true;
+      }
+
+      if (name === 'Symbol' && key === 'description') {
         return true;
       }
     }
