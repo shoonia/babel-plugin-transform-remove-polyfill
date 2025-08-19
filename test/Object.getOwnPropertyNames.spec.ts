@@ -14,4 +14,19 @@ describe('Object.getOwnPropertyNames', () => {
   });`)
       .toBeTransform('');
   });
+
+  test('transform #1', async () => {
+    await expect(`var C = function(e) {
+    return C = Object.getOwnPropertyNames || function(e) {
+        var t = [];
+        for (var n in e)
+            Object.prototype.hasOwnProperty.call(e, n) && (t[t.length] = n);
+        return t
+    },
+    C(e)
+};`,
+    ).toBeTransform(`var C = function (e) {
+  return C = Object.getOwnPropertyNames, C(e);
+};`);
+  });
 });

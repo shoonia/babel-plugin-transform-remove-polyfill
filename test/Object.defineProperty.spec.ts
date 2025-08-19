@@ -12,4 +12,18 @@ describe('Object.defineProperty', () => {
     await expect('var o = Object.defineProperty || function(t, n, e) { t[n] = e.value }')
       .toBeTransform('var o = Object.defineProperty;');
   });
+
+  test('transform #2', async () => {
+    await expect(`function x(e, t) {
+    return Object.defineProperty ? Object.defineProperty(e, "raw", {
+        value: t
+    }) : e.raw = t,
+    e
+}`,
+    ).toBeTransform(`function x(e, t) {
+  return Object.defineProperty(e, "raw", {
+    value: t
+  }), e;
+}`);
+  });
 });
