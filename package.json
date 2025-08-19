@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-transform-remove-polyfill",
   "version": "0.24.1",
-  "description": "",
+  "description": "Babel plugin that removes polyfills and transforms feature detection patterns for modern JavaScript environments",
   "main": "dist/index.cjs",
   "exports": "./dist/index.cjs",
   "types": "./index.d.ts",
@@ -33,7 +33,17 @@
     "index.d.ts"
   ],
   "keywords": [
-    "babel-plugin"
+    "babel-plugin",
+    "polyfill",
+    "babel",
+    "transform",
+    "optimization",
+    "es6",
+    "es2015",
+    "modern",
+    "dead-code-elimination",
+    "feature-detection",
+    "bundle-size"
   ],
   "author": {
     "name": "Alexander Zaytsev",
