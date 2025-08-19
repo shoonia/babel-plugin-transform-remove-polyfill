@@ -58,21 +58,21 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
 
     if (tyof.match) {
       if (functionGroup(tyof.target)) {
-        return node.operator.startsWith(tyof.expect === 'function' ? '=' : '!');
+        return node.operator.charCodeAt(0) === (tyof.expect === 'function' ? 61 : 33); // '=' : '!'
       }
 
       if (isBuiltInMember(tyof.target)) {
-        return node.operator.startsWith(tyof.expect === 'object' ? '=' : '!');
+        return node.operator.charCodeAt(0) === (tyof.expect === 'object' ? 61 : 33); // '=' : '!'
       }
 
       if (isWellKnownSymbol(tyof.target)) {
-        return node.operator.startsWith(tyof.expect === 'symbol' ? '=' : '!');
+        return node.operator.charCodeAt(0) === (tyof.expect === 'symbol' ? 61 : 33); // '=' : '!'
       }
     } else if (
       isUndefined(node.left) && functionGroup(node.right) ||
       isUndefined(node.right) && functionGroup(node.left)
     ) {
-      return node.operator.startsWith('!');
+      return node.operator.charCodeAt(0) === 33; // '!'
     }
   } else if (node.operator === 'in' && isString(node.left)) {
     const key = node.left.value;
