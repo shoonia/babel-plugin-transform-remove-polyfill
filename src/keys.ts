@@ -100,6 +100,13 @@ export const keys = new Map<string, Set<string>>([
     ] satisfies (keyof ObjectConstructor)[]),
   ],
   [
+    'String', new Set([
+      'fromCharCode',  // 1
+      'fromCodePoint', // 41
+      'raw',           // 41
+    ] satisfies (keyof StringConstructor)[]),
+  ],
+  [
     'Array', new Set([
       'isArray', // 4
       'of', //      45
