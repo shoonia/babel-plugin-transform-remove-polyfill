@@ -36,4 +36,52 @@ describe('Reflect.construct', () => {
   }
 }`);
   });
+
+  test('transform #2', async () => {
+    await expect(`var eaa = function() {
+  function a() {
+    function e() {}
+    new e;
+    Reflect.construct(e, [], l());
+    return new e instanceof e
+  }
+  if (typeof Reflect != "undefined" && Reflect.construct) {
+    if (a())
+      return Reflect.construct;
+    var c = Reflect.construct;
+    return function(e, f, g) {
+      e = c(e, f);
+      g && Reflect.setPrototypeOf(e, g.prototype);
+      return e
+    }
+  }
+  return function(e, f, g) {
+    g === void 0 && (g = e);
+    g = baa(g.prototype || Object.prototype);
+    return Function.prototype.apply.call(e, g, f) || g
+  }
+}()`,
+    ).toBeTransform(`var eaa = function () {
+  function a() {
+    function e() {}
+    new e();
+    Reflect.construct(e, [], l());
+    return new e() instanceof e;
+  }
+  if (true) {
+    if (a()) return Reflect.construct;
+    var c = Reflect.construct;
+    return function (e, f, g) {
+      e = c(e, f);
+      g && Reflect.setPrototypeOf(e, g.prototype);
+      return e;
+    };
+  }
+  return function (e, f, g) {
+    g === void 0 && (g = e);
+    g = baa(g.prototype || Object.prototype);
+    return Function.prototype.apply.call(e, g, f) || g;
+  };
+}();`);
+  });
 });
