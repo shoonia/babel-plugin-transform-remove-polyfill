@@ -89,12 +89,14 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
       exit(path) {
         const node = path.node;
 
-        if (node.operator === '!') {
-          if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
-            path.replaceWith(bool(false));
-          } else if (isBoolean(node.argument)) {
-            path.replaceWith(bool(!node.argument.value));
-          }
+        if (node.operator !== '!') {
+          return;
+        }
+
+        if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
+          path.replaceWith(bool(false));
+        } else if (isBoolean(node.argument)) {
+          path.replaceWith(bool(!node.argument.value));
         }
       },
     },
@@ -119,7 +121,11 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
 
     CallExpression: {
       exit(path) {
-        transformers.some((t) => t(path.node));
+        for (let i = 0; i < transformers.length;) {
+          if (transformers[i++](path.node)) {
+            break;
+          }
+        }
       },
     },
   };
