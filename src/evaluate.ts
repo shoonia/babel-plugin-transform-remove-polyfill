@@ -78,13 +78,13 @@ export const evaluate = (node: t.BinaryExpression): boolean | null => {
     const key = node.left.value;
 
     if (isIdent(node.right)) {
-      if (keys.get(node.right.name)?.has(key) === true) {
+      if (keys.get(node.right.name)?.has(key)) {
         return true;
       }
     } else if (isPrototype(node.right)) {
       const name = node.right.object.name;
 
-      if (prototypeKeys.get(name)?.has(key) === true) {
+      if (prototypeKeys.get(name)?.has(key)) {
         return true;
       }
 
