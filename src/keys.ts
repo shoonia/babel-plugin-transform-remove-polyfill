@@ -9,6 +9,53 @@ import {
 
 type GlobalKeys = keyof typeof globalThis
 
+type TypedArrayPrototype =
+  keyof typeof Array.prototype &
+  keyof typeof Int8Array.prototype &
+  keyof typeof Int16Array.prototype &
+  keyof typeof Int32Array.prototype &
+  keyof typeof Uint8Array.prototype &
+  keyof typeof Uint16Array.prototype &
+  keyof typeof Uint32Array.prototype &
+  keyof typeof Uint8ClampedArray.prototype &
+  keyof typeof Float32Array.prototype &
+  keyof typeof Float64Array.prototype &
+  keyof typeof BigInt64Array.prototype &
+  keyof typeof BigUint64Array.prototype;
+
+const arrayLike = [
+  'toString',
+  'join',
+  'reverse',
+  'slice',
+  'sort',
+  'indexOf',
+  'lastIndexOf',
+  'every',
+  'some',
+  'forEach',
+  'map',
+  'filter',
+  'reduce',
+  'reduceRight',
+  'find',
+  'findIndex',
+  'fill',
+  'copyWithin',
+  'entries',
+  'keys',
+  'values',
+  'at',
+  'includes',
+  // 'findLast',
+  // 'findLastIndex',
+  // 'toReversed',
+  // 'toSorted',
+  // 'with',
+] satisfies TypedArrayPrototype[];
+
+const arrayLikeSet = new Set(arrayLike);
+
 export const literals = new Set<t.Node['type']>([
   'NumericLiteral',
   'NullLiteral',
@@ -230,46 +277,30 @@ export const keys = new Map<string, Set<string>>([
 export const prototypeKeys = new Map<string, Set<string>>([
   [
     'Array', new Set([
-      'indexOf', //        1
-      'lastIndexOf', //    1
-      'forEach', //        1
-      'filter', //         1
+      ...arrayLike,
       'concat', //         1
-      'every', //          1
-      'some', //           1
-      'map', //            1
-      'join', //           1
       'shift', //          1
       'unshift', //        1
-      'sort', //           1
-      'slice', //          1
       'splice', //         1
       'pop', //            1
       'push', //           1
-      'reverse', //        1
       'toLocaleString', // 1
-      'toString', //       1
-      'reduce', //         3
-      'reduceRight', //    3
-      'keys', //           38
-      'entries', //        38
-      'copyWithin', //     45
-      'find', //           45
-      'findIndex', //      45
-      'fill', //           45
-      'includes', //       47
-      'values', //         66
       'flat', //           69
       'flatMap', //        69
-      'at', //             92
-      // 'findLast', //       97
-      // 'findLastIndex', //  97
-      // 'toReversed', //     110
-      // 'toSorted', //       110
       // 'toSpliced', //      110
-      // 'with', //           110
     ] satisfies (keyof Array<null>)[]),
   ],
+  ['Int8Array', arrayLikeSet],
+  ['Int16Array', arrayLikeSet],
+  ['Int32Array', arrayLikeSet],
+  ['Uint8Array', arrayLikeSet],
+  ['Uint16Array', arrayLikeSet],
+  ['Uint32Array', arrayLikeSet],
+  ['Uint8ClampedArray', arrayLikeSet],
+  ['Float32Array', arrayLikeSet],
+  ['Float64Array', arrayLikeSet],
+  ['BigInt64Array', arrayLikeSet],
+  ['BigUint64Array', arrayLikeSet],
   [
     'String', new Set([
       'indexOf', //           1

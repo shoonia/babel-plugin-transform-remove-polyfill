@@ -123,7 +123,7 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
       exit(path) {
         for (let i = 0; i < transformers.length;) {
           if (transformers[i++](path.node)) {
-            break;
+            return;
           }
         }
       },
