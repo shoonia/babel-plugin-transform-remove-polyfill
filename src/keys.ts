@@ -366,6 +366,32 @@ export const prototypeKeys = new Map<string, Set<string>>([
       'text',        // 76
     ] satisfies (keyof Blob)[]),
   ],
+  [
+    'DataView', new Set([
+      'getInt8',      // 9
+      'setInt8',      // 9
+      'getInt16',     // 9
+      'setInt16',     // 9
+      'getInt32',     // 9
+      'setInt32',     // 9
+      'getUint8',     // 9
+      'setUint8',     // 9
+      'getUint16',    // 9
+      'setUint16',    // 9
+      'getUint32',    // 9
+      'setUint32',    // 9
+      'getFloat32',   // 9
+      'setFloat32',   // 9
+      'getFloat64',   // 9
+      'setFloat64',   // 9
+      'getBigInt64',  // 67
+      'setBigInt64',  // 67
+      'getBigUint64', // 67
+      'setBigUint64', // 67
+      // 'getFloat16',   // 135
+      // 'setFloat16',   // 135
+    ] satisfies (keyof DataView)[]),
+  ],
 ]);
 
 export const functionGroup = (node: t.Node): boolean => {
