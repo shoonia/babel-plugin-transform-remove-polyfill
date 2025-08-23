@@ -47,21 +47,18 @@ export const matchesPattern = (path: string) => {
   const length = parts.length;
 
   return (node: t.Node): node is t.MemberExpression => {
-    if (!isMember(node)) {
+    if (!isMember(node) || !isIdentName(node.property, parts[0])) {
       return false;
     }
 
-    const nodes = [node.property];
+    let index = 1;
 
-    while (isMember(node = node.object)) {
-      if (nodes.push(node.property) >= length) {
+    for (; index < length && isMember(node = node.object); index++) {
+      if (!isIdentName(node.property, parts[index])) {
         return false;
       }
     }
 
-    nodes.push(node);
-
-    return nodes.length === length &&
-      nodes.every((n, i) => isIdentName(n, parts[i]));
+    return index + 1 === length && isIdentName(node, parts[index]);
   };
 };
