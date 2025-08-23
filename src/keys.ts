@@ -24,6 +24,20 @@ type TypedArrayPrototype =
   keyof typeof BigUint64Array.prototype;
 
 const arrayLike = [
+  'Int8Array',
+  'Int16Array',
+  'Int32Array',
+  'Uint8Array',
+  'Uint16Array',
+  'Uint32Array',
+  'Uint8ClampedArray',
+  'Float32Array',
+  'Float64Array',
+  'BigInt64Array',
+  'BigUint64Array',
+] satisfies GlobalKeys[];
+
+const arrayLikeMethods = [
   'toString',
   'join',
   'reverse',
@@ -54,7 +68,8 @@ const arrayLike = [
   // 'with',
 ] satisfies TypedArrayPrototype[];
 
-const arrayLikeSet = new Set(arrayLike);
+const arrayLikeConstructor = new Set(['of', 'from']);
+const arrayLikePrototype = new Set(arrayLikeMethods);
 
 export const literals = new Set<t.Node['type']>([
   'NumericLiteral',
@@ -119,6 +134,7 @@ export const builtInMember = new Set<string>([
 ] satisfies GlobalKeys[]);
 
 export const keys = new Map<string, Set<string>>([
+  ...arrayLike.map((i) => [i, arrayLikeConstructor] as const),
   [
     'Object', new Set([
       'create', //                    5
@@ -272,12 +288,13 @@ export const keys = new Map<string, Set<string>>([
       'captureStackTrace', // 3
     ] satisfies (keyof ErrorConstructor)[]),
   ],
-] satisfies [GlobalKeys, Set<string>][]);
+]);
 
 export const prototypeKeys = new Map<string, Set<string>>([
+  ...arrayLike.map((i) => [i, arrayLikePrototype] as const),
   [
     'Array', new Set([
-      ...arrayLike,
+      ...arrayLikeMethods,
       'concat', //         1
       'shift', //          1
       'unshift', //        1
@@ -290,17 +307,6 @@ export const prototypeKeys = new Map<string, Set<string>>([
       // 'toSpliced', //      110
     ] satisfies (keyof Array<null>)[]),
   ],
-  ['Int8Array', arrayLikeSet],
-  ['Int16Array', arrayLikeSet],
-  ['Int32Array', arrayLikeSet],
-  ['Uint8Array', arrayLikeSet],
-  ['Uint16Array', arrayLikeSet],
-  ['Uint32Array', arrayLikeSet],
-  ['Uint8ClampedArray', arrayLikeSet],
-  ['Float32Array', arrayLikeSet],
-  ['Float64Array', arrayLikeSet],
-  ['BigInt64Array', arrayLikeSet],
-  ['BigUint64Array', arrayLikeSet],
   [
     'String', new Set([
       'indexOf', //           1
