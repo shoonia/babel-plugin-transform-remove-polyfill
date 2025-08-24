@@ -1,5 +1,13 @@
 import type t from '@babel/types';
 
+interface ObjectMember extends t.MemberExpression {
+  readonly type: 'MemberExpression';
+  readonly object: t.Identifier
+  readonly property: t.Identifier;
+  readonly computed: false;
+  readonly optional: false;
+}
+
 interface PrototypeMember extends t.MemberExpression {
   readonly type: 'MemberExpression';
   readonly object: t.Identifier
@@ -8,6 +16,7 @@ interface PrototypeMember extends t.MemberExpression {
     readonly name: 'prototype'
   }
   readonly computed: false;
+  readonly optional: false;
 }
 
 export const isMember = (node: t.Node): node is t.MemberExpression =>
@@ -46,7 +55,7 @@ export const matchesPattern = (path: string) => {
   const parts = path.split('.').reverse();
   const length = parts.length;
 
-  return (node: t.Node): node is t.MemberExpression => {
+  return (node: t.Node): node is ObjectMember => {
     if (!isMember(node) || !isIdentName(node.property, parts[0])) {
       return false;
     }
