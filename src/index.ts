@@ -126,10 +126,8 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
         }
       },
     },
-  };
 
-  if (transformers.length > 0) {
-    visitor.CallExpression = {
+    CallExpression: {
       exit(path) {
         const ident = new GlobalIdentifier(path);
 
@@ -139,8 +137,8 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
           }
         }
       },
-    };
-  }
+    },
+  };
 
   return {
     name: 'transform-remove-polyfill',
