@@ -2,9 +2,8 @@ import type { Visitor, PluginPass, ConfigAPI } from '@babel/core';
 
 import { type Options, transformerCallExpression } from './transformers.ts';
 import { evaluate } from './evaluate.ts';
-import { functionGroup, isWellKnownSymbol, literals, builtInMember, builtInConstructor } from './keys.ts';
+import { literals, builtInMember, builtInConstructor, KeyChecker } from './keys.ts';
 import { isBoolean, bool } from './utils.ts';
-import { initGlobalIdentifier } from './GlobalIdentifier.ts';
 
 const plugin = (api: ConfigAPI, options: Options = {}) => {
   api.assertVersion(7);
@@ -27,9 +26,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     IfStatement: {
       exit(path) {
         const node = path.node;
-        const isGlobalIdent = initGlobalIdentifier(path);
+        const checker = new KeyChecker(path);
 
-        if (functionGroup(isGlobalIdent, node.test)) {
+        if (checker.functionGroup(node.test)) {
           node.test = bool(true);
         }
 
@@ -52,9 +51,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     LogicalExpression: {
       exit(path) {
         const node = path.node;
-        const isGlobalIdent = initGlobalIdentifier(path);
+        const checker = new KeyChecker(path);
 
-        if (functionGroup(isGlobalIdent, node.left) || isWellKnownSymbol(isGlobalIdent, node.left)) {
+        if (checker.functionGroup(node.left) || checker.isWellKnownSymbol(node.left)) {
           path.replaceWith(
             node.operator === '&&'
               ? node.right
@@ -79,9 +78,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     ConditionalExpression: {
       exit(path) {
         const node = path.node;
-        const isGlobalIdent = initGlobalIdentifier(path);
+        const checker = new KeyChecker(path);
 
-        if (functionGroup(isGlobalIdent, node.test)) {
+        if (checker.functionGroup(node.test)) {
           path.replaceWith(node.consequent);
         } else if (isBoolean(node.test)) {
           path.replaceWith(node.test.value ? node.consequent : node.alternate);
@@ -97,9 +96,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
           return;
         }
 
-        const isGlobalIdent = initGlobalIdentifier(path);
+        const checker = new KeyChecker(path);
 
-        if (functionGroup(isGlobalIdent, node.argument) || isWellKnownSymbol(isGlobalIdent, node.argument)) {
+        if (checker.functionGroup(node.argument) || checker.isWellKnownSymbol(node.argument)) {
           path.replaceWith(bool(false));
         } else if (isBoolean(node.argument)) {
           path.replaceWith(bool(!node.argument.value));
@@ -108,8 +107,8 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     },
 
     BinaryExpression(path) {
-      const isGlobalIdent = initGlobalIdentifier(path);
-      const value = evaluate(isGlobalIdent, path.node);
+      const checker = new KeyChecker(path);
+      const value = evaluate(checker, path.node);
 
       if (value !== null) {
         path.replaceWith(bool(value));
@@ -119,9 +118,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     ExpressionStatement: {
       exit(path) {
         const exp = path.node.expression;
-        const isGlobalIdent = initGlobalIdentifier(path);
+        const checker = new KeyChecker(path);
 
-        if (functionGroup(isGlobalIdent, exp) || literals.has(exp.type)) {
+        if (checker.functionGroup(exp) || literals.has(exp.type)) {
           path.remove();
         }
       },

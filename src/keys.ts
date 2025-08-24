@@ -1,6 +1,7 @@
 import type t from '@babel/types';
+import type { NodePath } from '@babel/core';
 
-import type { GlobalIdentifier } from './GlobalIdentifier.ts';
+import { GlobalIdentifier } from './GlobalIdentifier.ts';
 import {
   isIdent,
   isIdentName,
@@ -395,32 +396,60 @@ export const prototypeKeys = new Map<string, Set<string>>([
   ],
 ]);
 
-export const functionGroup = (isGlobalIdent: GlobalIdentifier, node: t.Node): boolean => {
+const getFunctionGroup = (node: t.Node): t.Identifier | null => {
   if (isIdent(node)) {
-    return builtInConstructor.has(node.name) && isGlobalIdent(node);
+    return builtInConstructor.has(node.name) ? node : null;
   }
 
   if (!isMember(node) || !isIdent(node.property)) {
-    return false;
+    return null;
   }
 
   if (isIdent(node.object)) {
-    return (keys.get(node.object.name)?.has(node.property.name) ?? false) && isGlobalIdent(node.object);
+    return keys.get(node.object.name)?.has(node.property.name) ? node.object : null;
   }
 
   if (isPrototype(node.object)) {
-    return (prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false) && isGlobalIdent(node.object.object);
+    return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ? node.object.object : null;
   }
 
-  return false;
+  return null;
 };
 
-export const isBuiltInMember = (isGlobalIdent: GlobalIdentifier, node: t.Node): node is t.Identifier =>
-  isIdent(node) && builtInMember.has(node.name) && isGlobalIdent(node);
+const getBuiltInMember = (node: t.Node): t.Identifier | null =>
+  isIdent(node) && builtInMember.has(node.name) ? node : null;
 
-export const isWellKnownSymbol = (isGlobalIdent: GlobalIdentifier, node: t.Node): node is t.MemberExpression =>
+const getWellKnownSymbol = (node: t.Node): t.Identifier | null =>
   isMember(node) &&
   isIdentName(node.object, 'Symbol') &&
   isIdent(node.property) &&
-  wellKnownSymbols.has(node.property.name) &&
-  isGlobalIdent(node.object);
+  wellKnownSymbols.has(node.property.name)
+    ? node.object
+    : null;
+
+export class KeyChecker {
+  readonly #cache: GlobalIdentifier;
+
+  constructor(path: NodePath) {
+    this.#cache = new GlobalIdentifier(path);
+  }
+
+  isGlobalIdent(ident: t.Identifier): boolean {
+    return this.#cache.isGlobal(ident);
+  }
+
+  functionGroup(node: t.Node): boolean {
+    const ident = getFunctionGroup(node);
+    return ident !== null && this.#cache.isGlobal(ident);
+  }
+
+  isBuiltInMember(node: t.Node): node is t.Identifier {
+    const ident = getBuiltInMember(node);
+    return ident !== null && this.#cache.isGlobal(ident);
+  }
+
+  isWellKnownSymbol(node: t.Node): node is t.MemberExpression {
+    const ident = getWellKnownSymbol(node);
+    return ident !== null && this.#cache.isGlobal(ident);
+  }
+}
