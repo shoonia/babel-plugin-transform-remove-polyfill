@@ -1,5 +1,6 @@
 import type t from '@babel/types';
 
+import type { GlobalIdentifier } from './GlobalIdentifier.ts';
 import {
   isIdent,
   isIdentName,
@@ -394,9 +395,9 @@ export const prototypeKeys = new Map<string, Set<string>>([
   ],
 ]);
 
-export const functionGroup = (node: t.Node): boolean => {
+export const functionGroup = (isGlobalIdent: GlobalIdentifier, node: t.Node): boolean => {
   if (isIdent(node)) {
-    return builtInConstructor.has(node.name);
+    return builtInConstructor.has(node.name) && isGlobalIdent(node);
   }
 
   if (!isMember(node) || !isIdent(node.property)) {
@@ -404,20 +405,22 @@ export const functionGroup = (node: t.Node): boolean => {
   }
 
   if (isIdent(node.object)) {
-    return keys.get(node.object.name)?.has(node.property.name) ?? false;
+    return (keys.get(node.object.name)?.has(node.property.name) ?? false) && isGlobalIdent(node.object);
   }
 
   if (isPrototype(node.object)) {
-    return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false;
+    return (prototypeKeys.get(node.object.object.name)?.has(node.property.name) ?? false) && isGlobalIdent(node.object.object);
   }
 
   return false;
 };
 
-export const isBuiltInMember = (node: t.Node): node is t.Identifier =>
-  isIdent(node) && builtInMember.has(node.name);
+export const isBuiltInMember = (isGlobalIdent: GlobalIdentifier, node: t.Node): node is t.Identifier =>
+  isIdent(node) && builtInMember.has(node.name) && isGlobalIdent(node);
 
-export const isWellKnownSymbol = (node: t.Node): node is t.MemberExpression =>
+export const isWellKnownSymbol = (isGlobalIdent: GlobalIdentifier, node: t.Node): node is t.MemberExpression =>
   isMember(node) &&
   isIdentName(node.object, 'Symbol') &&
-  isIdent(node.property) && wellKnownSymbols.has(node.property.name);
+  isIdent(node.property) &&
+  wellKnownSymbols.has(node.property.name) &&
+  isGlobalIdent(node.object);

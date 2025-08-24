@@ -4,6 +4,7 @@ import { type Options, transformerCallExpression } from './transformers.ts';
 import { evaluate } from './evaluate.ts';
 import { functionGroup, isWellKnownSymbol, literals, builtInMember, builtInConstructor } from './keys.ts';
 import { isBoolean, bool } from './utils.ts';
+import { initGlobalIdentifier } from './GlobalIdentifier.ts';
 
 const plugin = (api: ConfigAPI, options: Options = {}) => {
   api.assertVersion(7);
@@ -26,8 +27,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     IfStatement: {
       exit(path) {
         const node = path.node;
+        const isGlobalIdent = initGlobalIdentifier(path);
 
-        if (functionGroup(node.test)) {
+        if (functionGroup(isGlobalIdent, node.test)) {
           node.test = bool(true);
         }
 
@@ -50,8 +52,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     LogicalExpression: {
       exit(path) {
         const node = path.node;
+        const isGlobalIdent = initGlobalIdentifier(path);
 
-        if (functionGroup(node.left) || isWellKnownSymbol(node.left)) {
+        if (functionGroup(isGlobalIdent, node.left) || isWellKnownSymbol(isGlobalIdent, node.left)) {
           path.replaceWith(
             node.operator === '&&'
               ? node.right
@@ -76,8 +79,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     ConditionalExpression: {
       exit(path) {
         const node = path.node;
+        const isGlobalIdent = initGlobalIdentifier(path);
 
-        if (functionGroup(node.test)) {
+        if (functionGroup(isGlobalIdent, node.test)) {
           path.replaceWith(node.consequent);
         } else if (isBoolean(node.test)) {
           path.replaceWith(node.test.value ? node.consequent : node.alternate);
@@ -93,7 +97,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
           return;
         }
 
-        if (functionGroup(node.argument) || isWellKnownSymbol(node.argument)) {
+        const isGlobalIdent = initGlobalIdentifier(path);
+
+        if (functionGroup(isGlobalIdent, node.argument) || isWellKnownSymbol(isGlobalIdent, node.argument)) {
           path.replaceWith(bool(false));
         } else if (isBoolean(node.argument)) {
           path.replaceWith(bool(!node.argument.value));
@@ -102,7 +108,8 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     },
 
     BinaryExpression(path) {
-      const value = evaluate(path.node);
+      const isGlobalIdent = initGlobalIdentifier(path);
+      const value = evaluate(isGlobalIdent, path.node);
 
       if (value !== null) {
         path.replaceWith(bool(value));
@@ -112,8 +119,9 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
     ExpressionStatement: {
       exit(path) {
         const exp = path.node.expression;
+        const isGlobalIdent = initGlobalIdentifier(path);
 
-        if (functionGroup(exp) || literals.has(exp.type)) {
+        if (functionGroup(isGlobalIdent, exp) || literals.has(exp.type)) {
           path.remove();
         }
       },
