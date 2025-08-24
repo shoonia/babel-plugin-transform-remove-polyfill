@@ -10,7 +10,8 @@
   "scripts": {
     "build": "NODE_NO_WARNINGS=1 rollup -c",
     "lint": "eslint ./src ./test",
-    "test": "NODE_NO_WARNINGS=1 node --experimental-strip-types --test ./test/*.spec.ts"
+    "test": "NODE_NO_WARNINGS=1 node --experimental-strip-types --test ./test/*.spec.ts",
+    "e2e": "node --experimental-strip-types ./e2e/index.ts"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0-0"

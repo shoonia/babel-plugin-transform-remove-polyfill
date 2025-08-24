@@ -32,5 +32,8 @@
     "src",
     "test",
     "index.d.ts"
+  ],
+  "exclude": [
+    "e2e"
   ]
 }

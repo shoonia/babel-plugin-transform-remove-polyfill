@@ -5,6 +5,7 @@ export default ts.config(
   {
     ignores: [
       'dist',
+      'e2e',
     ],
   },
   js.configs.recommended,
