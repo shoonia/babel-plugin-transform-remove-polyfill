@@ -14,10 +14,10 @@ const setScope = (path: NodePath) => {
 
 export const initGlobalIdentifier = (path: NodePath): GlobalIdentifier => {
   const scope = path.scope;
-  const map = cache.get(scope) ?? setScope(path);
 
   return (ident) => {
     const id = ident.name;
+    const map = cache.get(scope) ?? setScope(path);
     const cached = map.get(id);
 
     if (typeof cached === 'boolean') {
