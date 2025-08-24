@@ -3,7 +3,7 @@ import type t from '@babel/types';
 interface ObjectMember extends t.MemberExpression {
   readonly type: 'MemberExpression';
   readonly object: t.Identifier
-  readonly property: t.Identifier;
+  readonly property: t.Identifier | t.MemberExpression;
   readonly computed: false;
   readonly optional: false;
 }
@@ -51,23 +51,17 @@ export const bool = (value: boolean): t.BooleanLiteral => ({
   value,
 });
 
-export const matchesPattern = (path: string) => {
-  const parts = path.split('.').reverse();
-  const length = parts.length;
+export const matchesPattern = (path: `${string}.${string}`) => {
+  const parts = path.split('.');
+  const lastIndex = parts.length - 1;
 
   return (node: t.Node): node is ObjectMember => {
-    if (!isMember(node) || !isIdentName(node.property, parts[0])) {
-      return false;
-    }
-
-    let index = 1;
-
-    for (; index < length && isMember(node = node.object); index++) {
-      if (!isIdentName(node.property, parts[index])) {
+    for (let i = lastIndex; i > 0; i--, node = node.object) {
+      if (!isMember(node) || !isIdentName(node.property, parts[i])) {
         return false;
       }
     }
 
-    return index + 1 === length && isIdentName(node, parts[index]);
+    return isIdentName(node, parts[0]);
   };
 };

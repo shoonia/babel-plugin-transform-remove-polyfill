@@ -26,7 +26,7 @@ export const transformerCallExpression = (options?: TransformOptions): Transform
 
   const isObjectHasOwn = matchesPattern('Object.prototype.hasOwnProperty.call');
   const transformers: Transformer[] = [
-    (ident,node) => {
+    (ident, node) => {
       if (node.arguments.length === 2 && isObjectHasOwn(node.callee) && ident.isGlobal(node.callee.object)) {
         node.callee = memberExpression('Object', 'hasOwn');
 

@@ -51,28 +51,30 @@ const matchTypeof = (node: t.BinaryExpression): Result => {
 };
 
 export const evaluate = (checker: KeyChecker, node: t.BinaryExpression): boolean | null => {
-  if (equalities.has(node.operator)) {
+  const operator = node.operator;
+
+  if (equalities.has(operator)) {
     const tyof = matchTypeof(node);
 
     if (tyof.match) {
       if (checker.functionGroup(tyof.target)) {
-        return node.operator.charCodeAt(0) === (tyof.expect === 'function' ? 61 : 33); // '=' : '!'
+        return operator.charCodeAt(0) === (tyof.expect === 'function' ? 61 : 33); // '=' : '!'
       }
 
       if (checker.isBuiltInMember(tyof.target)) {
-        return node.operator.charCodeAt(0) === (tyof.expect === 'object' ? 61 : 33); // '=' : '!'
+        return operator.charCodeAt(0) === (tyof.expect === 'object' ? 61 : 33); // '=' : '!'
       }
 
       if (checker.isWellKnownSymbol(tyof.target)) {
-        return node.operator.charCodeAt(0) === (tyof.expect === 'symbol' ? 61 : 33); // '=' : '!'
+        return operator.charCodeAt(0) === (tyof.expect === 'symbol' ? 61 : 33); // '=' : '!'
       }
     } else if (
       isUndefined(node.left) && checker.functionGroup(node.right) ||
       isUndefined(node.right) && checker.functionGroup(node.left)
     ) {
-      return node.operator.charCodeAt(0) === 33; // '!'
+      return operator.charCodeAt(0) === 33; // '!'
     }
-  } else if (node.operator === 'in' && isString(node.left)) {
+  } else if (operator === 'in' && isString(node.left)) {
     const key = node.left.value;
 
     if (isIdent(node.right)) {
