@@ -1,7 +1,8 @@
 import type t from '@babel/types';
 import type { NodePath } from '@babel/core';
+import type { Scope } from 'babel__traverse';
 
-import { GlobalIdentifier } from './GlobalIdentifier.ts';
+import { isGlobal } from './GlobalIdentifier.ts';
 import {
   isIdent,
   isIdentName,
@@ -441,28 +442,28 @@ const getWellKnownSymbol = (node: t.Node): t.Identifier | null =>
     : null;
 
 export class KeyChecker {
-  readonly #cache: GlobalIdentifier;
+  readonly #scope: Scope;
 
   constructor(path: NodePath) {
-    this.#cache = new GlobalIdentifier(path);
+    this.#scope = path.scope;
   }
 
   isGlobalIdent(ident: t.Identifier): boolean {
-    return this.#cache.isGlobal(ident);
+    return isGlobal(this.#scope, ident);
   }
 
   functionGroup(node: t.Node): boolean {
     const ident = getFunctionGroup(node);
-    return ident !== null && this.#cache.isGlobal(ident);
+    return ident !== null && isGlobal(this.#scope, ident);
   }
 
   isBuiltInMember(node: t.Node): node is t.Identifier {
     const ident = getBuiltInMember(node);
-    return ident !== null && this.#cache.isGlobal(ident);
+    return ident !== null && isGlobal(this.#scope, ident);
   }
 
   isWellKnownSymbol(node: t.Node): node is t.MemberExpression {
     const ident = getWellKnownSymbol(node);
-    return ident !== null && this.#cache.isGlobal(ident);
+    return ident !== null && isGlobal(this.#scope, ident);
   }
 }

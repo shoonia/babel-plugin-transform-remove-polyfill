@@ -4,7 +4,6 @@ import { type Options, transformerCallExpression } from './transformers.ts';
 import { evaluate } from './evaluate.ts';
 import { literals, builtInMember, builtInConstructor, KeyChecker } from './keys.ts';
 import { isBoolean, bool } from './utils.ts';
-import { GlobalIdentifier } from './GlobalIdentifier.ts';
 
 const plugin = (api: ConfigAPI, options: Options = {}) => {
   api.assertVersion(7);
@@ -129,10 +128,8 @@ const plugin = (api: ConfigAPI, options: Options = {}) => {
 
     CallExpression: {
       exit(path) {
-        const ident = new GlobalIdentifier(path);
-
         for (let i = 0; i < transformers.length;) {
-          if (transformers[i++](ident, path.node)) {
+          if (transformers[i++](path)) {
             return;
           }
         }

@@ -1,36 +1,29 @@
 import type t from '@babel/types';
-import type { NodePath } from '@babel/core';
 import type { Scope } from 'babel__traverse';
 
-const cache = new WeakMap<Scope, Map<string, boolean>>();
+type TCache = Map<string, boolean>;
 
-export class GlobalIdentifier {
-  readonly #scope: Scope;
+const cache = new WeakMap<Scope, TCache>();
 
-  constructor(path: NodePath) {
-    this.#scope = path.scope;
+const setScope = (scope: Scope): TCache => {
+  const map: TCache = new Map();
+  cache.set(scope, map);
+
+  return map;
+};
+
+export const isGlobal = (scope: Scope, ident: t.Identifier): boolean => {
+  const id = ident.name;
+  const map = cache.get(scope) ?? setScope(scope);
+  const cached = map.get(id);
+
+  if (typeof cached === 'boolean') {
+    return cached;
   }
 
-  #setScope() {
-    const map = new Map<string, boolean>();
-    cache.set(this.#scope, map);
+  const result = !scope.getBinding(id);
 
-    return map;
-  }
+  map.set(id, result);
 
-  isGlobal(ident: t.Identifier): boolean {
-    const id = ident.name;
-    const map = cache.get(this.#scope) ?? this.#setScope();
-    const cached = map.get(id);
-
-    if (typeof cached === 'boolean') {
-      return cached;
-    }
-
-    const result = !this.#scope.getBinding(id);
-
-    map.set(id, result);
-
-    return result;
-  }
-}
+  return result;
+};
