@@ -4,6 +4,7 @@ import {
   keys,
   prototypeKeys,
   KeyChecker,
+  regExpPrototypeKeys,
 } from './keys.ts';
 import {
   isIdent,
@@ -84,12 +85,12 @@ export const evaluate = (checker: KeyChecker, node: t.BinaryExpression): boolean
     } else if (isPrototype(node.right)) {
       const name = node.right.object.name;
 
-      if (prototypeKeys.get(name)?.has(key)) {
-        return checker.isGlobalIdent(node.right.object);
-      }
-
-      if (name === 'Symbol' && key === 'description') {
-        return checker.isGlobalIdent(node.right.object);
+      switch (true) {
+        case prototypeKeys.get(name)?.has(key):
+        case name === 'Symbol' && key === 'description':
+        case name === 'RegExp' && regExpPrototypeKeys.has(key): {
+          return checker.isGlobalIdent(node.right.object);
+        }
       }
     }
   }

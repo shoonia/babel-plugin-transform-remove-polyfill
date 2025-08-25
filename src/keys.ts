@@ -396,6 +396,19 @@ export const prototypeKeys = new Map<string, Set<string>>([
   ],
 ]);
 
+export const regExpPrototypeKeys = new Set<string>([
+  'global',      // 1
+  'ignoreCase',  // 1
+  'multiline',   // 1
+  'source',      // 1
+  'flags',       // 49
+  'sticky',      // 49
+  'unicode',     // 50
+  'dotAll',      // 62
+  'hasIndices',  // 90
+  // 'unicodeSets', // 112
+] satisfies (keyof typeof RegExp.prototype)[]);
+
 const getFunctionGroup = (node: t.Node): t.Identifier | null => {
   if (isIdent(node)) {
     return builtInConstructor.has(node.name) ? node : null;
