@@ -2,7 +2,7 @@ import type t from '@babel/types';
 import type { NodePath } from '@babel/core';
 
 import { matchesPattern } from './utils.ts';
-import { isGlobal } from './GlobalIdentifier.ts';
+import { isGlobal } from './isGlobal.ts';
 
 export type TransformOptions = boolean | null | undefined | Readonly<{
   'optimize:Object.assign'?: unknown;

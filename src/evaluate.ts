@@ -11,7 +11,6 @@ import {
   isString,
   isPrototype,
   isUnary,
-  isUndefined,
 } from './utils.ts';
 
 type Result = {
@@ -70,8 +69,8 @@ export const evaluate = (checker: KeyChecker, node: t.BinaryExpression): boolean
         return operator.charCodeAt(0) === (tyof.expect === 'symbol' ? 61 : 33); // '=' : '!'
       }
     } else if (
-      isUndefined(node.left) && checker.functionGroup(node.right) ||
-      isUndefined(node.right) && checker.functionGroup(node.left)
+      checker.isUndefined(node.left) && checker.functionGroup(node.right) ||
+      checker.isUndefined(node.right) && checker.functionGroup(node.left)
     ) {
       return operator.charCodeAt(0) === 33; // '!'
     }

@@ -43,9 +43,6 @@ export const isPrototype = (node: t.Node): node is PrototypeMember =>
 export const isUnary = (node: t.Node, operator: t.UnaryExpression['operator']): node is t.UnaryExpression =>
   node.type === 'UnaryExpression' && node.operator === operator;
 
-export const isUndefined = (node: t.Node): boolean =>
-  isIdentName(node, 'undefined') || isUnary(node, 'void') && isNumeric(node.argument, 0);
-
 export const bool = (value: boolean): t.BooleanLiteral => ({
   type: 'BooleanLiteral',
   value,

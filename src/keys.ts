@@ -2,12 +2,14 @@ import type t from '@babel/types';
 import type { NodePath } from '@babel/core';
 import type { Scope } from 'babel__traverse';
 
-import { isGlobal } from './GlobalIdentifier.ts';
+import { isGlobal } from './isGlobal.ts';
 import {
   isIdent,
   isIdentName,
   isMember,
+  isNumeric,
   isPrototype,
+  isUnary,
 } from './utils.ts';
 
 type GlobalKeys = keyof typeof globalThis
@@ -465,5 +467,13 @@ export class KeyChecker {
   isWellKnownSymbol(node: t.Node): node is t.MemberExpression {
     const ident = getWellKnownSymbol(node);
     return ident !== null && isGlobal(this.#scope, ident);
+  }
+
+  isUndefined(node: t.Node): boolean {
+    if (isIdentName(node, 'undefined')) {
+      return isGlobal(this.#scope, node);
+    }
+
+    return isUnary(node, 'void') && isNumeric(node.argument, 0);
   }
 }
