@@ -13,6 +13,7 @@ import {
 } from './utils.ts';
 
 type GlobalKeys = keyof typeof globalThis
+type Checker = (node: t.Node) => t.Identifier | null
 
 type TypedArrayPrototype =
   keyof typeof Array.prototype &
@@ -412,9 +413,11 @@ export const regExpPrototypeKeys = new Set<string>([
   // 'unicodeSets', // 112
 ] satisfies (keyof typeof RegExp.prototype)[]);
 
-const getFunctionGroup = (node: t.Node): t.Identifier | null => {
+const getFunctionGroup: Checker = (node) => {
   if (isIdent(node)) {
-    return builtInConstructor.has(node.name) ? node : null;
+    return builtInConstructor.has(node.name)
+      ? node
+      : null;
   }
 
   if (!isMember(node) || !isIdent(node.property)) {
@@ -422,24 +425,30 @@ const getFunctionGroup = (node: t.Node): t.Identifier | null => {
   }
 
   if (isIdent(node.object)) {
-    return keys.get(node.object.name)?.has(node.property.name) ? node.object : null;
+    return keys.get(node.object.name)?.has(node.property.name)
+      ? node.object
+      : null;
   }
 
   if (isPrototype(node.object)) {
-    return prototypeKeys.get(node.object.object.name)?.has(node.property.name) ? node.object.object : null;
+    return prototypeKeys.get(node.object.object.name)?.has(node.property.name)
+      ? node.object.object
+      : null;
   }
 
   return null;
 };
 
-const getBuiltInMember = (node: t.Node): t.Identifier | null =>
-  isIdent(node) && builtInMember.has(node.name) ? node : null;
+const getBuiltInMember: Checker = (node) =>
+  isIdent(node) && builtInMember.has(node.name)
+    ? node
+    : null;
 
-const getWellKnownSymbol = (node: t.Node): t.Identifier | null =>
+const getWellKnownSymbol: Checker = (node) =>
   isMember(node) &&
-  isIdentName(node.object, 'Symbol') &&
-  isIdent(node.property) &&
-  wellKnownSymbols.has(node.property.name)
+    isIdentName(node.object, 'Symbol') &&
+    isIdent(node.property) &&
+    wellKnownSymbols.has(node.property.name)
     ? node.object
     : null;
 
