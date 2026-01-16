@@ -23,7 +23,7 @@
     "@rollup/plugin-babel": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/babel__core": "^7.20.5",
-    "@types/node": "^24.10.9",
+    "@types/node": "^25.0.9",
     "babel-plugin-transform-lhs-constants": "^1.4.0",
     "rollup": "^4.55.1",
     "typescript": "^5.9.3",
