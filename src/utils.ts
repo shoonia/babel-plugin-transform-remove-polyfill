@@ -19,7 +19,7 @@ interface PrototypeMember extends t.MemberExpressionNonComputed {
   readonly optional: false;
 }
 
-export const isMember = (node: t.Node): node is t.MemberExpression =>
+export const isMember = (node: t.Node): node is t.MemberExpressionNonComputed =>
   node.type === 'MemberExpression' && node.computed === false;
 
 export const isIdent = (node: t.Node): node is t.Identifier =>

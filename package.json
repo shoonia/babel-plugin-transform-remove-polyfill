@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-remove-polyfill",
-  "version": "0.26.0",
+  "version": "0.26.1",
   "description": "Babel plugin that removes polyfills and transforms feature detection patterns for modern JavaScript environments",
   "main": "dist/index.cjs",
   "exports": "./dist/index.cjs",
