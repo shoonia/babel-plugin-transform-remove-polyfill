@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ES2024",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
@@ -26,6 +26,9 @@
     "skipLibCheck": true,
     "lib": [
       "ES2023"
+    ],
+    "types": [
+      "node"
     ]
   },
   "include": [
