@@ -1,6 +1,6 @@
-import type t from '@babel/types';
+import type * as t from '@babel/types';
 import type { NodePath } from '@babel/core';
-import type { Scope } from 'babel__traverse';
+import type { Scope } from '@babel/traverse';
 
 import { isGlobal } from './isGlobal.ts';
 import {

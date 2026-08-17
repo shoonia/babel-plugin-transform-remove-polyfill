@@ -5,9 +5,7 @@ import { evaluate } from './evaluate.ts';
 import { literals, builtInMember, builtInConstructor, KeyChecker } from './keys.ts';
 import { isBoolean, bool } from './utils.ts';
 
-const plugin = (api: ConfigAPI, options: Options = {}) => {
-  api.assertVersion(7);
-
+const plugin = (_: ConfigAPI, options: Options = {}) => {
   if (Array.isArray(options.globalObjects)) {
     options.globalObjects.forEach((key) => {
       builtInMember.add(key);
