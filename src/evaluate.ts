@@ -1,4 +1,4 @@
-import type t from '@babel/types';
+import type * as t from '@babel/types';
 
 import {
   keys,

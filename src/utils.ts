@@ -1,19 +1,19 @@
-import type t from '@babel/types';
+import type * as t from '@babel/types';
 
-interface ObjectMember extends t.MemberExpression {
+interface ObjectMember extends t.MemberExpressionNonComputed {
   readonly type: 'MemberExpression';
-  readonly object: t.Identifier
-  readonly property: t.Identifier | t.MemberExpression;
+  readonly object: t.Identifier;
+  readonly property: t.Identifier;
   readonly computed: false;
   readonly optional: false;
 }
 
-interface PrototypeMember extends t.MemberExpression {
+interface PrototypeMember extends t.MemberExpressionNonComputed {
   readonly type: 'MemberExpression';
-  readonly object: t.Identifier
+  readonly object: t.Identifier;
   readonly property: {
-    readonly type: 'Identifier',
-    readonly name: 'prototype'
+    readonly type: 'Identifier';
+    readonly name: 'prototype';
   }
   readonly computed: false;
   readonly optional: false;

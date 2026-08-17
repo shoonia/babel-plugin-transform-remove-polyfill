@@ -1,4 +1,4 @@
-import type t from '@babel/types';
+import type * as t from '@babel/types';
 import type { NodePath } from '@babel/core';
 
 import { matchesPattern } from './utils.ts';
@@ -17,12 +17,11 @@ export interface Options {
 type Transformer = (path: NodePath<t.CallExpression>) => boolean;
 
 export const transformerCallExpression = (options?: TransformOptions): Transformer[] => {
-  const memberExpression = (object: string, property: string): t.MemberExpression => ({
+  const memberExpression = (object: string, property: string): t.MemberExpressionNonComputed => ({
     type: 'MemberExpression',
     object: { type: 'Identifier', name: object },
     property: { type: 'Identifier', name: property },
     computed: false,
-    optional: false,
   });
 
   const isObjectHasOwn = matchesPattern('Object.prototype.hasOwnProperty.call');
